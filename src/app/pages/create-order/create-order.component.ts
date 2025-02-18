@@ -1,10 +1,36 @@
+import { NgFor } from '@angular/common';
 import { Component } from '@angular/core';
-import { CreateFormComponent } from '../../components/create-form/create-form.component';
+import { FormsModule } from '@angular/forms';
+
+interface SaleItem {
+  barcode: string;
+  quantity: number;
+  date: string;
+}
 
 @Component({
   selector: 'app-create-order',
   standalone: true,
-  imports: [CreateFormComponent],
-  template: `<app-create-form entity="Order"></app-create-form>`
+  imports: [FormsModule, NgFor],
+  templateUrl: './create-order.component.html',
+  styleUrls: ['./create-order.component.scss']
 })
-export class CreateOrderComponent {}
+export class CreateOrderComponent {
+  saleItems: SaleItem[] = [{
+    barcode: '',
+    quantity: 0,
+    date: new Date().toISOString().split('T')[0]
+  }];
+
+  addSaleItem() {
+    this.saleItems.push({
+      barcode: '',
+      quantity: 0,
+      date: new Date().toISOString().split('T')[0]
+    });
+  }
+
+  submitForm() {
+    console.log('Order form submitted:', this.saleItems);
+  }
+}

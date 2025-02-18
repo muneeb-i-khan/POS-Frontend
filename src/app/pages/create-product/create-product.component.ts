@@ -1,10 +1,22 @@
 import { Component } from '@angular/core';
-import { CreateFormComponent } from '../../components/create-form/create-form.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-create-product',
   standalone: true,
-  imports: [CreateFormComponent],
-  template: `<app-create-form entity="Product"></app-create-form>`
+  imports: [FormsModule],
+  templateUrl: './create-product.component.html',
+  styleUrls: ['./create-product.component.scss']
 })
-export class CreateProductComponent {}
+export class CreateProductComponent {
+  formData = {
+    clientName: '',
+    productName: '',
+    barcode: '',
+    price: 0
+  };
+
+  submitForm() {
+    console.log('Product form submitted:', this.formData);
+  }
+}

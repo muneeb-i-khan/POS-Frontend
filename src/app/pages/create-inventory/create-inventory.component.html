@@ -1,1 +1,16 @@
-<p>create-inventory works!</p>
+<div class="container mt-4">
+    <h3>Create Inventory</h3>
+    
+    <form (ngSubmit)="submitForm()">
+        <div class="mb-3">
+            <label class="form-label">Barcode</label>
+            <input type="text" class="form-control" [(ngModel)]="formData.barcode" name="barcode" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Quantity</label>
+            <input type="number" class="form-control" [(ngModel)]="formData.quantity" name="quantity" required>
+        </div>
+
+        <button type="submit" class="btn btn-success mt-3">Submit</button>
+    </form>
+</div>
