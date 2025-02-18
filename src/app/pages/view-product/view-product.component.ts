@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
+import { ProductService, Product } from '../../services/product.service';
 
 @Component({
   selector: 'app-view-product',
@@ -8,18 +9,35 @@ import { ViewTableComponent } from '../../components/view-table/view-table.compo
   templateUrl: './view-product.component.html',
   styleUrls: ['./view-product.component.scss']
 })
-export class ViewProductComponent {
+export class ViewProductComponent implements OnInit {
+  private productService = inject(ProductService);
 
   columns = [
-    { header: 'Product ID', field: 'productId' },
-    { header: 'Client ID', field: 'clientId' },
-    { header: 'Client Name', field: 'clientName' },
+    { header: 'ID', field: 'id' },
+    { header: 'Name', field: 'name' },
     { header: 'Barcode', field: 'barcode' },
-    { header: 'Product Name', field: 'productName' }
+    { header: 'Client ID', field: 'client_id' },
+    { header: 'Client Name', field: 'clientName' },
+    { header: 'Price', field: 'price' }
   ];
 
-  data = [
-    { productId: 1, clientId: 101, clientName: 'Muneeb', barcode: '123456', productName: 'Product A', isEditing: false },
-    { productId: 2, clientId: 102, clientName: 'John', barcode: '789012', productName: 'Product B', isEditing: false }
-  ];
+  data: Product[] = [];
+
+  ngOnInit() {
+    this.loadProducts();
+  }
+
+  loadProducts() {
+    this.productService.getProducts().subscribe({
+      next: (products) => {
+        this.data = products.map(product => ({
+          ...product,
+          isEditing: false
+        }));
+      },
+      error: (error) => {
+        console.error('Error fetching products:', error);
+      }
+    });
+  }
 }
