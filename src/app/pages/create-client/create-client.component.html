@@ -1,0 +1,76 @@
+<div class="container mt-4">
+    <h3>Create {{ entity }}</h3>
+    
+    <form (ngSubmit)="submitForm()">
+      
+      <!-- Client Form -->
+      <div *ngIf="entity === 'Client'">
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.name" name="name" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" [(ngModel)]="formData.description" name="description" required></textarea>
+        </div>
+      </div>
+  
+      <!-- Product Form -->
+      <div *ngIf="entity === 'Product'">
+        <div class="mb-3">
+          <label class="form-label">Client Name</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.clientName" name="clientName" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Product Name</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.productName" name="productName" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Barcode</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.barcode" name="barcode" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Price</label>
+          <input type="number" class="form-control" [(ngModel)]="formData.price" name="price" required>
+        </div>
+      </div>
+  
+      <!-- Inventory Form -->
+      <div *ngIf="entity === 'Inventory'">
+        <div class="mb-3">
+          <label class="form-label">Barcode</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.barcode" name="barcode" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Quantity</label>
+          <input type="number" class="form-control" [(ngModel)]="formData.quantity" name="quantity" required>
+        </div>
+      </div>
+  
+      <!-- Order Form (Sale Items) -->
+      <div *ngIf="entity === 'Order'">
+        <div *ngFor="let item of saleItems; let i = index" class="border p-3 mb-3">
+          <h5>Sale Item {{ i + 1 }}</h5>
+          <div class="mb-3">
+            <label class="form-label">Barcode</label>
+            <input type="text" class="form-control" [(ngModel)]="item.barcode" name="barcode{{i}}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Quantity</label>
+            <input type="number" class="form-control" [(ngModel)]="item.quantity" name="quantity{{i}}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-control" [(ngModel)]="item.date" name="date{{i}}" required>
+          </div>
+        </div>
+  
+        <button type="button" class="btn btn-secondary" (click)="addSaleItem()">➕ Add Sale Item</button>
+      </div>
+  
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-success mt-3">Submit</button>
+      
+    </form>
+  </div>
+  
