@@ -1,1 +1,22 @@
-<p>view-table works!</p>
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        <th *ngFor="let col of columns">{{ col.header }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of data; let i = index">
+        <td *ngFor="let col of columns">
+          <input *ngIf="row.isEditing" [(ngModel)]="row[col.field]" />
+          <span *ngIf="!row.isEditing">{{ row[col.field] }}</span>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-success" (click)="editRow(i)">
+            {{ row.isEditing ? 'Save' : 'Edit' }}
+          </button>
+          <button class="btn btn-sm btn-danger" (click)="deleteRow(i)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  

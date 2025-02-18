@@ -11,6 +11,11 @@ import { CreateClientComponent } from './pages/create-client/create-client.compo
 import { CreateProductComponent } from './pages/create-product/create-product.component';
 import { CreateInventoryComponent } from './pages/create-inventory/create-inventory.component';
 import { CreateOrderComponent } from './pages/create-order/create-order.component';
+import { ViewClientComponent } from './pages/view-client/view-client.component';
+import { ViewProductComponent } from './pages/view-product/view-product.component';
+import { ViewInventoryComponent } from './pages/view-inventory/view-inventory.component';
+import { ViewOrderComponent } from './pages/view-order/view-order.component';
+import { OrderDetailsComponent } from './views/order-details/order-details.component';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -23,5 +28,10 @@ export const routes: Routes = [
   { path: 'app/clients/create', component: CreateClientComponent },
   { path: 'app/products/create', component: CreateProductComponent },
   { path: 'app/inventory/create', component: CreateInventoryComponent },
-  { path: 'app/orders/create', component: CreateOrderComponent }
+  { path: 'app/orders/create', component: CreateOrderComponent },
+  { path: 'app/clients/view', component: ViewClientComponent },
+  { path: 'app/products/view', component: ViewProductComponent },
+  { path: 'app/inventory/view', component: ViewInventoryComponent },
+  { path: 'app/orders/view', component: ViewOrderComponent },
+  { path: 'app/order-details/:orderId', component: OrderDetailsComponent },
 ];

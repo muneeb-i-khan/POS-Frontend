@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-order-details-card',
   standalone: true,
-  imports: [],
+  imports: [NgFor],
   templateUrl: './order-details-card.component.html',
-  styleUrl: './order-details-card.component.scss'
+  styleUrls: ['./order-details-card.component.scss']
 })
 export class OrderDetailsCardComponent {
-
+  @Input() orderId!: number; 
+  @Input() saleItems: any[] = []; 
 }

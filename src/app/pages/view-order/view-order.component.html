@@ -1,1 +1,28 @@
-<p>view-order works!</p>
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        <th *ngFor="let col of columns">{{ col.header }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of data; let i = index">
+        <td *ngFor="let col of columns">
+          <input *ngIf="row.isEditing" [(ngModel)]="row[col.field]" />
+          <span *ngIf="!row.isEditing">{{ row[col.field] }}</span>
+        </td>
+        <td>
+
+          <button class="btn btn-sm btn-success me-2" (click)="editRow(i)">
+            {{ row.isEditing ? 'Save' : 'Edit' }}
+          </button>
+          
+
+          <button class="btn btn-sm btn-danger me-2" (click)="deleteRow(i)">Delete</button>
+          
+          <button class="btn btn-info btn-sm" [routerLink]="['/app/order-details', row.orderId]">
+            View
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
