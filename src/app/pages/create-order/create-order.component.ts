@@ -7,7 +7,8 @@ import { OrderService } from '../../services/order.service';
 interface OrderItem {
   barcode: string;
   quantity: number;
-  date: string;
+  saleDate: string;
+  prodName: string;
 }
 
 @Component({
@@ -26,7 +27,12 @@ export class CreateOrderComponent {
   ) {}
 
   private createEmptyOrderItem(): OrderItem {
-    return { barcode: '', quantity: 0, date: this.getTodayDate() };
+    return { 
+      barcode: '', 
+      quantity: 0, 
+      saleDate: this.getTodayDate(),
+      prodName: ''
+    };
   }
 
   private getTodayDate(): string {
@@ -42,8 +48,8 @@ export class CreateOrderComponent {
       items: this.orderItems.map(item => ({
         barcode: item.barcode,
         quantity: item.quantity,
-        date: item.date,
-        name: ''  
+        saleDate: item.saleDate,
+        prodName: item.prodName
       })),
       orderDate: this.getTodayDate()
     };

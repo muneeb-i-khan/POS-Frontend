@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 
 export interface OrderItem {
   barcode: string;
-  name: string;
+  prodName: string;
   quantity: number;
-  date: string;
+  saleDate: string;
 }
 
 export interface Order {
