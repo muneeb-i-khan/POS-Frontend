@@ -26,4 +26,8 @@ export class ProductService {
     console.log(product);
     return this.http.post<Product>(this.apiUrl, product, { headers });
   }
+
+  deleteProduct(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

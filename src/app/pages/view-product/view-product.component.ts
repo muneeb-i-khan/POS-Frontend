@@ -40,4 +40,15 @@ export class ViewProductComponent implements OnInit {
       }
     });
   }
+
+  deleteProduct(id: number) {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.productService.deleteProduct(id).subscribe({
+        next: () => this.loadProducts(),
+        error: (err) => {
+          console.error('Failed to delete product:', err);
+        }
+      });
+    }
+  }
 }
