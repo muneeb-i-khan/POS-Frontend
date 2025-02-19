@@ -3,8 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Inventory {  
+  id: number;
   barcode: string;
   quantity: number;
+  prodId: number;
+  prodName: string;
+  clientName: string;
+  isEditing?: boolean;
 }
 
 @Injectable({
@@ -25,5 +30,9 @@ export class InventoryService {
 
   deleteInventory(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  updateInventory(id: number, inventory: Partial<Inventory>): Observable<Inventory> {
+    return this.http.put<Inventory>(`${this.apiUrl}/${id}`, inventory);
   }
 } 

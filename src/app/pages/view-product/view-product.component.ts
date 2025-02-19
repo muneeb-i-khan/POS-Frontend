@@ -51,4 +51,25 @@ export class ViewProductComponent implements OnInit {
       });
     }
   }
+
+  editProduct(index: number) {
+    console.log('Edit product called with index:', index);
+    const product = this.data[index];
+    console.log('Product to edit:', product);
+    if (product.isEditing) {
+      this.productService.updateProduct(product.id, {
+        name: product.name,
+        barcode: product.barcode,
+        clientName: product.clientName,
+        price: product.price
+      }).subscribe({
+        next: () => {
+          product.isEditing = false;
+          this.loadProducts();
+        }
+      });
+    } else {
+      product.isEditing = true;
+    }
+  }
 }

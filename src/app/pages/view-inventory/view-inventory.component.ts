@@ -48,4 +48,21 @@ export class ViewInventoryComponent implements OnInit {
       });
     }
   }
+
+  editInventory(index: number) {
+    const inventory = this.data[index];
+    if (inventory.isEditing) {
+      this.inventoryService.updateInventory(inventory.id, {
+        barcode: inventory.barcode,
+        quantity: inventory.quantity
+      }).subscribe({
+        next: () => {
+          inventory.isEditing = false;
+          this.loadInventory();
+        }
+      });
+    } else {
+      inventory.isEditing = true;
+    }
+  }
 }

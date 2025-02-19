@@ -8,8 +8,10 @@
   <tbody>
     <tr *ngFor="let row of data; let i = index">
       <td *ngFor="let col of columns">
-        <input *ngIf="row.isEditing" [(ngModel)]="row[col.field]" name="{{col.field + '-' + i}}" class="form-control" />
-        <span *ngIf="!row.isEditing">{{ row[col.field] }}</span>
+        <ng-container *ngIf="row.isEditing && isEditableField(col.field)">
+          <input [(ngModel)]="row[col.field]" name="{{col.field + '-' + i}}" class="form-control" />
+        </ng-container>
+        <span *ngIf="!row.isEditing || !isEditableField(col.field)">{{ row[col.field] }}</span>
       </td>
       <td>
         <button class="btn btn-sm btn-success me-2" (click)="editRow(i)">

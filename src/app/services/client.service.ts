@@ -6,6 +6,7 @@ export interface Client {
   id: number;
   name: string;
   description: string;
+  isEditing?: boolean;
 }
 
 @Injectable({
@@ -26,5 +27,9 @@ export class ClientService {
 
   deleteClient(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  updateClient(id: number, client: Partial<Client>): Observable<Client> {
+    return this.http.put<Client>(`${this.apiUrl}/${id}`, client);
   }
 } 

@@ -1,1 +1,7 @@
-<app-view-table [columns]="columns" [data]="data" (delete)="deleteProduct($event)"></app-view-table>
+<app-view-table 
+[columns]="columns" 
+[data]="data" 
+[editableFields]="['name', 'barcode', 'clientName', 'price']"
+(delete)="deleteProduct($event)"
+(edit)="editProduct($event)">
+</app-view-table>

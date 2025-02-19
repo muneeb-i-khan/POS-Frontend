@@ -13,12 +13,18 @@ export class ViewTableComponent {
   @Input() columns: { header: string, field: string }[] = [];
   @Input() data: any[] = [];
   @Output() delete = new EventEmitter<number>();  
-
+  @Output() edit = new EventEmitter<number>();
+  @Input() editableFields: string[] = [];
+  
   editRow(index: number) {
-    this.data[index].isEditing = !this.data[index].isEditing;
+    this.edit.emit(index);
   }
 
   deleteRow(id: number) {
     this.delete.emit(id); 
+  }
+
+  isEditableField(field: string): boolean {
+    return this.editableFields.includes(field);
   }
 }

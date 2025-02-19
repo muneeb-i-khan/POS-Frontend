@@ -50,4 +50,21 @@ export class ViewClientComponent implements OnInit {
       });
     }
   }
+
+  editClient(index: number) {
+    const client = this.data[index];
+    if (client.isEditing) {
+      this.clientService.updateClient(client.id, {
+        name: client.name,
+        description: client.description
+      }).subscribe({
+        next: () => {
+          client.isEditing = false;
+          this.loadClients();
+        }
+      });
+    } else {
+      client.isEditing = true;
+    }
+  }
 }

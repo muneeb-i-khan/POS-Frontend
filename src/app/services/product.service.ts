@@ -3,10 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Product {
+  id: number;
   name: string;
   barcode: string;
   clientName: string;
   price: number;
+  client_id?: number;
+  isEditing?: boolean;
 }
 
 @Injectable({
@@ -29,5 +32,9 @@ export class ProductService {
 
   deleteProduct(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  updateProduct(id: number, product: Partial<Product>): Observable<Product> {
+    return this.http.put<Product>(`${this.apiUrl}/${id}`, product);
   }
 }
