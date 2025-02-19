@@ -2,8 +2,12 @@
     <h3>Create Order</h3>
 
     <form (ngSubmit)="submitForm()">
-        <div *ngFor="let item of orderItems; let i = index" class="border p-3 mb-3">
-            <h5>Sale Item {{ i + 1 }}</h5>
+        <div *ngFor="let item of orderItems; let i = index" class="border p-3 mb-3 position-relative">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5>Sale Item {{ i + 1 }}</h5>
+                <button type="button" class="btn btn-danger btn-sm" (click)="removeOrderItem(i)" *ngIf="orderItems.length > 1">❌ Remove</button>
+            </div>
+
             <div class="mb-3">
                 <label class="form-label">Barcode</label>
                 <input type="text" class="form-control" [(ngModel)]="item.barcode" name="barcode-{{i}}" required>
@@ -18,7 +22,9 @@
             </div>
         </div>
 
-        <button type="button" class="btn btn-secondary" (click)="addOrderItem()">➕ Add Sale Item</button>
-        <button type="submit" class="btn btn-success mt-3 ms-2">Submit</button>
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" (click)="addOrderItem()">➕ Add Sale Item</button>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
     </form>
 </div>
