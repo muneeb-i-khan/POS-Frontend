@@ -2,12 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface Inventory {
-  id: number;
-  prodId: number;
-  prodName: string;
+export interface Inventory {  
   barcode: string;
-  clientName: string;
   quantity: number;
 }
 
@@ -21,5 +17,9 @@ export class InventoryService {
 
   getInventory(): Observable<Inventory[]> {
     return this.http.get<Inventory[]>(this.apiUrl);
+  }
+
+  postInventory(inventory: Inventory): Observable<Inventory> {
+    return this.http.post<Inventory>(this.apiUrl, inventory);
   }
 } 

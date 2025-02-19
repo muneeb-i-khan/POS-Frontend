@@ -25,7 +25,7 @@ export class OrderDetailsComponent implements OnInit {
   loadOrderDetails() {
     this.orderService.getOrders().subscribe({
       next: (orders) => {
-        const order = orders.find(o => o.id === this.orderId);
+        const order = orders.find(o => o['id'] === this.orderId);
         if (order) {
           this.items = order.items;
         }

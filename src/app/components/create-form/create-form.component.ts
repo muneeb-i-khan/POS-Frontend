@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ClientService } from '../../services/client.service';
 import { ProductService } from '../../services/product.service';
+import { InventoryService } from '../../services/inventory.service';
 
 @Component({
   selector: 'app-create-form',
@@ -19,7 +20,8 @@ export class CreateFormComponent {
   constructor(
     private router: Router,
     private clientService: ClientService,
-    private productService: ProductService
+    private productService: ProductService,
+    private inventoryService: InventoryService
   ) {}
 
   submitForm() {
@@ -37,6 +39,12 @@ export class CreateFormComponent {
         }
       });
     }
-
+    else if (this.entity === 'Inventory') {
+      this.inventoryService.postInventory(this.formData).subscribe({
+        next: () => {
+          this.router.navigate(['/app/inventory/view']);
+        }
+      });
+    }
   }
 }
