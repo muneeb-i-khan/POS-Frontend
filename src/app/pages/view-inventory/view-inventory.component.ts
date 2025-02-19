@@ -40,4 +40,12 @@ export class ViewInventoryComponent implements OnInit {
       }
     });
   }
+
+  deleteInventory(id: number) {
+    if (confirm('Are you sure you want to delete this inventory?')) {
+      this.inventoryService.deleteInventory(id).subscribe({
+        next: () => this.loadInventory()
+      });
+    }
+  }
 }

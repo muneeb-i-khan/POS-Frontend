@@ -22,4 +22,8 @@ export class InventoryService {
   postInventory(inventory: Inventory): Observable<Inventory> {
     return this.http.post<Inventory>(this.apiUrl, inventory);
   }
+
+  deleteInventory(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 } 
