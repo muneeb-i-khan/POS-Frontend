@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ClientService } from '../../services/client.service';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-create-form',
@@ -17,7 +18,8 @@ export class CreateFormComponent {
 
   constructor(
     private router: Router,
-    private clientService: ClientService
+    private clientService: ClientService,
+    private productService: ProductService
   ) {}
 
   submitForm() {
@@ -28,5 +30,13 @@ export class CreateFormComponent {
         }
       });
     }
+    else if (this.entity === 'Product') {
+      this.productService.postProduct(this.formData).subscribe({
+        next: () => {
+          this.router.navigate(['/app/products/view']);
+        }
+      });
+    }
+
   }
 }
