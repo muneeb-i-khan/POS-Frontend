@@ -1,1 +1,5 @@
-<app-view-table [columns]="columns" [data]="data"></app-view-table>
+<app-view-table 
+  [columns]="columns" 
+  [data]="data" 
+  (delete)="deleteClient($event)">
+</app-view-table>

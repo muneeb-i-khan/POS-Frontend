@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -12,13 +12,13 @@ import { FormsModule } from '@angular/forms';
 export class ViewTableComponent {
   @Input() columns: { header: string, field: string }[] = [];
   @Input() data: any[] = [];
-
+  @Output() delete = new EventEmitter<number>();  
 
   editRow(index: number) {
     this.data[index].isEditing = !this.data[index].isEditing;
   }
 
-  deleteRow(index: number) {
-    this.data.splice(index, 1);
+  deleteRow(id: number) {
+    this.delete.emit(id); 
   }
 }

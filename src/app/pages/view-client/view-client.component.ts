@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
 import { ClientService, Client } from '../../services/client.service';
+
 @Component({
   selector: 'app-view-client',
   standalone: true,
@@ -35,5 +36,18 @@ export class ViewClientComponent implements OnInit {
         console.error('Error fetching clients:', error);
       }
     });
+  }
+
+  deleteClient(id: number) {
+    if (confirm('Are you sure you want to delete this client?')) {
+      this.clientService.deleteClient(id).subscribe({
+        next: () => {
+          this.data = this.data.filter(client => client.id !== id); 
+        },
+        error: (err) => {
+          console.error('Failed to delete client:', err);
+        }
+      });
+    }
   }
 }
