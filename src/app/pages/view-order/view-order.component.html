@@ -2,6 +2,7 @@
     <thead>
       <tr>
         <th *ngFor="let col of columns">{{ col.header }}</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -11,14 +12,11 @@
           <span *ngIf="!row.isEditing">{{ row[col.field] }}</span>
         </td>
         <td>
-
-          <button class="btn btn-sm btn-success me-2" (click)="editRow(i)">
+          <!-- See Later if there is any real worl scenario where we need to delete or edit the order -->
+          <!-- <button class="btn btn-sm btn-success me-2" (click)="editRow(i)">
             {{ row.isEditing ? 'Save' : 'Edit' }}
           </button>
-          
-
-          <button class="btn btn-sm btn-danger me-2" (click)="deleteRow(i)">Delete</button>
-          
+          <button class="btn btn-sm btn-danger me-2" (click)="deleteRow(i)">Delete</button> -->
           <button class="btn btn-info btn-sm" [routerLink]="['/app/order-details', row['id']]">
             View
           </button>
