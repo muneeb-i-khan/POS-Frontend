@@ -1,26 +1,38 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+  <app-search-bar [columns]="columns" (searchChange)="onSearchChange($event)"></app-search-bar>
+
+
+  <div class="w-50 d-flex gap-2">
+    <div>
+      <label class="fw-bold">📅 Start Date:</label>
+      <input type="date" class="form-control" [(ngModel)]="startDate">
+    </div>
+    <div>
+      <label class="fw-bold">📅 End Date:</label>
+      <input type="date" class="form-control" [(ngModel)]="endDate">
+    </div>
+  </div>
+</div>
+
+
 <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th *ngFor="let col of columns">{{ col.header }}</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of data; let i = index">
-        <td *ngFor="let col of columns">
-          <input *ngIf="row.isEditing" [(ngModel)]="row[col.field]" />
-          <span *ngIf="!row.isEditing">{{ row[col.field] }}</span>
-        </td>
-        <td>
-          <!-- See Later if there is any real worl scenario where we need to delete or edit the order -->
-          <!-- <button class="btn btn-sm btn-success me-2" (click)="editRow(i)">
-            {{ row.isEditing ? 'Save' : 'Edit' }}
-          </button>
-          <button class="btn btn-sm btn-danger me-2" (click)="deleteRow(i)">Delete</button> -->
-          <button class="btn btn-info btn-sm" [routerLink]="['/app/order-details', row['id']]">
-            View
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <thead>
+    <tr>
+      <th *ngFor="let col of columns">{{ col.header }}</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of filteredData(); let i = index">
+      <td *ngFor="let col of columns">
+        <span>{{ row[col.field] }}</span>
+      </td>
+      <td>
+        <button class="btn btn-info btn-sm" [routerLink]="['/app/order-details', row['id']]">
+          View
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
