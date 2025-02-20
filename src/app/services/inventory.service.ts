@@ -17,6 +17,7 @@ export interface Inventory {
 })
 export class InventoryService {
   private apiUrl = 'http://localhost:9000/pos/api/inventory';
+  private inventoryUploadUrl = 'http://localhost:9000/pos/api/inventory/upload';
 
   constructor(private http: HttpClient) {}
 
@@ -34,5 +35,11 @@ export class InventoryService {
 
   updateInventory(id: number, inventory: Partial<Inventory>): Observable<Inventory> {
     return this.http.put<Inventory>(`${this.apiUrl}/${id}`, inventory);
+  }
+
+  uploadInventoryTSV(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(this.inventoryUploadUrl, formData);
   }
 } 

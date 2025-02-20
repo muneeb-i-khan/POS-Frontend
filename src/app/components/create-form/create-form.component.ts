@@ -15,7 +15,8 @@ import { InventoryService } from '../../services/inventory.service';
 })
 export class CreateFormComponent {
   @Input() entity!: string;
-  formData: any = {};  
+  formData: any = {};
+  selectedFile: File | null = null;
 
   constructor(
     private router: Router,
@@ -27,24 +28,57 @@ export class CreateFormComponent {
   submitForm() {
     if (this.entity === 'Client') {
       this.clientService.postClient(this.formData).subscribe({
-        next: () => {
-          this.router.navigate(['/app/clients/view']);
-        }
+        next: () => this.router.navigate(['/app/clients/view'])
       });
-    }
+    } 
     else if (this.entity === 'Product') {
       this.productService.postProduct(this.formData).subscribe({
-        next: () => {
-          this.router.navigate(['/app/products/view']);
-        }
+        next: () => this.router.navigate(['/app/products/view'])
       });
-    }
+    } 
     else if (this.entity === 'Inventory') {
       this.inventoryService.postInventory(this.formData).subscribe({
-        next: () => {
-          this.router.navigate(['/app/inventory/view']);
-        }
+        next: () => this.router.navigate(['/app/inventory/view'])
       });
     }
   }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
+
+  uploadTSV() {
+    if (!this.selectedFile) {
+      alert("Please select a TSV file to upload.");
+      return;
+    }
+  
+    if (this.entity === 'Product') {
+      this.productService.uploadProductTSV(this.selectedFile).subscribe({
+        next: () => {
+          alert("Products uploaded successfully.");
+          this.selectedFile = null;
+        },
+        error: (err) => {
+          console.error("Product upload failed:", err);
+          alert("Failed to upload products.");
+        }
+      });
+    } 
+    else if (this.entity === 'Inventory') {
+      this.inventoryService.uploadInventoryTSV(this.selectedFile).subscribe({
+        next: () => {
+          alert("Inventory uploaded successfully.");
+          this.selectedFile = null;
+        },
+        error: (err) => {
+          console.error("Inventory upload failed:", err);
+          alert("Failed to upload inventory.");
+        }
+      });
+    }
+  }  
 }

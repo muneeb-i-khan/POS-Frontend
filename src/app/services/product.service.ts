@@ -17,6 +17,7 @@ export interface Product {
 })
 export class ProductService {
   private apiUrl = 'http://localhost:9000/pos/api/product';
+  private uploadUrl = 'http://localhost:9000/pos/api/product/upload';
 
   constructor(private http: HttpClient) {}
 
@@ -26,7 +27,6 @@ export class ProductService {
 
   postProduct(product: Product): Observable<Product> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    console.log(product);
     return this.http.post<Product>(this.apiUrl, product, { headers });
   }
 
@@ -36,5 +36,11 @@ export class ProductService {
 
   updateProduct(id: number, product: Partial<Product>): Observable<Product> {
     return this.http.put<Product>(`${this.apiUrl}/${id}`, product);
+  }
+
+  uploadProductTSV(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(this.uploadUrl, formData);
   }
 }
