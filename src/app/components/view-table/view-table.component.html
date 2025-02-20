@@ -1,15 +1,40 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <!-- Search Bar -->
+  <div class="w-50">
+    <label class="fw-bold">🔍 Search by:</label>
+    <div class="input-group">
+      <select class="form-select" [(ngModel)]="searchField">
+        <option value="">All Fields</option>
+        <option *ngFor="let col of columns" [value]="col.field">{{ col.header }}</option>
+      </select>
+      <input type="text" class="form-control" placeholder="Type to search..." [(ngModel)]="searchQuery">
+    </div>
+  </div>
+
+  <!-- Sorting Dropdown -->
+  <div class="w-25">
+    <label class="fw-bold">📌 Sort by:</label>
+    <select class="form-select" [(ngModel)]="sortField">
+      <option value="" disabled selected>Choose a column</option>
+      <option *ngFor="let col of columns" [value]="col.field">{{ col.header }}</option>
+    </select>
+  </div>
+</div>
+
 <table class="table table-bordered">
   <thead>
     <tr>
-      <th *ngFor="let col of columns">{{ col.header }}</th>
+      <th *ngFor="let col of columns" (click)="setSort(col.field)">
+        {{ col.header }} <span *ngIf="sortField === col.field">🔼</span>
+      </th>
       <th>Actions</th>  
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let row of data; let i = index">
+    <tr *ngFor="let row of filteredData(); let i = index">
       <td *ngFor="let col of columns">
         <ng-container *ngIf="row.isEditing && isEditableField(col.field)">
-          <input [(ngModel)]="row[col.field]" name="{{col.field + '-' + i}}" class="form-control" />
+          <input [(ngModel)]="row[col.field]" name="{{ col.field + '-' + i }}" class="form-control" />
         </ng-container>
         <span *ngIf="!row.isEditing || !isEditableField(col.field)">{{ row[col.field] }}</span>
       </td>
