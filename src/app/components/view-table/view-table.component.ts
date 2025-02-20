@@ -1,11 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SearchBarComponent } from '../search-bar/search-bar.component';
 
 @Component({
   selector: 'app-view-table',
   standalone: true,
-  imports: [NgFor, NgIf, FormsModule],
+  imports: [NgFor, NgIf, FormsModule, SearchBarComponent],
   templateUrl: './view-table.component.html',
   styleUrls: ['./view-table.component.scss']
 })
@@ -49,5 +50,11 @@ export class ViewTableComponent {
 
   isEditableField(field: string): boolean {
     return this.editableFields.includes(field);
+  }
+
+  // Function to handle search changes
+  onSearchChange(event: { field: string, query: string }) {
+    this.searchField = event.field;
+    this.searchQuery = event.query;
   }
 }

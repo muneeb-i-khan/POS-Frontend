@@ -1,15 +1,6 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <!-- Search Bar -->
-  <div class="w-50">
-    <label class="fw-bold">🔍 Search by:</label>
-    <div class="input-group">
-      <select class="form-select" [(ngModel)]="searchField">
-        <option value="">All Fields</option>
-        <option *ngFor="let col of columns" [value]="col.field">{{ col.header }}</option>
-      </select>
-      <input type="text" class="form-control" placeholder="Type to search..." [(ngModel)]="searchQuery">
-    </div>
-  </div>
+  <!-- Search Bar (Reused Component) -->
+  <app-search-bar [columns]="columns" (searchChange)="onSearchChange($event)"></app-search-bar>
 
   <!-- Sorting Dropdown -->
   <div class="w-25">
@@ -21,6 +12,7 @@
   </div>
 </div>
 
+<!-- Table -->
 <table class="table table-bordered">
   <thead>
     <tr>
