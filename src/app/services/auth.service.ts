@@ -1,28 +1,51 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  private isAuthenticated = false;
+  private apiUrl = 'http://localhost:9000/pos/api/auth';
 
-  constructor(private router: Router) {}
+  constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): boolean {
-    if (username === 'Muneeb' && password === '1234') {
-      this.isAuthenticated = true;
-      return true;
-    }
-    return false;
+  login(email: string, password: string): Observable<any> {
+    console.log(email, password);
+    return this.http.post(
+      `${this.apiUrl}/login`,
+      { email, password },
+      { withCredentials: true }
+    );
   }
 
-  logout(): void {
-    this.isAuthenticated = false;
-    this.router.navigate(['/login']);
+  signup(email: string, password: string, role: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/signup`, { email, password, role }, {
+      observe: 'response', 
+      withCredentials: true
+    });
   }
+
+  checkSession(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/check`, { withCredentials: true });
+  }
+
+  logout(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true });
+  }  
 
   isLoggedIn(): boolean {
-    return this.isAuthenticated;
+    return sessionStorage.getItem('userId') !== null;
   }
+
+  setUserSession(userId: string, role: string): void {
+    sessionStorage.setItem('userId', userId);
+    sessionStorage.setItem('role', role);
+  }
+  
+  clearUserSession(): void {
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('role');
+  }
+  
 }

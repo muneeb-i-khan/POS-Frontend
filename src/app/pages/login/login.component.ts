@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 
@@ -9,23 +9,36 @@ import { NgIf } from '@angular/common';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   standalone: true,
-  imports: [
-    FormsModule,
-    NgIf
-  ],
+  imports: [FormsModule, NgIf]
 })
 export class LoginComponent {
-  username = '';
-  password = '';
-  errorMessage = '';
+  email: string = '';
+  password: string = '';
+  errorMessage: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  login(): void {
-    if (this.authService.login(this.username, this.password)) {
-      this.router.navigate(['/app']);
-    } else {
-      this.errorMessage = 'Invalid username or password';
-    }
+  login() {
+    console.log('Attempting login with:', this.email, this.password);
+
+    this.authService.login(this.email, this.password).subscribe({
+      next: (response) => {
+        console.log('Login successful:', response);
+        if (response && response.id) {
+          this.authService.setUserSession(response.id.toString(), response.role);
+          this.router.navigate(['/app']); 
+        } else {
+          this.errorMessage = 'Invalid response from server';
+        }
+      },
+      error: (error) => {
+        console.error('Login failed:', error);
+        this.errorMessage = 'Invalid email or password';
+      },
+    });
+  }
+
+  navigateToSignup() {
+    this.router.navigate(['/signup']);
   }
 }

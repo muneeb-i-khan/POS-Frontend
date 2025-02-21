@@ -16,6 +16,7 @@ import { ViewProductComponent } from './pages/view-product/view-product.componen
 import { ViewInventoryComponent } from './pages/view-inventory/view-inventory.component';
 import { ViewOrderComponent } from './pages/view-order/view-order.component';
 import { OrderDetailsComponent } from './views/order-details/order-details.component';
+import { SignupComponent } from './components/signup/signup.component';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -34,4 +35,7 @@ export const routes: Routes = [
   { path: 'app/inventory/view', component: ViewInventoryComponent, canActivate: [AuthGuard] },
   { path: 'app/orders/view', component: ViewOrderComponent, canActivate: [AuthGuard] },
   { path: 'app/order-details/:orderId', component: OrderDetailsComponent, canActivate: [AuthGuard] },
+  { path: '', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
 ];

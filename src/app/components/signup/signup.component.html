@@ -1,0 +1,28 @@
+<div class="login-container d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 shadow-sm">
+      <h2 class="text-center">Signup</h2>
+      <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+      
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="text" class="form-control" [(ngModel)]="email">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" [(ngModel)]="password">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Role</label>
+        <select class="form-control" [(ngModel)]="role">
+          <option value="SUPERVISOR">Supervisor</option>
+          <option value="OPERATOR">Operator</option>
+        </select>
+      </div>
+
+      <button class="btn btn-primary w-100" (click)="signup()">Signup</button>
+    </div>
+</div>

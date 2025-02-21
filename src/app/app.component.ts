@@ -25,6 +25,16 @@ export class AppComponent {
   constructor(public authService: AuthService) {}
 
   logout(): void {
-    this.authService.logout();
+    this.authService.logout().subscribe({
+      next: () => {
+        console.log('Logout successful');
+        this.authService.clearUserSession();
+        window.location.href = '/login'; 
+      },
+      error: (error) => {
+        console.error('Logout failed:', error);
+      },
+    });
   }
+  
 }
