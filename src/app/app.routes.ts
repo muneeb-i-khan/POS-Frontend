@@ -20,7 +20,6 @@ import { SignupComponent } from './components/signup/signup.component';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
-  { path: 'login', component: LoginComponent },
   { path: 'app', component: AppDashboardComponent, canActivate: [AuthGuard] },
   { path: 'app/clients', component: ClientManagementComponent, canActivate: [AuthGuard] },
   { path: 'app/products', component: ProductManagementComponent, canActivate: [AuthGuard] },
@@ -35,7 +34,6 @@ export const routes: Routes = [
   { path: 'app/inventory/view', component: ViewInventoryComponent, canActivate: [AuthGuard] },
   { path: 'app/orders/view', component: ViewOrderComponent, canActivate: [AuthGuard] },
   { path: 'app/order-details/:orderId', component: OrderDetailsComponent, canActivate: [AuthGuard] },
-  { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
 ];

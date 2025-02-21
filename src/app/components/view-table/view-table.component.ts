@@ -52,7 +52,6 @@ export class ViewTableComponent {
     return this.editableFields.includes(field);
   }
 
-  // Function to handle search changes
   onSearchChange(event: { field: string, query: string }) {
     this.searchField = event.field;
     this.searchQuery = event.query;
