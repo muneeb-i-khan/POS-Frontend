@@ -2,13 +2,11 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { OrderService } from '../../services/order.service';
+import { Order, OrderService } from '../../services/order.service';
 
 interface OrderItem {
   barcode: string;
   quantity: number;
-  saleDate: string;
-  prodName: string;
 }
 
 @Component({
@@ -29,14 +27,8 @@ export class CreateOrderComponent {
   private createEmptyOrderItem(): OrderItem {
     return { 
       barcode: '', 
-      quantity: 0, 
-      saleDate: this.getTodayDate(),
-      prodName: ''
+      quantity: 0
     };
-  }
-
-  private getTodayDate(): string {
-    return new Date().toISOString().split('T')[0];
   }
 
   addOrderItem() {
@@ -44,16 +36,11 @@ export class CreateOrderComponent {
   }
 
   submitForm() {
-    const order = {
-      items: this.orderItems.map(item => ({
-        barcode: item.barcode,
-        quantity: item.quantity,
-        saleDate: item.saleDate,
-        prodName: item.prodName
-      })),
+    const order: Order = {
+      items: this.orderItems,
       orderDate: this.getTodayDate()
     };
-
+  
     this.orderService.postOrder(order).subscribe({
       next: () => this.router.navigate(['/app/orders/view'])
     });
@@ -63,5 +50,9 @@ export class CreateOrderComponent {
     if (this.orderItems.length > 1) {
       this.orderItems.splice(index, 1);
     }
+  }
+
+  private getTodayDate(): string {
+    return new Date().toISOString().split('T')[0];
   }
 }

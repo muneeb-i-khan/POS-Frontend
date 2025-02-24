@@ -31,10 +31,10 @@
         <span *ngIf="!row.isEditing || !isEditableField(col.field)">{{ row[col.field] }}</span>
       </td>
       <td>
-        <button class="btn btn-sm btn-success me-2" (click)="editRow(i)">
+        <button class="btn btn-sm btn-success" (click)="editRow(i)">
           {{ row.isEditing ? 'Save' : 'Edit' }}
         </button>
-        <button class="btn btn-sm btn-danger" (click)="deleteRow(row.id)">Delete</button>
+        <!-- <button class="btn btn-sm btn-danger" (click)="deleteRow(row.id)">Delete</button> -->
       </td>
     </tr>
   </tbody>

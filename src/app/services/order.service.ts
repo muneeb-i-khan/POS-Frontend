@@ -4,9 +4,8 @@ import { Observable } from 'rxjs';
 
 export interface OrderItem {
   barcode: string;
-  prodName: string;
   quantity: number;
-  saleDate: string;
+  prodName?: string;
 }
 
 export interface Order {
@@ -31,6 +30,8 @@ export class OrderService {
   }
 
   postOrder(order: Order): Observable<Order> {
-    return this.http.post<Order>(this.apiUrl, order);
+    console.log(order.items); 
+    return this.http.post<Order>(this.apiUrl, order.items); 
   }
+  
 }
