@@ -1,22 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface OrderItem {
-  barcode: string;
-  prodName: string;
-  quantity: number;
-  saleDate: string;
-}
-
-export interface Order {
-  id?: number;
-  items: OrderItem[];
-  orderDate: string;
-  totalAmount?: number;
-  isEditing?: boolean;
-  [key: string]: any;
-}
+import { Order } from '../models/order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +16,8 @@ export class OrderService {
   }
 
   postOrder(order: Order): Observable<Order> {
-    return this.http.post<Order>(this.apiUrl, order);
+    console.log(order.items); 
+    return this.http.post<Order>(this.apiUrl, order.items); 
   }
+  
 }

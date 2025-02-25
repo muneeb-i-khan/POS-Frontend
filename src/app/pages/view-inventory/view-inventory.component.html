@@ -1,6 +1,8 @@
 <app-view-table [columns]="columns" 
 [data]="data" 
 [editableFields]="['barcode', 'quantity']"
+[entity]="entity"
 (delete)="deleteInventory($event)" 
-(edit)="editInventory($event)">
+(edit)="editInventory($event)"
+(create)="createInventory()">
 </app-view-table>

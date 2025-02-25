@@ -1,41 +1,54 @@
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <!-- Search Bar (Reused Component) -->
-  <app-search-bar [columns]="columns" (searchChange)="onSearchChange($event)"></app-search-bar>
+<div class="container">
 
-  <!-- Sorting Dropdown -->
-  <div class="w-25">
-    <label class="fw-bold">📌 Sort by:</label>
-    <select class="form-select" [(ngModel)]="sortField">
-      <option value="" disabled selected>Choose a column</option>
-      <option *ngFor="let col of columns" [value]="col.field">{{ col.header }}</option>
-    </select>
+    <!-- Create Button at Bottom -->
+    <div class="d-flex mt-3">
+      <button class="btn btn-success px-4 py-2 shadow-sm" (click)="onCreate()">
+        <i class="fas fa-plus-circle me-2"></i> Create {{ entity }}
+      </button>
+    </div>
+  <!-- Toolbar -->
+  <div class="row align-items-center g-3 mb-3">
+    <!-- Search Bar -->
+    <div class="col-md-6 col-12">
+      <app-search-bar [columns]="columns" (searchChange)="onSearchChange($event)"></app-search-bar>
+    </div>
+
+    <!-- Sorting Dropdown -->
+    <div class="col-md-6 col-12 text-md-end text-center">
+      <label class="fw-bold d-block mb-1">📌 Sort by:</label>
+      <select class="form-select w-100" [(ngModel)]="sortField">
+        <option value="" disabled selected>Choose a column</option>
+        <option *ngFor="let col of columns" [value]="col.field">{{ col.header }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Responsive Table -->
+  <div class="table-responsive shadow-sm rounded">
+    <table class="table table-hover table-bordered text-center align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th *ngFor="let col of columns" (click)="setSort(col.field)" class="sortable">
+            {{ col.header }} <span *ngIf="sortField === col.field">🔼</span>
+          </th>
+          <th>Actions</th>  
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of filteredData(); let i = index">
+          <td *ngFor="let col of columns">
+            <ng-container *ngIf="row.isEditing && isEditableField(col.field)">
+              <input [(ngModel)]="row[col.field]" name="{{ col.field + '-' + i }}" class="form-control text-center" />
+            </ng-container>
+            <span *ngIf="!row.isEditing || !isEditableField(col.field)">{{ row[col.field] }}</span>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-primary me-1" (click)="editRow(i)">
+              <i class="fas fa-edit"></i> {{ row.isEditing ? 'Save' : 'Edit' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
-
-<!-- Table -->
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th *ngFor="let col of columns" (click)="setSort(col.field)">
-        {{ col.header }} <span *ngIf="sortField === col.field">🔼</span>
-      </th>
-      <th>Actions</th>  
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let row of filteredData(); let i = index">
-      <td *ngFor="let col of columns">
-        <ng-container *ngIf="row.isEditing && isEditableField(col.field)">
-          <input [(ngModel)]="row[col.field]" name="{{ col.field + '-' + i }}" class="form-control" />
-        </ng-container>
-        <span *ngIf="!row.isEditing || !isEditableField(col.field)">{{ row[col.field] }}</span>
-      </td>
-      <td>
-        <button class="btn btn-sm btn-success me-2" (click)="editRow(i)">
-          {{ row.isEditing ? 'Save' : 'Edit' }}
-        </button>
-        <button class="btn btn-sm btn-danger" (click)="deleteRow(row.id)">Delete</button>
-      </td>
-    </tr>
-  </tbody>
-</table>

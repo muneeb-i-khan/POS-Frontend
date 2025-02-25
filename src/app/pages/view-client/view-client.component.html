@@ -1,7 +1,9 @@
 <app-view-table 
   [columns]="columns" 
   [data]="data" 
+  [entity]="entity"
   [editableFields]="['name', 'description']"
   (delete)="deleteClient($event)"
-  (edit)="editClient($event)">
+  (edit)="editClient($event)"
+  (create)="createClient()"> 
 </app-view-table>

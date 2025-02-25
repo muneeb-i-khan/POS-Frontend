@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
-import { ClientService, Client } from '../../services/client.service';
+import { ClientService } from '../../services/client.service';
+import { Client } from '../../models/client.model';
+import { Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-view-client',
   standalone: true,
-  imports: [ViewTableComponent],
+  imports: [ViewTableComponent], 
   templateUrl: './view-client.component.html',
   styleUrls: ['./view-client.component.scss']
 })
@@ -17,8 +19,9 @@ export class ViewClientComponent implements OnInit {
   ];
 
   data: Client[] = [];
+  entity: string = 'Client';
 
-  constructor(private clientService: ClientService) {}
+  constructor(private clientService: ClientService, private router: Router) {} 
 
   ngOnInit() {
     this.loadClients();
@@ -42,7 +45,7 @@ export class ViewClientComponent implements OnInit {
     if (confirm('Are you sure you want to delete this client?')) {
       this.clientService.deleteClient(id).subscribe({
         next: () => {
-          this.data = this.data.filter(client => client.id !== id); 
+          this.data = this.data.filter(client => client.id !== id);
         },
         error: (err) => {
           console.error('Failed to delete client:', err);
@@ -66,5 +69,9 @@ export class ViewClientComponent implements OnInit {
     } else {
       client.isEditing = true;
     }
+  }
+
+  createClient() {
+    this.router.navigate(['/app/clients/create']);
   }
 }

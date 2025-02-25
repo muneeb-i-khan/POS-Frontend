@@ -4,18 +4,18 @@
     <table class="table table-bordered mt-3">
       <thead>
         <tr>
-          <th>Product Name</th>
           <th>Barcode</th>
           <th>Quantity</th>
-          <th>Sale Date</th>
+          <th>Product Name</th>
+          <th>Price</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of items">
-          <td>{{ item.prodName }}</td>
           <td>{{ item.barcode }}</td>
           <td>{{ item.quantity }}</td>
-          <td>{{ item.saleDate }}</td>
+          <td>{{ item.prodName }}</td>
+          <td>{{ item.price }}</td>
         </tr>
       </tbody>
     </table>

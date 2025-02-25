@@ -13,8 +13,10 @@ import { SearchBarComponent } from '../search-bar/search-bar.component';
 export class ViewTableComponent {
   @Input() columns: { header: string, field: string }[] = [];
   @Input() data: any[] = [];
+  @Input() entity: string = ''; 
   @Output() delete = new EventEmitter<number>();  
   @Output() edit = new EventEmitter<number>();
+  @Output() create = new EventEmitter<void>(); 
   @Input() editableFields: string[] = [];
 
   searchQuery: string = '';
@@ -55,5 +57,9 @@ export class ViewTableComponent {
   onSearchChange(event: { field: string, query: string }) {
     this.searchField = event.field;
     this.searchQuery = event.query;
+  }
+
+  onCreate() {
+    this.create.emit(); 
   }
 }
