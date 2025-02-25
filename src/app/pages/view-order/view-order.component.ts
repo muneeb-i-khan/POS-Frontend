@@ -34,7 +34,10 @@ export class ViewOrderComponent implements OnInit {
   loadOrders() {
     this.orderService.getOrders().subscribe({
       next: (orders) => {
-        this.data = orders;
+        this.data = orders.map(order => ({
+          ...order,
+          orderDate: this.formatDate(order.orderDate)
+        }));
       },
       error: (error) => {
         console.error('Error fetching orders:', error);
@@ -42,6 +45,10 @@ export class ViewOrderComponent implements OnInit {
     });
   }
 
+  private formatDate(dateObj: any): string {
+    if (!dateObj) return '';
+    return `${dateObj.year}-${String(dateObj.monthValue).padStart(2, '0')}-${String(dateObj.dayOfMonth).padStart(2, '0')}`;
+  }
 
   onSearchChange(event: { field: string; query: string }) {
     this.searchField = event.field;
