@@ -2,9 +2,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgIf, NgFor } from '@angular/common';
-import { OrderService, Order } from '../../services/order.service';
+import { OrderService } from '../../services/order.service';
 import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
-
+import { Order } from '../../models/order.model';
 @Component({
   selector: 'app-view-order',
   standalone: true,

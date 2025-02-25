@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
-import { InventoryService, Inventory } from '../../services/inventory.service';
+import { InventoryService } from '../../services/inventory.service';
+import { Inventory } from '../../models/inventory.model';
 
 @Component({
   selector: 'app-view-inventory',

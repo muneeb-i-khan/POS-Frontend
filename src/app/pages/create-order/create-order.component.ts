@@ -2,12 +2,9 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Order, OrderService } from '../../services/order.service';
+import { OrderService } from '../../services/order.service';
+import { Order, OrderItem } from '../../models/order.model';
 
-interface OrderItem {
-  barcode: string;
-  quantity: number;
-}
 
 @Component({
   selector: 'app-create-order',

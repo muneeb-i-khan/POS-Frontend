@@ -1,16 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface Inventory {  
-  id: number;
-  barcode: string;
-  quantity: number;
-  prodId: number;
-  prodName: string;
-  clientName: string;
-  isEditing?: boolean;
-}
+import { Inventory } from '../models/inventory.model';
 
 @Injectable({
   providedIn: 'root'

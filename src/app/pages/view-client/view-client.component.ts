@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
-import { ClientService, Client } from '../../services/client.service';
-
+import { ClientService } from '../../services/client.service';
+import { Client } from '../../models/client.model';
 @Component({
   selector: 'app-view-client',
   standalone: true,

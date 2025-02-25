@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
-import { ProductService, Product } from '../../services/product.service';
-
+import { ProductService } from '../../services/product.service';
+import { Product } from '../../models/product.model';
 @Component({
   selector: 'app-view-product',
   standalone: true,
