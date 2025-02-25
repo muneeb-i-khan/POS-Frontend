@@ -15,7 +15,7 @@ import { ViewClientComponent } from './pages/view-client/view-client.component';
 import { ViewProductComponent } from './pages/view-product/view-product.component';
 import { ViewInventoryComponent } from './pages/view-inventory/view-inventory.component';
 import { ViewOrderComponent } from './pages/view-order/view-order.component';
-import { OrderDetailsComponent } from './views/order-details/order-details.component';
+import { OrderDetailsComponent } from './pages/order-details/order-details.component';
 import { SignupComponent } from './pages/signup/signup.component';
 
 export const routes: Routes = [
