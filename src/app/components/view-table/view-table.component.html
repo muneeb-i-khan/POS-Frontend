@@ -1,6 +1,11 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <!-- Search Bar (Reused Component) -->
+  <!-- Search Bar  -->
   <app-search-bar [columns]="columns" (searchChange)="onSearchChange($event)"></app-search-bar>
+
+  <!-- Create Button -->
+  <button class="btn btn-success" (click)="onCreate()">
+    Create {{ entity }}
+  </button>
 
   <!-- Sorting Dropdown -->
   <div class="w-25">

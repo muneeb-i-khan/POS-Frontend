@@ -2,6 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-view-product',
   standalone: true,
@@ -10,19 +12,19 @@ import { Product } from '../../models/product.model';
   styleUrls: ['./view-product.component.scss']
 })
 export class ViewProductComponent implements OnInit {
-  private productService = inject(ProductService);
 
   columns = [
     { header: 'ID', field: 'id' },
     { header: 'Name', field: 'name' },
     { header: 'Barcode', field: 'barcode' },
-    { header: 'Client ID', field: 'client_id' },
     { header: 'Client Name', field: 'clientName' },
     { header: 'Price', field: 'price' }
   ];
 
   data: Product[] = [];
+  entity: string = 'Product';
 
+  constructor(private productService: ProductService, private router: Router) {} 
   ngOnInit() {
     this.loadProducts();
   }
@@ -71,5 +73,9 @@ export class ViewProductComponent implements OnInit {
     } else {
       product.isEditing = true;
     }
+  }
+
+  createProduct() {
+    this.router.navigate(['/app/products/create']);
   }
 }

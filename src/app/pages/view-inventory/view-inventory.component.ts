@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
 import { InventoryService } from '../../services/inventory.service';
 import { Inventory } from '../../models/inventory.model';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-view-inventory',
   standalone: true,
@@ -11,11 +11,13 @@ import { Inventory } from '../../models/inventory.model';
   styleUrls: ['./view-inventory.component.scss']
 })
 export class ViewInventoryComponent implements OnInit {
-  private inventoryService = inject(InventoryService);
+
+  constructor(private inventoryService: InventoryService, private router: Router) {} 
+
+  entity: string = 'Inventory';
 
   columns = [
     { header: 'ID', field: 'id' },
-    { header: 'Product ID', field: 'prodId' },
     { header: 'Product Name', field: 'prodName' },
     { header: 'Barcode', field: 'barcode' },
     { header: 'Client Name', field: 'clientName' },
@@ -65,5 +67,9 @@ export class ViewInventoryComponent implements OnInit {
     } else {
       inventory.isEditing = true;
     }
+  }
+
+  createInventory() {
+    this.router.navigate(['/app/inventory/create']);
   }
 }
