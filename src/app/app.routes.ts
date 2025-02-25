@@ -16,7 +16,7 @@ import { ViewProductComponent } from './pages/view-product/view-product.componen
 import { ViewInventoryComponent } from './pages/view-inventory/view-inventory.component';
 import { ViewOrderComponent } from './pages/view-order/view-order.component';
 import { OrderDetailsComponent } from './views/order-details/order-details.component';
-import { SignupComponent } from './components/signup/signup.component';
+import { SignupComponent } from './pages/signup/signup.component';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
