@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -15,6 +15,10 @@ import { InventoryService } from '../../services/inventory.service';
 })
 export class CreateFormComponent {
   @Input() entity!: string;
+  @Output() clientCreated = new EventEmitter<void>(); 
+  @Output() productCreated = new EventEmitter<void>();
+  @Output() inventoryCreated = new EventEmitter<void>();
+  @Output() tsvSubmitted = new EventEmitter<void>();
   formData: any = {};
   selectedFile: File | null = null;
 
@@ -28,17 +32,23 @@ export class CreateFormComponent {
   submitForm() {
     if (this.entity === 'Client') {
       this.clientService.postClient(this.formData).subscribe({
-        next: () => this.router.navigate(['/app/clients/view'])
+        next: () => {
+          this.clientCreated.emit(); 
+        }
       });
     } 
     else if (this.entity === 'Product') {
       this.productService.postProduct(this.formData).subscribe({
-        next: () => this.router.navigate(['/app/products/view'])
+        next: () => {
+          this.productCreated.emit();
+        }
       });
     } 
     else if (this.entity === 'Inventory') {
       this.inventoryService.postInventory(this.formData).subscribe({
-        next: () => this.router.navigate(['/app/inventory/view'])
+        next: () => {
+          this.inventoryCreated.emit();
+        }
       });
     }
   }
@@ -59,7 +69,8 @@ export class CreateFormComponent {
     if (this.entity === 'Product') {
       this.productService.uploadProductTSV(this.selectedFile).subscribe({
         next: () => {
-          alert("Products uploaded successfully.");
+          console.log("TSV upload successful, emitting event");
+          this.tsvSubmitted.emit();
           this.selectedFile = null;
         },
         error: (err) => {
@@ -68,10 +79,12 @@ export class CreateFormComponent {
         }
       });
     } 
+  
     else if (this.entity === 'Inventory') {
       this.inventoryService.uploadInventoryTSV(this.selectedFile).subscribe({
         next: () => {
-          alert("Inventory uploaded successfully.");
+          console.log("TSV upload successful, emitting event");
+          this.tsvSubmitted.emit();
           this.selectedFile = null;
         },
         error: (err) => {
@@ -80,5 +93,6 @@ export class CreateFormComponent {
         }
       });
     }
-  }  
+  }
+  
 }

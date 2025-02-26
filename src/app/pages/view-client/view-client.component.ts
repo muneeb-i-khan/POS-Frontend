@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
 import { ClientService } from '../../services/client.service';
 import { Client } from '../../models/client.model';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
+import { CreateFormComponent } from '../../components/create-form/create-form.component';
 
 @Component({
   selector: 'app-view-client',
   standalone: true,
-  imports: [ViewTableComponent], 
+  imports: [ViewTableComponent, CreateFormComponent],
   templateUrl: './view-client.component.html',
   styleUrls: ['./view-client.component.scss']
 })
-export class ViewClientComponent implements OnInit {
+export class ViewClientComponent implements OnInit, AfterViewInit {
   columns = [
     { header: 'ID', field: 'id' },
     { header: 'Name', field: 'name' },
@@ -21,10 +22,20 @@ export class ViewClientComponent implements OnInit {
   data: Client[] = [];
   entity: string = 'Client';
 
-  constructor(private clientService: ClientService, private router: Router) {} 
+  @ViewChild('createClientModal', { static: false }) createClientModal!: ElementRef;
+
+  constructor(private clientService: ClientService, private router: Router) {}
 
   ngOnInit() {
     this.loadClients();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (!this.createClientModal) {
+        console.error('createClientModal is undefined.');
+      }
+    });
   }
 
   loadClients() {
@@ -71,7 +82,22 @@ export class ViewClientComponent implements OnInit {
     }
   }
 
-  createClient() {
-    this.router.navigate(['/app/clients/create']);
+  openCreateModal() {
+    if (this.createClientModal) {
+      this.createClientModal.nativeElement.style.display = 'flex';
+    } else {
+      console.error('createClientModal is not initialized yet.');
+    }
+  }
+
+  closeCreateModal() {
+    if (this.createClientModal) {
+      this.createClientModal.nativeElement.style.display = 'none';
+    }
+  }
+
+  handleClientCreated() {
+    this.closeCreateModal(); // Close modal
+    this.loadClients(); // Refresh list
   }
 }

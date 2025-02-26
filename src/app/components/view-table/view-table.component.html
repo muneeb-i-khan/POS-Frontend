@@ -1,11 +1,6 @@
 <div class="container">
 
-    <!-- Create Button at Bottom -->
-    <div class="d-flex mt-3">
-      <button class="btn btn-success px-4 py-2 shadow-sm" (click)="onCreate()">
-        <i class="fas fa-plus-circle me-2"></i> Create {{ entity }}
-      </button>
-    </div>
+
   <!-- Toolbar -->
   <div class="row align-items-center g-3 mb-3">
     <!-- Search Bar -->
@@ -21,6 +16,12 @@
         <option *ngFor="let col of columns" [value]="col.field">{{ col.header }}</option>
       </select>
     </div>
+  </div>
+  <!-- Create button -->
+  <div class="d-flex mt-3 mb-3">
+    <button class="btn btn-success px-4 py-2 shadow-sm" (click)="onCreate()">
+      <i class="fas fa-plus-circle me-2"></i> Create {{ entity }}
+    </button>
   </div>
 
   <!-- Responsive Table -->

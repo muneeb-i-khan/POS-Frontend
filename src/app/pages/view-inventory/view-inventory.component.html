@@ -1,8 +1,18 @@
-<app-view-table [columns]="columns" 
-[data]="data" 
-[editableFields]="['barcode', 'quantity']"
-[entity]="entity"
-(delete)="deleteInventory($event)" 
-(edit)="editInventory($event)"
-(create)="createInventory()">
-</app-view-table>
+<div id="createInventoryModal" class="modal-overlay" #createInventoryModal *ngIf="isModalOpen">
+    <div class="modal-content">
+      <span class="close" (click)="closeCreateModal()">&times;</span>
+      <app-create-form entity="Inventory" (inventoryCreated)="handleInventoryCreated()" (tsvSubmitted)="handleTsvSubmitted()"></app-create-form>
+    </div>
+  </div>
+  
+
+  <app-view-table 
+    [columns]="columns" 
+    [data]="data" 
+    [editableFields]="['barcode', 'quantity']"
+    [entity]="entity"
+    (delete)="deleteInventory($event)" 
+    (edit)="editInventory($event)"
+    (create)="openCreateModal()">
+  </app-view-table>
+  

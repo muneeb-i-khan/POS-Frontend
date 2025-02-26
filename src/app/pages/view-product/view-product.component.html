@@ -1,9 +1,16 @@
-<app-view-table 
-[columns]="columns" 
-[data]="data" 
-[entity]="entity"
-[editableFields]="['name', 'barcode', 'clientName', 'price']"
-(delete)="deleteProduct($event)"
-(edit)="editProduct($event)"
-(create)="createProduct()">
-</app-view-table>
+<div id="createProductModal" class="modal-overlay" #createProductModal>
+    <div class="modal-content">
+      <span class="close" (click)="closeCreateModal()">&times;</span>
+      <app-create-form entity="Product" (productCreated)="handleProductCreated()"  (tsvSubmitted)="handleTsvSubmitted()"></app-create-form>
+    </div>
+  </div>
+  
+  <app-view-table 
+    [columns]="columns" 
+    [data]="data" 
+    [editableFields]="['name', 'barcode', 'clientName', 'price']"
+    (delete)="deleteProduct($event)"
+    (edit)="editProduct($event)"
+    (create)="openCreateModal()">
+  </app-view-table>
+  

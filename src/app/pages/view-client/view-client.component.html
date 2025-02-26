@@ -1,9 +1,16 @@
+<div id="createClientModal" class="modal-overlay" #createClientModal>
+  <div class="modal-content">
+    <span class="close" (click)="closeCreateModal()">&times;</span>
+    <app-create-form entity="Client" (clientCreated)="handleClientCreated()"></app-create-form>
+  </div>
+</div>
+
+
 <app-view-table 
   [columns]="columns" 
   [data]="data" 
-  [entity]="entity"
   [editableFields]="['name', 'description']"
   (delete)="deleteClient($event)"
   (edit)="editClient($event)"
-  (create)="createClient()"> 
+  (create)="openCreateModal()">
 </app-view-table>
