@@ -18,6 +18,7 @@ export class CreateFormComponent {
   @Output() clientCreated = new EventEmitter<void>(); 
   @Output() productCreated = new EventEmitter<void>();
   @Output() inventoryCreated = new EventEmitter<void>();
+  @Output() tsvSubmitted = new EventEmitter<void>();
   formData: any = {};
   selectedFile: File | null = null;
 
@@ -68,7 +69,8 @@ export class CreateFormComponent {
     if (this.entity === 'Product') {
       this.productService.uploadProductTSV(this.selectedFile).subscribe({
         next: () => {
-          alert("Products uploaded successfully.");
+          console.log("TSV upload successful, emitting event");
+          this.tsvSubmitted.emit();
           this.selectedFile = null;
         },
         error: (err) => {
@@ -77,10 +79,12 @@ export class CreateFormComponent {
         }
       });
     } 
+  
     else if (this.entity === 'Inventory') {
       this.inventoryService.uploadInventoryTSV(this.selectedFile).subscribe({
         next: () => {
-          alert("Inventory uploaded successfully.");
+          console.log("TSV upload successful, emitting event");
+          this.tsvSubmitted.emit();
           this.selectedFile = null;
         },
         error: (err) => {
@@ -89,5 +93,6 @@ export class CreateFormComponent {
         }
       });
     }
-  }  
+  }
+  
 }

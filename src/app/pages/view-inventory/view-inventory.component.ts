@@ -85,4 +85,11 @@ export class ViewInventoryComponent implements OnInit {
     this.closeCreateModal(); 
     this.loadInventory(); 
   }
+
+  handleTsvSubmitted() {
+    console.log("TSV submitted event received");
+    this.closeCreateModal();
+    this.loadInventory();
+  }
+  
 }

@@ -106,4 +106,9 @@ export class ViewProductComponent implements OnInit, AfterViewInit {
     this.closeCreateModal(); 
     this.loadProducts(); 
   }
+
+  handleTsvSubmitted() {
+    this.closeCreateModal();
+    this.loadProducts();
+  }
 }
