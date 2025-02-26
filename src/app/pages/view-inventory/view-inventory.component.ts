@@ -1,20 +1,22 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
 import { InventoryService } from '../../services/inventory.service';
 import { Inventory } from '../../models/inventory.model';
 import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
+import { CreateFormComponent } from '../../components/create-form/create-form.component';
+
 @Component({
   selector: 'app-view-inventory',
   standalone: true,
-  imports: [ViewTableComponent],
+  imports: [ViewTableComponent, NgIf, CreateFormComponent],
   templateUrl: './view-inventory.component.html',
   styleUrls: ['./view-inventory.component.scss']
 })
 export class ViewInventoryComponent implements OnInit {
 
-  constructor(private inventoryService: InventoryService, private router: Router) {} 
-
   entity: string = 'Inventory';
+  isModalOpen = false;
 
   columns = [
     { header: 'ID', field: 'id' },
@@ -25,6 +27,8 @@ export class ViewInventoryComponent implements OnInit {
   ];
 
   data: Inventory[] = [];
+
+  constructor(private inventoryService: InventoryService, private router: Router) {} 
 
   ngOnInit() {
     this.loadInventory();
@@ -69,7 +73,16 @@ export class ViewInventoryComponent implements OnInit {
     }
   }
 
-  createInventory() {
-    this.router.navigate(['/app/inventory/create']);
+  openCreateModal() {
+    this.isModalOpen = true;
+  }
+
+  closeCreateModal() {
+    this.isModalOpen = false;
+  }
+
+  handleInventoryCreated() {
+    this.closeCreateModal(); 
+    this.loadInventory(); 
   }
 }

@@ -1,18 +1,18 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
 import { Router } from '@angular/router';
+import { CreateFormComponent } from '../../components/create-form/create-form.component';
 
 @Component({
   selector: 'app-view-product',
   standalone: true,
-  imports: [ViewTableComponent],
+  imports: [ViewTableComponent, CreateFormComponent],
   templateUrl: './view-product.component.html',
   styleUrls: ['./view-product.component.scss']
 })
-export class ViewProductComponent implements OnInit {
-
+export class ViewProductComponent implements OnInit, AfterViewInit {
   columns = [
     { header: 'ID', field: 'id' },
     { header: 'Name', field: 'name' },
@@ -24,9 +24,20 @@ export class ViewProductComponent implements OnInit {
   data: Product[] = [];
   entity: string = 'Product';
 
-  constructor(private productService: ProductService, private router: Router) {} 
+  @ViewChild('createProductModal', { static: false }) createProductModal!: ElementRef;
+
+  constructor(private productService: ProductService, private router: Router) {}
+
   ngOnInit() {
     this.loadProducts();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (!this.createProductModal) {
+        console.error('createProductModal is undefined.');
+      }
+    });
   }
 
   loadProducts() {
@@ -55,9 +66,7 @@ export class ViewProductComponent implements OnInit {
   }
 
   editProduct(index: number) {
-    console.log('Edit product called with index:', index);
     const product = this.data[index];
-    console.log('Product to edit:', product);
     if (product.isEditing) {
       this.productService.updateProduct(product.id, {
         name: product.name,
@@ -75,7 +84,26 @@ export class ViewProductComponent implements OnInit {
     }
   }
 
-  createProduct() {
-    this.router.navigate(['/app/products/create']);
+  openCreateModal() {
+    if (this.createProductModal) {
+      const modal = this.createProductModal.nativeElement;
+      modal.style.display = 'flex';
+      modal.classList.add('show');
+    } else {
+      console.error('createProductModal is not initialized yet.');
+    }
+  }
+
+  closeCreateModal() {
+    if (this.createProductModal) {
+      const modal = this.createProductModal.nativeElement;
+      modal.style.display = 'none';
+      modal.classList.remove('show');
+    }
+  }
+
+  handleProductCreated() {
+    this.closeCreateModal(); 
+    this.loadProducts(); 
   }
 }
