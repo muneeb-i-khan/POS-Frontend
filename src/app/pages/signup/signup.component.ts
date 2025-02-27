@@ -13,18 +13,16 @@ import { NgIf } from '@angular/common';
     FormsModule,
     NgIf
   ],
-})
-export class SignupComponent {
+})export class SignupComponent {
   email = '';
   password = '';
-  role = 'OPERATOR';  
   errorMessage: string | null = '';  
   successMessage = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
   signup() {
-    this.authService.signup(this.email, this.password, this.role).subscribe({
+    this.authService.signup(this.email, this.password).subscribe({
       next: (response) => {
         console.log('Full response:', response);
         
