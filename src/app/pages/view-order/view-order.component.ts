@@ -5,6 +5,7 @@ import { NgIf, NgFor } from '@angular/common';
 import { OrderService } from '../../services/order.service';
 import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
 import { Order } from '../../models/order.model';
+
 @Component({
   selector: 'app-view-order',
   standalone: true,
@@ -18,7 +19,9 @@ export class ViewOrderComponent implements OnInit {
   columns = [
     { header: 'Order ID', field: 'id' },
     { header: 'Order Date', field: 'orderDate' },
-    { header: 'Total Amount', field: 'totalAmount' }
+    { header: 'Total Amount', field: 'totalAmount' },
+    {header: 'Customer Name', field: 'customerName'},
+    {header: 'Customer Phone', field: 'customerPhone'}
   ];
 
   data: Order[] = [];

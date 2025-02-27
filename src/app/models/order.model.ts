@@ -1,3 +1,8 @@
+export interface Customer {
+  name: string;
+  phone: string;
+}
+
 export interface OrderItem {
   barcode: string;
   quantity: number;
@@ -7,9 +12,10 @@ export interface OrderItem {
 
 export interface Order {
   id?: number;
-  items: OrderItem[];
+  customer: Customer; 
+  items: OrderItem[]; 
   orderDate: string;
   totalAmount?: number;
   isEditing?: boolean;
   [key: string]: any;
-} 
+}
