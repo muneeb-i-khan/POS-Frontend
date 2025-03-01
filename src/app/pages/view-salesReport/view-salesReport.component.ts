@@ -1,35 +1,36 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
 import { Router } from '@angular/router';
-import { CreateFormComponent } from '../../components/create-form/create-form.component';
 import { DaySalesReportService } from '../../services/daySalesReport.service';
-import { DaySalesReport } from '../../models/daySalesReport.model';
 import { FormsModule } from '@angular/forms';
+import { SalesReport } from '../../models/salesReport.model';
+import { SalesReportService } from '../../services/salesReport.service';
 
 @Component({
     selector: 'app-view-dayReport',
     standalone: true,
     imports: [ViewTableComponent, FormsModule],
-    templateUrl: './view-dayReport.component.html',
-    styleUrls: ['./view-dayReport.component.scss']
+    templateUrl: './view-salesReport.component.html',
+    styleUrls: ['./view-salesReport.component.scss']
 })
-export class ViewDayReportComponent implements OnInit, AfterViewInit {
+export class ViewSalesReportComponent implements OnInit, AfterViewInit {
     columns = [
-        { header: 'Date', field: 'date' },
-        { header: 'Order Count', field: 'orderCount' },
-        { header: 'Item Sold Count', field: 'itemSoldCount' },
+        { header: 'Client Name', field: 'clientName' },
+        { header: 'Description', field: 'description' },
+        { header: 'Quantity', field: 'quantity' },
         { header: 'Revenue', field: 'revenue' }
     ];
 
-    data: DaySalesReport[] = [];
-    entity: string = 'Day Sales Report';
+    data: SalesReport[] = [];
+    entity: string = 'Sales Report';
 
-    @ViewChild('createClientModal', { static: false }) createClientModal!: ElementRef;
 
     startDate: string = '';
     endDate: string = '';
+    clientName: string = '';
+    description: string = '';
 
-    constructor(private daySalesReportService: DaySalesReportService, private router: Router) { }
+    constructor(private SalesReportService: SalesReportService, private router: Router) { }
 
     ngOnInit() {
         this.loadClients();
@@ -44,13 +45,13 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
         this.loadClients();
     }
 
+
     loadClients() {
-        if (!this.startDate && !this.endDate) {
-            this.daySalesReportService.getAllReports().subscribe({
+        if (!this.startDate && !this.endDate && !this.clientName && !this.description) {
+            this.SalesReportService.getAllReports().subscribe({
                 next: (data) => {
                     this.data = data.map(report => ({
                         ...report,
-                        date: this.formatDate(report.date)
                     }));
                 },
                 error: (error) => {
@@ -60,11 +61,10 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
             return;
         }
         else {
-            this.daySalesReportService.getReport(this.startDate, this.endDate).subscribe({
+            this.SalesReportService.getReport(this.startDate, this.endDate, this.clientName, this.description).subscribe({
                 next: (data) => {
                     this.data = data.map(report => ({
                         ...report,
-                        date: this.formatDate(report.date)
                     }));
                 },
                 error: (error) => {
