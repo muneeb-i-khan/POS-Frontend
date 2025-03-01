@@ -16,8 +16,7 @@ export class OrderService {
   }
 
   postOrder(order: Order): Observable<Order> {
-    console.log(order.items); 
-    return this.http.post<Order>(this.apiUrl, order.items); 
+    console.log('Sending Order:', order); 
+    return this.http.post<Order>(this.apiUrl, order); 
   }
-  
 }

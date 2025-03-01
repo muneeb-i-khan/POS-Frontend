@@ -97,7 +97,7 @@ export class ViewClientComponent implements OnInit, AfterViewInit {
   }
 
   handleClientCreated() {
-    this.closeCreateModal(); // Close modal
-    this.loadClients(); // Refresh list
+    this.closeCreateModal(); 
+    this.loadClients(); 
   }
 }

@@ -3,8 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { OrderService } from '../../services/order.service';
-import { Order, OrderItem } from '../../models/order.model';
-
+import { Order, OrderItem, Customer } from '../../models/order.model';
 
 @Component({
   selector: 'app-create-order',
@@ -14,6 +13,7 @@ import { Order, OrderItem } from '../../models/order.model';
   styleUrls: ['./create-order.component.scss']
 })
 export class CreateOrderComponent {
+  customer: Customer = { name: '', phone: '' }; // Added customer object
   orderItems: OrderItem[] = [this.createEmptyOrderItem()];
 
   constructor(
@@ -31,17 +31,24 @@ export class CreateOrderComponent {
   addOrderItem() {
     this.orderItems.push(this.createEmptyOrderItem());
   }
-
   submitForm() {
-    const order: Order = {
-      items: this.orderItems,
+    const order: any = {
+      customer: {
+        name: this.customer.name,
+        phone: this.customer.phone
+      },
+      orderItems: this.orderItems,
       orderDate: this.getTodayDate()
     };
   
+    console.log('Order Payload:', order);
+  
     this.orderService.postOrder(order).subscribe({
-      next: () => this.router.navigate(['/app/orders/view'])
+      next: () => this.router.navigate(['/app/orders/view']),
+      error: (error) => console.error('Error creating order:', error)
     });
   }
+  
 
   removeOrderItem(index: number) {
     if (this.orderItems.length > 1) {
