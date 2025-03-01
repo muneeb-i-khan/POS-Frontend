@@ -2,7 +2,7 @@
 
 
   <!-- Toolbar -->
-  <div class="row align-items-center g-3 mb-3">
+  <div *ngIf="entity !== 'Day Sales Report'" class="row align-items-center g-3 mb-3">
     <!-- Search Bar -->
     <div class="col-md-6 col-12">
       <app-search-bar [columns]="columns" (searchChange)="onSearchChange($event)"></app-search-bar>
@@ -18,7 +18,7 @@
     </div>
   </div>
   <!-- Create button -->
-  <div class="d-flex mt-3 mb-3">
+  <div *ngIf="entity !== 'Day Sales Report'" class="d-flex mt-3 mb-3">
     <button class="btn btn-success px-4 py-2 shadow-sm" (click)="onCreate()">
       <i class="fas fa-plus-circle me-2"></i> Create {{ entity }}
     </button>

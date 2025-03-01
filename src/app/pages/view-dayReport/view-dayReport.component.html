@@ -1,0 +1,20 @@
+<form (ngSubmit)="onGenerateReport()" class="d-flex flex-column align-items-center">
+  <div class="d-flex mb-3 justify-content-center align-items-center mt-3">
+    <div class="me-3">
+      <label for="startDate" class="form-label">Start Date</label>
+      <input type="date" id="startDate" name="startDate" [(ngModel)]="startDate" class="form-control">
+    </div>
+    <div class="me-3">
+      <label for="endDate" class="form-label">End Date</label>
+      <input type="date" id="endDate" name="endDate" [(ngModel)]="endDate" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Generate Report</button>
+  </div>
+</form>
+
+<app-view-table 
+  [columns]="columns" 
+  [data]="data" 
+  [entity]="entity"
+  [editableFields]="['date', 'orderCount', 'itemSoldCount', 'revenue']">
+</app-view-table>
