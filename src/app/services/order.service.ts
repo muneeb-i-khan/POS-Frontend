@@ -19,4 +19,9 @@ export class OrderService {
     console.log('Sending Order:', order); 
     return this.http.post<Order>(this.apiUrl, order); 
   }
+
+  downloadInvoice(orderId: number) {
+    window.open(`http://localhost:9000/pos/api/order/download/${orderId}`, '_blank');
+  }
+  
 }
