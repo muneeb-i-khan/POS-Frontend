@@ -34,4 +34,10 @@ export class ProductService {
     formData.append('file', file);
     return this.http.post(this.uploadUrl, formData);
   }
+
+  getProductsPaginated(page: number, pageSize: number): Observable<{ products: Product[], totalProducts: number }> {
+    return this.http.get<{ products: Product[], totalProducts: number }>(
+      `${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`
+    );
+  }
 }

@@ -26,7 +26,14 @@ export class ViewProductComponent implements OnInit, AfterViewInit {
 
   @ViewChild('createProductModal', { static: false }) createProductModal!: ElementRef;
 
+   // Pagination properties
+   totalProducts: number = 0;
+   currentPage: number = 0;
+   pageSize: number = 10;
+ 
   constructor(private productService: ProductService, private router: Router) {}
+
+  
 
   ngOnInit() {
     this.loadProducts();
@@ -40,13 +47,15 @@ export class ViewProductComponent implements OnInit, AfterViewInit {
     });
   }
 
-  loadProducts() {
-    this.productService.getProducts().subscribe({
-      next: (products) => {
-        this.data = products.map(product => ({
+  loadProducts(page: number = 0) {
+    this.productService.getProductsPaginated(page, this.pageSize).subscribe({
+      next: (response) => {
+        this.data = response.products.map(product => ({
           ...product,
           isEditing: false
         }));
+        this.totalProducts = response.totalProducts;
+        this.currentPage = page;
       },
       error: (error) => {
         console.error('Error fetching products:', error);
@@ -110,5 +119,9 @@ export class ViewProductComponent implements OnInit, AfterViewInit {
   handleTsvSubmitted() {
     this.closeCreateModal();
     this.loadProducts();
+  }
+
+  goToPage(page: number) {
+    this.loadProducts(page);
   }
 }
