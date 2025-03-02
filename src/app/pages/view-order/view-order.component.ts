@@ -79,4 +79,8 @@ export class ViewOrderComponent implements OnInit {
         return this.columns.some(col => order[col.field]?.toString().toLowerCase().includes(this.searchQuery.toLowerCase()));
       });
   }
+
+  downloadInvoice(orderId: number) {
+    this.orderService.downloadInvoice(orderId);
+  }
 }

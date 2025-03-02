@@ -15,7 +15,6 @@
   </div>
 </div>
 
-
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -32,7 +31,11 @@
         <button class="btn btn-info btn-sm" [routerLink]="['/app/order-details', row['id']]">
           View
         </button>
+        <button class="btn btn-primary btn-sm ms-2" (click)="row['id'] !== undefined ? downloadInvoice(row['id']) : null">
+          📄 Download Invoice
+        </button>
       </td>
     </tr>
   </tbody>
 </table>
+
