@@ -11,8 +11,12 @@
     [data]="data" 
     [editableFields]="['barcode', 'quantity']"
     [entity]="entity"
+    [totalItems]="totalProducts"
+    [currentPage]="currentPage"
+    [pageSize]="pageSize"
     (delete)="deleteInventory($event)" 
     (edit)="editInventory($event)"
-    (create)="openCreateModal()">
+    (create)="openCreateModal()"
+    (pageChange)="goToPage($event)">
   </app-view-table>
   
