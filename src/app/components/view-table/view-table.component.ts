@@ -13,15 +13,25 @@ import { SearchBarComponent } from '../search-bar/search-bar.component';
 export class ViewTableComponent {
   @Input() columns: { header: string, field: string }[] = [];
   @Input() data: any[] = [];
-  @Input() entity: string = ''; 
+  @Input() entity: string = '';
   @Output() delete = new EventEmitter<number>();  
   @Output() edit = new EventEmitter<number>();
   @Output() create = new EventEmitter<void>(); 
   @Input() editableFields: string[] = [];
 
+
+  @Input() totalItems: number = 0;
+  @Input() currentPage: number = 0;
+  @Input() pageSize: number = 10;
+  @Output() pageChange = new EventEmitter<number>();
+
   searchQuery: string = '';
-  searchField: string = ''; 
+  searchField: string = '';
   sortField: string = '';
+
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.pageSize);
+  }
 
   filteredData() {
     return this.data
@@ -60,6 +70,10 @@ export class ViewTableComponent {
   }
 
   onCreate() {
-    this.create.emit(); 
+    this.create.emit();
+  }
+
+  goToPage(page: number) {
+    this.pageChange.emit(page);
   }
 }

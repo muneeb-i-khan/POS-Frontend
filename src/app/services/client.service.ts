@@ -26,4 +26,11 @@ export class ClientService {
   updateClient(id: number, client: Partial<Client>): Observable<Client> {
     return this.http.put<Client>(`${this.apiUrl}/${id}`, client);
   }
+
+  getClientsPaginated(page: number, pageSize: number): Observable<{ clients: Client[], totalClients: number }> {
+    return this.http.get<{ clients: Client[], totalClients: number }>(
+      `${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`
+    );
+  }
+  
 } 
