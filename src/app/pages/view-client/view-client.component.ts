@@ -24,6 +24,11 @@ export class ViewClientComponent implements OnInit, AfterViewInit {
 
   @ViewChild('createClientModal', { static: false }) createClientModal!: ElementRef;
 
+  // Pagination properties
+  totalClients: number = 0;
+  currentPage: number = 0;
+  pageSize: number = 10;
+
   constructor(private clientService: ClientService, private router: Router) {}
 
   ngOnInit() {
@@ -38,13 +43,15 @@ export class ViewClientComponent implements OnInit, AfterViewInit {
     });
   }
 
-  loadClients() {
-    this.clientService.getClients().subscribe({
-      next: (clients) => {
-        this.data = clients.map(client => ({
+  loadClients(page: number = 0) {
+    this.clientService.getClientsPaginated(page, this.pageSize).subscribe({
+      next: (response) => {
+        this.data = response.clients.map(client => ({
           ...client,
           isEditing: false
         }));
+        this.totalClients = response.totalClients;
+        this.currentPage = page;
       },
       error: (error) => {
         console.error('Error fetching clients:', error);
@@ -56,7 +63,7 @@ export class ViewClientComponent implements OnInit, AfterViewInit {
     if (confirm('Are you sure you want to delete this client?')) {
       this.clientService.deleteClient(id).subscribe({
         next: () => {
-          this.data = this.data.filter(client => client.id !== id);
+          this.loadClients(this.currentPage); // Reload clients
         },
         error: (err) => {
           console.error('Failed to delete client:', err);
@@ -74,7 +81,7 @@ export class ViewClientComponent implements OnInit, AfterViewInit {
       }).subscribe({
         next: () => {
           client.isEditing = false;
-          this.loadClients();
+          this.loadClients(this.currentPage);
         }
       });
     } else {
@@ -97,7 +104,11 @@ export class ViewClientComponent implements OnInit, AfterViewInit {
   }
 
   handleClientCreated() {
-    this.closeCreateModal(); 
-    this.loadClients(); 
+    this.closeCreateModal();
+    this.loadClients(this.currentPage);
+  }
+
+  goToPage(page: number) {
+    this.loadClients(page);
   }
 }

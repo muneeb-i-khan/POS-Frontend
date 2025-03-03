@@ -23,5 +23,10 @@ export class OrderService {
   downloadInvoice(orderId: number) {
     window.open(`http://localhost:9000/pos/api/order/download/${orderId}`, '_blank');
   }
-  
+
+  getOrdersPaginated(page: number, pageSize: number): Observable<{ orders: Order[], totalOrders: number }> {
+    return this.http.get<{ orders: Order[], totalOrders: number }>(
+      `${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`
+    );
+  }
 }

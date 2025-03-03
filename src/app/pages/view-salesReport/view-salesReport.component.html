@@ -24,5 +24,9 @@
     [columns]="columns" 
     [data]="data" 
     [entity]="entity"
-    [editableFields]="['date', 'orderCount', 'itemSoldCount', 'revenue']">
+    [editableFields]="['date', 'orderCount', 'itemSoldCount', 'revenue']"
+    [totalItems]="totalItems"
+    [currentPage]="currentPage"
+    [pageSize]="pageSize"
+    (pageChange)="goToPage($event)">
   </app-view-table>

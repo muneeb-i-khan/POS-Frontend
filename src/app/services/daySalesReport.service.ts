@@ -33,5 +33,11 @@ export class DaySalesReportService {
   generateDailyReport(): Observable<string> {
     return this.http.post<string>(`${this.apiUrl}/generate`, null);
   }
+
+  getDailyReportsPaginated(page: number, pageSize: number): Observable<{ reports: DaySalesReport[], totalReports: number }> {
+    return this.http.get<{ reports: DaySalesReport[], totalReports: number }>(
+      `${this.apiUrl}/sales/paginated?page=${page}&pageSize=${pageSize}`
+    );
+  }
 }
 

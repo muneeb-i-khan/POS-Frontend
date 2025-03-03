@@ -9,8 +9,11 @@
     [columns]="columns" 
     [data]="data" 
     [editableFields]="['name', 'barcode', 'clientName', 'price']"
+    [totalItems]="totalProducts"
+    [currentPage]="currentPage"
+    [pageSize]="pageSize"
     (delete)="deleteProduct($event)"
     (edit)="editProduct($event)"
-    (create)="openCreateModal()">
+    (create)="openCreateModal()"
+    (pageChange)="goToPage($event)">
   </app-view-table>
-  

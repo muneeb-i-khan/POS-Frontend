@@ -33,4 +33,10 @@ export class InventoryService {
     formData.append('file', file);
     return this.http.post(this.inventoryUploadUrl, formData);
   }
+
+  getInventoriesPaginated(page: number, pageSize: number): Observable<{ inventories: Inventory[], totalInventories: number }> {
+    return this.http.get<{ inventories: Inventory[], totalInventories: number }>(
+      `${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`
+    );
+  }
 } 

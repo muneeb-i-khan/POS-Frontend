@@ -31,5 +31,11 @@ export class SalesReportService {
     return this.http.get<SalesReport[]>(`${this.apiUrl}/sales/all`);
   }
 
+  getSalesReportsPaginated(page: number, pageSize: number): Observable<{ report: SalesReport[], totalSalesReport: number }> {
+    return this.http.get<{ report: SalesReport[], totalSalesReport: number }>(
+      `${this.apiUrl}/sales/paginated?page=${page}&pageSize=${pageSize}`
+    );
+  }
+
 }
 

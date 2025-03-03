@@ -5,12 +5,15 @@
   </div>
 </div>
 
-
 <app-view-table 
   [columns]="columns" 
   [data]="data" 
   [editableFields]="['name', 'description']"
   (delete)="deleteClient($event)"
   (edit)="editClient($event)"
-  (create)="openCreateModal()">
+  (create)="openCreateModal()"
+  [totalItems]="totalClients"
+  [currentPage]="currentPage"
+  [pageSize]="pageSize"
+  (pageChange)="goToPage($event)">
 </app-view-table>

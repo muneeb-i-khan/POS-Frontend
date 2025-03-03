@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject , Input, Output, EventEmitter} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgIf, NgFor } from '@angular/common';
@@ -16,6 +16,12 @@ import { Order } from '../../models/order.model';
 export class ViewOrderComponent implements OnInit {
   private orderService = inject(OrderService);
 
+  @Input() totalItems: number = 0;
+  @Input() currentPage: number = 0;
+  @Input() pageSize: number = 10;
+  @Output() pageChange = new EventEmitter<number>();
+
+
   columns = [
     { header: 'Order ID', field: 'id' },
     { header: 'Order Date', field: 'orderDate' },
@@ -30,22 +36,30 @@ export class ViewOrderComponent implements OnInit {
   startDate: string = '';
   endDate: string = '';
 
+
+
   ngOnInit() {
     this.loadOrders();
   }
 
-  loadOrders() {
-    this.orderService.getOrders().subscribe({
-      next: (orders) => {
-        this.data = orders.map(order => ({
+  loadOrders(page: number = 0) {
+    this.orderService.getOrdersPaginated(page, this.pageSize).subscribe({
+      next: (response) => {
+        this.data = response.orders.map(order => ({
           ...order,
           orderDate: this.formatDate(order.orderDate)
         }));
+        this.totalItems = response.totalOrders;
+        this.currentPage = page;
       },
       error: (error) => {
         console.error('Error fetching orders:', error);
       }
     });
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.pageSize);
   }
 
   private formatDate(dateObj: any): string {
@@ -82,5 +96,9 @@ export class ViewOrderComponent implements OnInit {
 
   downloadInvoice(orderId: number) {
     this.orderService.downloadInvoice(orderId);
+  }
+
+  goToPage(page: number) {
+    this.loadOrders(page);
   }
 }

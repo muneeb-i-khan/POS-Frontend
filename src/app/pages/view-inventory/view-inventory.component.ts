@@ -28,19 +28,42 @@ export class ViewInventoryComponent implements OnInit {
 
   data: Inventory[] = [];
 
+
+  totalProducts: number = 0;
+  currentPage: number = 0;
+  pageSize: number = 10;
+
   constructor(private inventoryService: InventoryService, private router: Router) {} 
 
   ngOnInit() {
     this.loadInventory();
   }
 
-  loadInventory() {
-    this.inventoryService.getInventory().subscribe({
-      next: (inventory) => {
-        this.data = inventory.map(item => ({
-          ...item,
+  // loadProducts(page: number = 0) {
+  //   this.productService.getProductsPaginated(page, this.pageSize).subscribe({
+  //     next: (response) => {
+  //       this.data = response.products.map(product => ({
+  //         ...product,
+  //         isEditing: false
+  //       }));
+  //       this.totalProducts = response.totalProducts;
+  //       this.currentPage = page;
+  //     },
+  //     error: (error) => {
+  //       console.error('Error fetching products:', error);
+  //     }
+  //   });
+  // }
+
+  loadInventory(page: number = 0) {
+    this.inventoryService.getInventoriesPaginated(page, this.pageSize).subscribe({
+      next: (response) => {
+        this.data = response.inventories.map(inventory => ({
+          ...inventory,
           isEditing: false
         }));
+        this.totalProducts = response.totalInventories;
+        this.currentPage = page;
       },
       error: (error) => {
         console.error('Error fetching inventory:', error);
@@ -90,6 +113,10 @@ export class ViewInventoryComponent implements OnInit {
     console.log("TSV submitted event received");
     this.closeCreateModal();
     this.loadInventory();
+  }
+
+  goToPage(page: number) {
+    this.loadInventory(page);
   }
   
 }
