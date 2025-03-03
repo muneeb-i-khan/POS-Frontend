@@ -24,15 +24,18 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
     data: DaySalesReport[] = [];
     entity: string = 'Day Sales Report';
 
-    @ViewChild('createClientModal', { static: false }) createClientModal!: ElementRef;
 
     startDate: string = '';
     endDate: string = '';
 
+    totalItems: number = 0;
+    currentPage: number = 0;
+    pageSize: number = 10;
+
     constructor(private daySalesReportService: DaySalesReportService, private router: Router) { }
 
     ngOnInit() {
-        this.loadClients();
+        this.loadDayReports();
     }
 
     ngAfterViewInit() {
@@ -41,17 +44,34 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
     }
 
     onGenerateReport() {
-        this.loadClients();
+        this.loadDayReports();
     }
 
-    loadClients() {
+    // loadDayReports(page: number = 0) {
+    //     this.daySalesReportService.getDailyReportsPaginated(page, this.pageSize).subscribe({
+    //         next: (response) => {
+    //             this.data = response.reports.map(report => ({
+    //                 ...report,
+    //                 date: this.formatDate(report.date)
+    //             }));
+    //             this.totalItems = response.totalReports;
+    //             this.currentPage = page;
+    //         },
+    //         error: (error) => {
+    //             console.error('Error fetching day reports:', error);
+    //         }
+    //     });
+    // }
+    loadDayReports(page: number = 0) {
         if (!this.startDate && !this.endDate) {
-            this.daySalesReportService.getAllReports().subscribe({
+            this.daySalesReportService.getDailyReportsPaginated(page, this.pageSize).subscribe({
                 next: (data) => {
-                    this.data = data.map(report => ({
+                    this.data = data.reports.map(report => ({
                         ...report,
                         date: this.formatDate(report.date)
                     }));
+                    this.totalItems = data.totalReports;
+                    this.currentPage = page;
                 },
                 error: (error) => {
                     console.error('Error fetching orders:', error);
@@ -72,6 +92,16 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
                 }
             });
         }
+    }
+
+
+    get totalPages(): number {
+        return Math.ceil(this.totalItems / this.pageSize);
+    }
+
+    goToPage(page: number) {
+        this.currentPage = page;
+        this.loadDayReports(page);
     }
 
     private formatDate(dateObj: any): string {
