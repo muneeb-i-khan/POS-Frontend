@@ -5,12 +5,12 @@
 
     <div class="mb-3">
       <label class="form-label">Email</label>
-      <input type="text" class="form-control" [(ngModel)]="email">
+      <input type="email" placeholder="Enter your email" class="form-control" [(ngModel)]="email">
     </div>
 
     <div class="mb-3">
       <label class="form-label">Password</label>
-      <input type="password" class="form-control" [(ngModel)]="password" name="password">
+      <input type="password" placeholder="Enter your password"  class="form-control" [(ngModel)]="password">
     </div>
 
     <button class="btn btn-primary w-100" (click)="login()">Login</button>
