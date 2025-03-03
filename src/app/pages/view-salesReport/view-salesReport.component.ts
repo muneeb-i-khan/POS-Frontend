@@ -30,10 +30,14 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
     clientName: string = '';
     description: string = '';
 
+    totalItems: number = 0;
+    currentPage: number = 0;
+    pageSize: number = 10;
+
     constructor(private SalesReportService: SalesReportService, private router: Router) { }
 
     ngOnInit() {
-        this.loadClients();
+        this.loadSalesReports();
     }
 
     ngAfterViewInit() {
@@ -42,17 +46,19 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
     }
 
     onGenerateReport() {
-        this.loadClients();
+        this.loadSalesReports();
     }
 
 
-    loadClients() {
+    loadSalesReports(page: number = 0) {
         if (!this.startDate && !this.endDate && !this.clientName && !this.description) {
             this.SalesReportService.getAllReports().subscribe({
                 next: (data) => {
                     this.data = data.map(report => ({
                         ...report,
                     }));
+                    this.totalItems = data.length;
+                    this.currentPage = page;
                 },
                 error: (error) => {
                     console.error('Error fetching orders:', error);
@@ -72,6 +78,17 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
                 }
             });
         }
+    }
+
+
+
+    get totalPages(): number {
+        return Math.ceil(this.totalItems / this.pageSize);
+    }
+
+    goToPage(page: number) {
+        this.currentPage = page;
+        this.loadSalesReports(page);
     }
 
     private formatDate(dateObj: any): string {
