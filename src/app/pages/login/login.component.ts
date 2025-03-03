@@ -25,7 +25,7 @@ export class LoginComponent {
       next: (response) => {
         console.log('Login successful:', response);
         if (response && response.id) {
-          this.authService.setUserSession(response.id.toString(), response.role);
+          this.authService.setUserSession(this.email, response.id.toString(), response.role);
           this.router.navigate(['/app']); 
         } else {
           this.errorMessage = 'Invalid response from server';

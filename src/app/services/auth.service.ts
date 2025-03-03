@@ -38,7 +38,8 @@ export class AuthService {
     return sessionStorage.getItem('userId') !== null;
   }
 
-  setUserSession(userId: string, role: string): void {
+  setUserSession(email:string, userId: string, role: string): void {
+    sessionStorage.setItem('email', email)
     sessionStorage.setItem('userId', userId);
     sessionStorage.setItem('role', role);
   }
@@ -46,6 +47,10 @@ export class AuthService {
   clearUserSession(): void {
     sessionStorage.removeItem('userId');
     sessionStorage.removeItem('role');
+  }
+
+  getUserEmail(): string {
+    return sessionStorage.getItem('email') || 'User';
   }
   
 }
