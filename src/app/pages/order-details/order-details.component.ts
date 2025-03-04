@@ -32,7 +32,7 @@ export class OrderDetailsComponent implements OnInit {
         
         if (order) {
           console.log('Order Found:', order);
-          this.items = order.items;  
+          this.items = order['items'] 
           console.log('Order Items:', this.items);
         }
       },

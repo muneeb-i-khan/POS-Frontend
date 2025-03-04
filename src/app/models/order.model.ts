@@ -8,13 +8,13 @@ export interface OrderItem {
   quantity: number;
   prodName?: string;
   price?: number;
-  sellingPrice?: number;
+  sellingPrice: number;
 }
 
 export interface Order {
   id?: number;
   customer: Customer; 
-  items: OrderItem[]; 
+  orderItems: OrderItem[]; 
   orderDate: string;
   totalAmount?: number;
   isEditing?: boolean;
