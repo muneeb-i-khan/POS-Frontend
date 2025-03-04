@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Client } from '../models/client.model';
 
 @Injectable({
@@ -28,9 +29,14 @@ export class ClientService {
   }
 
   getClientsPaginated(page: number, pageSize: number): Observable<{ clients: Client[], totalClients: number }> {
-    return this.http.get<{ clients: Client[], totalClients: number }>(
-      `${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`
-    );
+    return this.http.get<Client[]>(`${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`, { observe: 'response' })
+      .pipe(
+        map(response => {
+          const totalClients = Number(response.headers.get('totalClients')) || 0;
+          console.log('Parsed totalClients:', totalClients);
+          return { clients: response.body || [], totalClients };
+        })
+      );
   }
   
-} 
+}

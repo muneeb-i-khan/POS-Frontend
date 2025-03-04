@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Product } from '../models/product.model';
 
 @Injectable({
@@ -35,9 +35,14 @@ export class ProductService {
     return this.http.post(this.uploadUrl, formData);
   }
 
+
   getProductsPaginated(page: number, pageSize: number): Observable<{ products: Product[], totalProducts: number }> {
-    return this.http.get<{ products: Product[], totalProducts: number }>(
-      `${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`
-    );
+    return this.http.get<Product[]>(`${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`, { observe: 'response' })
+      .pipe(
+        map(response => {
+          const totalProducts = Number(response.headers.get('totalProducts')) || 0;
+          return { products: response.body || [], totalProducts };
+        })
+      );
   }
 }

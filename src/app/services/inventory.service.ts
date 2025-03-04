@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Inventory } from '../models/inventory.model';
 
 @Injectable({
@@ -35,8 +35,12 @@ export class InventoryService {
   }
 
   getInventoriesPaginated(page: number, pageSize: number): Observable<{ inventories: Inventory[], totalInventories: number }> {
-    return this.http.get<{ inventories: Inventory[], totalInventories: number }>(
-      `${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`
-    );
+    return this.http.get<Inventory[]>(`${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`, { observe: 'response' })
+      .pipe(
+        map(response => {
+          const totalInventories = Number(response.headers.get('totalInventories')) || 0;
+          return { inventories: response.body || [], totalInventories };  
+        })
+      );
   }
 } 

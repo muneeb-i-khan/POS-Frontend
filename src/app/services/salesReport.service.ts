@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 interface SalesReport {
   clientName: string;
@@ -32,10 +32,13 @@ export class SalesReportService {
   }
 
   getSalesReportsPaginated(page: number, pageSize: number): Observable<{ report: SalesReport[], totalSalesReport: number }> {
-    return this.http.get<{ report: SalesReport[], totalSalesReport: number }>(
-      `${this.apiUrl}/sales/paginated?page=${page}&pageSize=${pageSize}`
-    );
+    return this.http.get<SalesReport[]>(`${this.apiUrl}/sales/paginated?page=${page}&pageSize=${pageSize}`, { observe: 'response' })
+      .pipe(
+        map(response => {
+          const totalSalesReport = Number(response.headers.get('totalSalesReport')) || 0;
+          return { report: response.body || [], totalSalesReport };
+        })
+      );
   }
-
 }
 
