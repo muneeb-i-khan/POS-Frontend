@@ -13,7 +13,7 @@ import { Order, OrderItem, Customer } from '../../models/order.model';
   styleUrls: ['./create-order.component.scss']
 })
 export class CreateOrderComponent {
-  customer: Customer = { name: '', phone: '' }; // Added customer object
+  customer: Customer = { name: '', phone: '' }; 
   orderItems: OrderItem[] = [this.createEmptyOrderItem()];
 
   constructor(
@@ -24,13 +24,15 @@ export class CreateOrderComponent {
   private createEmptyOrderItem(): OrderItem {
     return { 
       barcode: '', 
-      quantity: 0
+      quantity: 0,
+      sellingPrice: 0
     };
   }
 
   addOrderItem() {
     this.orderItems.push(this.createEmptyOrderItem());
   }
+  
   submitForm() {
     const order: any = {
       customer: {
@@ -47,8 +49,7 @@ export class CreateOrderComponent {
       next: () => this.router.navigate(['/app/orders/view']),
       error: (error) => console.error('Error creating order:', error)
     });
-  }
-  
+  }  
 
   removeOrderItem(index: number) {
     if (this.orderItems.length > 1) {
