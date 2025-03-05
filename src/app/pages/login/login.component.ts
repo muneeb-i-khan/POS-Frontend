@@ -31,10 +31,17 @@ export class LoginComponent {
           this.errorMessage = 'Invalid response from server';
         }
       },
-      error: (error) => {
-        console.error('Login failed:', error);
-        this.errorMessage = 'Invalid email or password';
-      },
+      error: (err) => {
+        if (err.status === 400 && err.error) {
+          if (typeof err.error === 'object') {
+            this.errorMessage = Object.values(err.error).join(' ');
+          } else {
+            this.errorMessage = err.error.error || 'Invalid email or password';
+          }
+        } else {
+          this.errorMessage = 'Login failed: ' + err.message;
+        }
+      }
     });
   }
 

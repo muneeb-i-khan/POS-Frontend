@@ -27,8 +27,7 @@ export class CreateOrderComponent implements OnInit {
     this.newItem = this.createEmptyOrderItem();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   private createEmptyOrderItem(): OrderItem {
     return { 
@@ -40,11 +39,10 @@ export class CreateOrderComponent implements OnInit {
 
   addOrderItem() {
     if (this.newItem.barcode && this.newItem.quantity > 0 && this.newItem.sellingPrice > 0) {
-  
       this.orderItems.push({ ...this.newItem }); 
       this.newItem = this.createEmptyOrderItem(); 
     } else {
-      console.error('Please fill in all fields correctly.');
+      this.errorMessage = 'Please fill in all fields correctly before adding an item.';
     }
   }
   
@@ -72,9 +70,16 @@ export class CreateOrderComponent implements OnInit {
 
     this.orderService.postOrder(order).subscribe({
       next: () => this.router.navigate(['/app/orders/view']),
-      error: (error) => {
-        console.error('Error creating order:', error);
-        this.errorMessage = error.error.error;
+      error: (err) => {
+        if (err.status === 400 && err.error) {
+          if (typeof err.error === 'object') {
+            this.errorMessage = Object.values(err.error).join(' ');
+          } else {
+            this.errorMessage = err.error.error || "Failed to create order.";
+          }
+        } else {
+          this.errorMessage = "Failed to create order: " + err.message;
+        }
       }
     });
   } 

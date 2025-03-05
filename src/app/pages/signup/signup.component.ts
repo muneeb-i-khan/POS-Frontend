@@ -39,11 +39,18 @@ import { NgIf } from '@angular/common';
           this.successMessage = '';
         }
       },
-      error: (error) => {
-        console.error('Signup Error:', error);
-        this.errorMessage = error.error?.message || 'Signup failed. Please try again.';
-        this.successMessage = '';
+      error: (err) => {
+        if (err.status === 400 && err.error) {
+          if (typeof err.error === 'object') {
+            this.errorMessage = Object.values(err.error).join(' '); 
+          } else {
+            this.errorMessage = err.error.error || 'Signup failed. Please try again.';
+          }
+        } else {
+          this.errorMessage = 'Signup failed: ' + err.message;
+        }
       }
     });
+  
   }
 }

@@ -29,31 +29,41 @@ export class CreateFormComponent {
     private productService: ProductService,
     private inventoryService: InventoryService
   ) {}
+  
   submitForm() {
     this.errorMessage = null; 
   
     if (this.entity === 'Client') {
       this.clientService.postClient(this.formData).subscribe({
         next: () => {
-          this.clientCreated.emit(); 
+          this.clientCreated.emit();
         },
         error: (err) => {
-          if (err.status === 400 && err.error?.error) {
-            this.errorMessage = err.error.error; 
+          if (err.status === 400 && err.error) {
+            if (typeof err.error === 'object') {
+              this.errorMessage = Object.values(err.error).join(' ');
+            } else {
+              this.errorMessage = err.error.error || "Failed to create client.";
+            }
           } else {
             this.errorMessage = "Failed to create client: " + err.message;
           }
         }
       });
     } 
+
     else if (this.entity === 'Product') {
       this.productService.postProduct(this.formData).subscribe({
         next: () => {
           this.productCreated.emit();
         },
         error: (err) => {
-          if (err.status === 400 && err.error?.error) {
-            this.errorMessage = err.error.error; 
+          if (err.status === 400 && err.error) {
+            if (typeof err.error === 'object') {
+              this.errorMessage = Object.values(err.error).join(' ');
+            } else {
+              this.errorMessage = err.error.error || "Failed to create product.";
+            }
           } else {
             this.errorMessage = "Failed to create product: " + err.message;
           }
@@ -66,8 +76,12 @@ export class CreateFormComponent {
           this.inventoryCreated.emit();
         },
         error: (err) => {
-          if (err.status === 400 && err.error?.error) {
-            this.errorMessage = err.error.error; 
+          if (err.status === 400 && err.error) {
+            if (typeof err.error === 'object') {
+              this.errorMessage = Object.values(err.error).join(' ');
+            } else {
+              this.errorMessage = err.error.error || "Failed to create inventory.";
+            }
           } else {
             this.errorMessage = "Failed to create inventory: " + err.message;
           }
