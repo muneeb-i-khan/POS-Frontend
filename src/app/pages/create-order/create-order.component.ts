@@ -16,6 +16,7 @@ export class CreateOrderComponent implements OnInit {
   customer: Customer = { name: '', phone: '' }; 
   orderItems: OrderItem[] = [];
   newItem: OrderItem;
+  errorMessage: string = '';
 
   constructor(
     private orderService: OrderService,
@@ -45,38 +46,35 @@ export class CreateOrderComponent implements OnInit {
   }
   
   submitForm() {
+    this.errorMessage = ''; // Reset error message
+
     if (!this.customer.name || !this.customer.phone || this.orderItems.length === 0) {
-      console.error('Please fill in customer details and add at least one item.');
-      alert('Please fill in customer details and add at least one item.'); 
+      this.errorMessage = 'Please fill in customer details and add at least one item.';
       return;
     }
 
     const hasEmptyItems = this.orderItems.some(item => !item.barcode || item.quantity <= 0 || item.sellingPrice <= 0);
     if (hasEmptyItems) {
-      console.error('One or more items are invalid.');
-      alert('Please ensure all items are filled out correctly.'); 
+      this.errorMessage = 'Please ensure all items are filled out correctly.';
       return;
     }
 
     const order: Order = {
-      customer: {
-        name: this.customer.name,
-        phone: this.customer.phone
-      },
+      customer: { name: this.customer.name, phone: this.customer.phone },
       orderItems: this.orderItems,
       orderDate: this.getTodayDate()
     };
-  
-    console.log('Order Payload:', order); 
-  
+
+    console.log('Order Payload:', order);
+
     this.orderService.postOrder(order).subscribe({
       next: () => this.router.navigate(['/app/orders/view']),
       error: (error) => {
         console.error('Error creating order:', error);
-        alert('Failed to create order. Please check the console for more details.'); 
+        this.errorMessage = error.error.error;
       }
     });
-  }  
+  } 
 
   removeOrderItem(index: number) {
     if (this.orderItems.length > 1) {

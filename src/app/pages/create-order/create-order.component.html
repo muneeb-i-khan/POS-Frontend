@@ -27,6 +27,7 @@
     <div class="right-panel" style="flex: 1;">
         <h3>Create Order</h3>
         <form (ngSubmit)="submitForm()" #orderForm="ngForm">
+            <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
             <!-- Customer Details -->
             <div class="mb-3">
                 <label class="form-label">Customer Name</label>
@@ -49,31 +50,31 @@
                 <h5>Add Sale Item</h5>
                 <div class="mb-3">
                     <label class="form-label">Barcode</label>
-                    <input type="text" class="form-control" [(ngModel)]="newItem.barcode" name="newBarcode" required>
-                    <div *ngIf="orderForm.controls['newBarcode']?.invalid && orderForm.controls['newBarcode']?.touched" class="text-danger">
+                    <input type="text" class="form-control" [(ngModel)]="newItem.barcode" name="newBarcode" required #newBarcode="ngModel">
+                    <div *ngIf="newBarcode.invalid && newBarcode.touched" class="text-danger">
                         Barcode is required.
                     </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Quantity</label>
-                    <input type="number" class="form-control" [(ngModel)]="newItem.quantity" name="newQuantity" required min="1">
-                    <div *ngIf="orderForm.controls['newQuantity']?.invalid && orderForm.controls['newQuantity']?.touched" class="text-danger">
-                        <div *ngIf="orderForm.controls['newQuantity']?.errors?.['required']">Quantity is required.</div>
-                        <div *ngIf="newItem.quantity <= 0" class="text-danger">Quantity must be greater than 0.</div>
+                    <input type="number" class="form-control" [(ngModel)]="newItem.quantity" name="newQuantity" required min="1" #newQuantity="ngModel">
+                    <div *ngIf="newQuantity.invalid && newQuantity.touched" class="text-danger">
+                        <div *ngIf="newQuantity.errors?.['required']">Quantity is required.</div>
+                        <div *ngIf="newItem.quantity <= 0">Quantity must be greater than 0.</div>
                     </div>
                 </div>  
                 <div class="mb-3">
                     <label class="form-label">Selling Price</label>
-                    <input type="number" class="form-control" [(ngModel)]="newItem.sellingPrice" name="newSellingPrice" required min="0">
-                    <div *ngIf="orderForm.controls['newSellingPrice']?.invalid && orderForm.controls['newSellingPrice']?.touched" class="text-danger">
-                        <div *ngIf="orderForm.controls['newSellingPrice']?.errors?.['required']">Selling Price is required.</div>
-                        <div *ngIf="newItem.sellingPrice <= 0" class="text-danger">Selling Price must be greater than 0.</div>
+                    <input type="number" class="form-control" [(ngModel)]="newItem.sellingPrice" name="newSellingPrice" required min="0" #newSellingPrice="ngModel">
+                    <div *ngIf="newSellingPrice.invalid && newSellingPrice.touched" class="text-danger">
+                        <div *ngIf="newSellingPrice.errors?.['required']">Selling Price is required.</div>
+                        <div *ngIf="newItem.sellingPrice <= 0">Selling Price must be greater than 0.</div>
                     </div>
                     <div *ngIf="newItem.sellingPrice < 0" class="text-danger">
                         Selling Price cannot be negative.
                     </div>
                 </div>
-                <button type="button" class="btn btn-secondary" (click)="addOrderItem()">➕ Add Sale Item</button>
+                <button type="button" class="btn btn-secondary" (click)="addOrderItem(); newBarcode.reset(); newQuantity.reset(); newSellingPrice.reset()">➕ Add Sale Item</button>
             </div>
         </form>
     </div>
