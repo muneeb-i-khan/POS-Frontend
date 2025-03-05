@@ -26,15 +26,22 @@
 
     <div class="right-panel" style="flex: 1;">
         <h3>Create Order</h3>
-        <form (ngSubmit)="submitForm()">
+        <form (ngSubmit)="submitForm()" #orderForm="ngForm">
             <!-- Customer Details -->
             <div class="mb-3">
                 <label class="form-label">Customer Name</label>
                 <input type="text" class="form-control" [(ngModel)]="customer.name" name="customerName" required>
+                <div *ngIf="orderForm.controls['customerName']?.invalid && orderForm.controls['customerName']?.touched" class="text-danger">
+                    Customer Name is required.
+                </div>
             </div>
             <div class="mb-3">
                 <label class="form-label">Customer Phone</label>
-                <input type="tel" class="form-control" [(ngModel)]="customer.phone" name="customerPhone" required>
+                <input type="tel" class="form-control" [(ngModel)]="customer.phone" name="customerPhone" required pattern="^[0-9]{10}$">
+                <div *ngIf="orderForm.controls['customerPhone']?.invalid && orderForm.controls['customerPhone']?.touched" class="text-danger">
+                    <div *ngIf="orderForm.controls['customerPhone']?.errors?.['required']">Customer Phone is required.</div>
+                    <div *ngIf="orderForm.controls['customerPhone']?.errors?.['pattern']">Please enter a valid 10-digit phone number.</div>
+                </div>
             </div>
 
             <!-- Order Item Form -->
@@ -43,14 +50,30 @@
                 <div class="mb-3">
                     <label class="form-label">Barcode</label>
                     <input type="text" class="form-control" [(ngModel)]="newItem.barcode" name="newBarcode" required>
+                    <div *ngIf="orderForm.controls['newBarcode']?.invalid && orderForm.controls['newBarcode']?.touched" class="text-danger">
+                        Barcode is required.
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Quantity</label>
-                    <input type="number" class="form-control" [(ngModel)]="newItem.quantity" name="newQuantity" required>
+                    <input type="number" class="form-control" [(ngModel)]="newItem.quantity" name="newQuantity" required min="1">
+                    <div *ngIf="orderForm.controls['newQuantity']?.invalid && orderForm.controls['newQuantity']?.touched" class="text-danger">
+                        <div *ngIf="orderForm.controls['newQuantity']?.errors?.['required']">Quantity is required.</div>
+                    </div>
+                    <div *ngIf="newItem.quantity <= 0" class="text-danger">
+                        Quantity must be greater than 0.
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Selling Price</label>
-                    <input type="number" class="form-control" [(ngModel)]="newItem.sellingPrice" name="newSellingPrice" required>  
+                    <input type="number" class="form-control" [(ngModel)]="newItem.sellingPrice" name="newSellingPrice" required min="0">
+                    <div *ngIf="orderForm.controls['newSellingPrice']?.invalid && orderForm.controls['newSellingPrice']?.touched" class="text-danger">
+                        <div *ngIf="orderForm.controls['newSellingPrice']?.errors?.['required']">Selling Price is required.</div>
+                        <div *ngIf="orderForm.controls['newSellingPrice']?.errors?.['min']">Selling Price must be at least 0.</div>
+                    </div>
+                    <div *ngIf="newItem.sellingPrice < 0" class="text-danger">
+                        Selling Price cannot be negative.
+                    </div>
                 </div>
                 <button type="button" class="btn btn-secondary" (click)="addOrderItem()">➕ Add Sale Item</button>
             </div>
