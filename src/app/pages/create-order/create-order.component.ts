@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { OrderService } from '../../services/order.service';
 import { Order, OrderItem, Customer } from '../../models/order.model';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-create-order',
@@ -20,6 +21,7 @@ export class CreateOrderComponent implements OnInit {
 
   constructor(
     private orderService: OrderService,
+    private productService: ProductService,
     private router: Router
   ) {
     this.newItem = this.createEmptyOrderItem();
@@ -38,6 +40,7 @@ export class CreateOrderComponent implements OnInit {
 
   addOrderItem() {
     if (this.newItem.barcode && this.newItem.quantity > 0 && this.newItem.sellingPrice > 0) {
+  
       this.orderItems.push({ ...this.newItem }); 
       this.newItem = this.createEmptyOrderItem(); 
     } else {
@@ -46,7 +49,7 @@ export class CreateOrderComponent implements OnInit {
   }
   
   submitForm() {
-    this.errorMessage = ''; // Reset error message
+    this.errorMessage = ''; 
 
     if (!this.customer.name || !this.customer.phone || this.orderItems.length === 0) {
       this.errorMessage = 'Please fill in customer details and add at least one item.';
@@ -84,5 +87,9 @@ export class CreateOrderComponent implements OnInit {
 
   private getTodayDate(): string {
     return new Date().toISOString().split('T')[0];
+  }
+
+  calculateTotalAmount(): number {
+    return this.orderItems.reduce((total, item) => total + (item.quantity * item.sellingPrice), 0);
   }
 }

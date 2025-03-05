@@ -7,7 +7,7 @@
                     <th>Barcode</th>
                     <th>Quantity</th>
                     <th>Selling Price</th>
-                    <th>Actions</th>
+                    <th>Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -15,9 +15,11 @@
                     <td>{{ item.barcode }}</td>
                     <td>{{ item.quantity }}</td>
                     <td>{{ item.sellingPrice }}</td>
-                    <td>
-                        <button type="button" class="btn btn-danger btn-sm" (click)="removeOrderItem(i)" *ngIf="orderItems.length > 1">❌ Remove</button>
-                    </td>
+                    <td>{{ item.quantity * item.sellingPrice }}</td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
+                    <td>{{ calculateTotalAmount() }}</td>
                 </tr>
             </tbody>
         </table>
