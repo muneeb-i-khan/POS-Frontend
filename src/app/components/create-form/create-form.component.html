@@ -2,6 +2,7 @@
     <h3>Create {{ entity }}</h3>
     
     <form (ngSubmit)="submitForm()">
+      <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
       
       <!-- Client Form -->
       <div *ngIf="entity === 'Client'">
@@ -55,7 +56,7 @@
         <div class="mb-3">
           <label class="form-label">Quantity</label>
           <input type="number" class="form-control" [(ngModel)]="formData.quantity" name="quantity" required>
-          <div *ngIf="formData.quantity == '' || formData.quantity <= 0" class="text-danger">Posititve quantity is required.</div>
+          <div *ngIf="formData.quantity == '' || formData.quantity <= 0" class="text-danger">Positive quantity is required.</div>
         </div>
         <div class="mb-3">
           <label class="form-label">Upload TSV File</label>

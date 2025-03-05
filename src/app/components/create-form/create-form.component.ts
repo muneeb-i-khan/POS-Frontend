@@ -11,7 +11,7 @@ import { InventoryService } from '../../services/inventory.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './create-form.component.html',
-  styleUrl: './create-form.component.scss'
+  styleUrls: ['./create-form.component.scss']
 })
 export class CreateFormComponent {
   @Input() entity!: string;
@@ -21,6 +21,7 @@ export class CreateFormComponent {
   @Output() tsvSubmitted = new EventEmitter<void>();
   formData: any = {};
   selectedFile: File | null = null;
+  errorMessage: string | null = null;
 
   constructor(
     private router: Router,
@@ -28,12 +29,20 @@ export class CreateFormComponent {
     private productService: ProductService,
     private inventoryService: InventoryService
   ) {}
-
   submitForm() {
+    this.errorMessage = null; 
+  
     if (this.entity === 'Client') {
       this.clientService.postClient(this.formData).subscribe({
         next: () => {
           this.clientCreated.emit(); 
+        },
+        error: (err) => {
+          if (err.status === 400 && err.error?.error) {
+            this.errorMessage = err.error.error; 
+          } else {
+            this.errorMessage = "Failed to create client: " + err.message;
+          }
         }
       });
     } 
@@ -41,6 +50,13 @@ export class CreateFormComponent {
       this.productService.postProduct(this.formData).subscribe({
         next: () => {
           this.productCreated.emit();
+        },
+        error: (err) => {
+          if (err.status === 400 && err.error?.error) {
+            this.errorMessage = err.error.error; 
+          } else {
+            this.errorMessage = "Failed to create product: " + err.message;
+          }
         }
       });
     } 
@@ -48,10 +64,17 @@ export class CreateFormComponent {
       this.inventoryService.postInventory(this.formData).subscribe({
         next: () => {
           this.inventoryCreated.emit();
+        },
+        error: (err) => {
+          if (err.status === 400 && err.error?.error) {
+            this.errorMessage = err.error.error; 
+          } else {
+            this.errorMessage = "Failed to create inventory: " + err.message;
+          }
         }
       });
     }
-  }
+  }  
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
@@ -74,8 +97,8 @@ export class CreateFormComponent {
           this.selectedFile = null;
         },
         error: (err) => {
+          this.errorMessage = "Product upload failed: " + err.message;
           console.error("Product upload failed:", err);
-          alert("Failed to upload products.");
         }
       });
     } 
@@ -88,11 +111,10 @@ export class CreateFormComponent {
           this.selectedFile = null;
         },
         error: (err) => {
+          this.errorMessage = "Inventory upload failed: " + err.message;
           console.error("Inventory upload failed:", err);
-          alert("Failed to upload inventory.");
         }
       });
     }
   }
-  
 }
