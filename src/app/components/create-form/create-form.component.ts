@@ -139,7 +139,7 @@ export class CreateFormComponent {
     this.isTsvModalOpen = true;
     this.sampleTsvContent = entity === 'Product' 
       ? `
-      barcode\tname\tprice\tclient_name
+      barcode\tname\tprice\tclientName
       100\tProduct A\t10.00\tClient X
       101\tProduct B\t15.00\tClient Y
       102\tProduct C\t20.00\tClient Z

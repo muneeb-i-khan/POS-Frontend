@@ -73,7 +73,7 @@
                 (click)="uploadTSV()">
           Upload TSV
         </button>
-        <button type="button" class="btn btn-info ms-2" (click)="openTsvModal(entity)">View Sample TSV</button>
+        <button *ngIf="entity === 'Product' || entity === 'Inventory'" type="button" class="btn btn-info ms-2" (click)="openTsvModal(entity)">View Sample TSV</button>
       </div>
    <!-- Sample TSV Modal -->
    <app-sample-tsv-modal 
