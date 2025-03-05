@@ -5,11 +5,11 @@ import { Router } from '@angular/router';
 import { ClientService } from '../../services/client.service';
 import { ProductService } from '../../services/product.service';
 import { InventoryService } from '../../services/inventory.service';
-
+import { SampleTsvModalComponent } from '../sample-tsv-modal/sample-tsv-modal.component';
 @Component({
   selector: 'app-create-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SampleTsvModalComponent],
   templateUrl: './create-form.component.html',
   styleUrls: ['./create-form.component.scss']
 })
@@ -22,6 +22,9 @@ export class CreateFormComponent {
   formData: any = {};
   selectedFile: File | null = null;
   errorMessage: string | null = null;
+
+  isTsvModalOpen = false;
+  sampleTsvContent = '';
 
   constructor(
     private router: Router,
@@ -130,5 +133,26 @@ export class CreateFormComponent {
         }
       });
     }
+  }
+
+  openTsvModal(entity: string) {
+    this.isTsvModalOpen = true;
+    this.sampleTsvContent = entity === 'Product' 
+      ? `
+      barcode\tname\tprice\tclient_name
+      100\tProduct A\t10.00\tClient X
+      101\tProduct B\t15.00\tClient Y
+      102\tProduct C\t20.00\tClient Z
+      ` 
+      : `
+      barcode\tquantity
+      100\t10
+      101\t20
+      102\t30
+      `;
+  }
+
+  closeTsvModal() {
+    this.isTsvModalOpen = false;
   }
 }

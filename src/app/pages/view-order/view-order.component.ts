@@ -1,18 +1,18 @@
 import { Component, OnInit, inject , Input, Output, EventEmitter} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgFor } from '@angular/common';
+import { NgFor } from '@angular/common';
 import { OrderService } from '../../services/order.service';
-import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
 import { Order } from '../../models/order.model';
 
 @Component({
   selector: 'app-view-order',
   standalone: true,
-  imports: [RouterLink, FormsModule, NgFor, SearchBarComponent],
+  imports: [RouterLink, FormsModule, NgFor],  
   templateUrl: './view-order.component.html',
   styleUrls: ['./view-order.component.scss']
 })
+
 export class ViewOrderComponent implements OnInit {
   private orderService = inject(OrderService);
 
