@@ -114,8 +114,7 @@ export class CreateFormComponent {
           this.selectedFile = null;
         },
         error: (err) => {
-          this.errorMessage = "Product upload failed: " + err.message;
-          console.error("Product upload failed:", err);
+          this.errorMessage = "Product upload failed: " + err.error.error;
         }
       });
     } 
@@ -128,9 +127,8 @@ export class CreateFormComponent {
           this.selectedFile = null;
         },
         error: (err) => {
-          this.errorMessage = "Inventory upload failed: " + err.message;
-          console.error("Inventory upload failed:", err);
-        }
+          this.errorMessage = "Inventory upload failed: " + err.error.error;
+        } 
       });
     }
   }
