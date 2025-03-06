@@ -1,12 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SearchBarComponent } from '../search-bar/search-bar.component';
 
 @Component({
   selector: 'app-view-table',
   standalone: true,
-  imports: [NgFor, NgIf, FormsModule, SearchBarComponent],
+  imports: [NgFor, NgIf, FormsModule],
   templateUrl: './view-table.component.html',
   styleUrls: ['./view-table.component.scss']
 })

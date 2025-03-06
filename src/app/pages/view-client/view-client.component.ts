@@ -105,7 +105,17 @@ export class ViewClientComponent implements OnInit, AfterViewInit {
 
   handleClientCreated() {
     this.closeCreateModal();
-    this.loadClients(this.currentPage);
+    this.clientService.getClientsPaginated(0, this.pageSize).subscribe({
+      next: (response) => {
+        this.totalClients = response.totalClients;
+        const lastPage = Math.max(0, Math.ceil(this.totalClients / this.pageSize) - 1);
+        this.loadClients(lastPage);
+      },
+      error: (error) => {
+        console.error('Error fetching updated client count:', error);
+        this.loadClients(this.currentPage);
+      }
+    });
   }
 
   goToPage(page: number) {

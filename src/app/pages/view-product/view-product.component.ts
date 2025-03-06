@@ -112,13 +112,33 @@ export class ViewProductComponent implements OnInit, AfterViewInit {
   }
 
   handleProductCreated() {
-    this.closeCreateModal(); 
-    this.loadProducts(); 
+    this.closeCreateModal();
+    this.productService.getProductsPaginated(0, this.pageSize).subscribe({
+      next: (response) => {
+        this.totalProducts = response.totalProducts;
+        const lastPage = Math.max(0, Math.ceil(this.totalProducts / this.pageSize) - 1);
+        this.loadProducts(lastPage);
+      },
+      error: (error) => {
+        console.error('Error fetching updated product count:', error);
+        this.loadProducts(this.currentPage);
+      }
+    });
   }
 
   handleTsvSubmitted() {
     this.closeCreateModal();
-    this.loadProducts();
+    this.productService.getProductsPaginated(0, this.pageSize).subscribe({
+      next: (response) => {
+        this.totalProducts = response.totalProducts;
+        const lastPage = Math.max(0, Math.ceil(this.totalProducts / this.pageSize) - 1);
+        this.loadProducts(lastPage);
+      },
+      error: (error) => {
+        console.error('Error fetching updated product count:', error);
+        this.loadProducts(this.currentPage);
+      }
+    });
   }
 
   goToPage(page: number) {
