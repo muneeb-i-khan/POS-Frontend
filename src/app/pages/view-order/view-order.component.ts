@@ -1,5 +1,5 @@
 import { Component, OnInit, inject , Input, Output, EventEmitter} from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { OrderService } from '../../services/order.service';
@@ -15,10 +15,11 @@ import { Order } from '../../models/order.model';
 
 export class ViewOrderComponent implements OnInit {
   private orderService = inject(OrderService);
+  private route = inject(ActivatedRoute);
 
   @Input() totalItems: number = 0;
   @Input() currentPage: number = 0;
-  @Input() pageSize: number = 10;
+  @Input() pageSize: number = 5;
   @Output() pageChange = new EventEmitter<number>();
 
 
@@ -39,7 +40,13 @@ export class ViewOrderComponent implements OnInit {
 
 
   ngOnInit() {
-    this.loadOrders();
+    this.route.queryParams.subscribe(params => {
+      if (params['newOrder']) {
+        this.handleOrderCreated();
+      } else {
+        this.loadOrders();
+      }
+    });
   }
 
   loadOrders(page: number = 0) {
@@ -54,6 +61,20 @@ export class ViewOrderComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error fetching orders:', error);
+      }
+    });
+  }
+
+  handleOrderCreated() {
+    this.orderService.getOrdersPaginated(0, this.pageSize).subscribe({
+      next: (response) => {
+        this.totalItems = response.totalOrders;
+        const lastPage = Math.max(0, Math.ceil(this.totalItems / this.pageSize) - 1);
+        this.loadOrders(lastPage);
+      },
+      error: (error) => {
+        console.error('Error fetching updated order count:', error);
+        this.loadOrders(this.currentPage);
       }
     });
   }

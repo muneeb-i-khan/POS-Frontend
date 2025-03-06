@@ -69,7 +69,11 @@ export class CreateOrderComponent implements OnInit {
     console.log('Order Payload:', order);
 
     this.orderService.postOrder(order).subscribe({
-      next: () => this.router.navigate(['/app/orders/view']),
+      next: () => this.router.navigate(['/app/orders/view'], { 
+        queryParams: { 
+          newOrder: true 
+        }
+      }),
       error: (err) => {
         if (err.status === 400 && err.error) {
           if (typeof err.error === 'object') {
