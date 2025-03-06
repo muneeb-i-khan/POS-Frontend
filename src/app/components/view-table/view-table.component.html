@@ -16,6 +16,11 @@
       </select>
     </div>
   </div> -->
+  <!-- Error Message Box -->
+  <div *ngIf="showError" class="alert alert-danger mt-3 mb-3 fade show" role="alert">
+    <strong>Error:</strong> {{ errorMessage }}
+  </div>
+
   <!-- Create button -->
   <div *ngIf="entity !== 'Day Sales Report' && entity !== 'Sales Report'" class="d-flex mt-3 mb-3">
     <button class="btn btn-success px-4 py-2 shadow-sm" (click)="onCreate()">
