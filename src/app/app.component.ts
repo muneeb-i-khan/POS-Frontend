@@ -1,9 +1,9 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 
-declare var bootstrap: any; 
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-root',
@@ -12,11 +12,20 @@ declare var bootstrap: any;
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'POS-Frontend';
   isDarkMode = false;
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, private router: Router) {}
+
+  ngOnInit() {
+    this.authService.checkSession().subscribe(response => {
+      if (!response.isAuthenticated) {
+        this.authService.clearUserSession();
+        this.router.navigate(['/login']); 
+      }
+    });
+  }
 
   ngAfterViewInit(): void {
     const dropdownElement = document.querySelector('.dropdown-toggle');
