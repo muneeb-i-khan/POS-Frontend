@@ -12,12 +12,16 @@ export class OrderService {
   constructor(private http: HttpClient) {}
 
   getOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(this.apiUrl);
+    return this.http.get<Order[]>(this.apiUrl, {
+      withCredentials: true
+     });
   }
 
   postOrder(order: Order): Observable<Order> {
     console.log('Sending Order:', order); 
-    return this.http.post<Order>(this.apiUrl, order); 
+      return this.http.post<Order>(this.apiUrl, order, {
+      withCredentials: true
+     });
   }
 
   downloadInvoice(orderId: number) {
@@ -25,7 +29,10 @@ export class OrderService {
   }
 
   getOrdersPaginated(page: number, pageSize: number): Observable<{ orders: Order[], totalOrders: number }> {
-    return this.http.get<Order[]>(`${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`, { observe: 'response' })
+    return this.http.get<Order[]>(`${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`, { 
+      observe: 'response',
+      withCredentials: true
+     })
       .pipe(
         map(response => {
           const totalOrders = Number(response.headers.get('totalOrders')) || 0;

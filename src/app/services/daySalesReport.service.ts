@@ -27,15 +27,22 @@ export class DaySalesReportService {
   }
 
   getAllReports(): Observable<DaySalesReport[]> {
-    return this.http.get<DaySalesReport[]>(`${this.apiUrl}/sales/all`);
+    return this.http.get<DaySalesReport[]>(`${this.apiUrl}/sales/all`, {
+      withCredentials: true
+     });
   }
 
   generateDailyReport(): Observable<string> {
-    return this.http.post<string>(`${this.apiUrl}/generate`, null);
+    return this.http.post<string>(`${this.apiUrl}/generate`, null, {
+      withCredentials: true
+     });
   }
 
   getDailyReportsPaginated(page: number, pageSize: number): Observable<{ reports: DaySalesReport[], totalReports: number }> {
-    return this.http.get<DaySalesReport[]>(`${this.apiUrl}/sales/paginated?page=${page}&pageSize=${pageSize}`, { observe: 'response' })
+    return this.http.get<DaySalesReport[]>(`${this.apiUrl}/sales/paginated?page=${page}&pageSize=${pageSize}`, { 
+      observe: 'response',
+      withCredentials: true
+     })
       .pipe(
         map(response => {
           const totalReports = Number(response.headers.get('totalReports')) || 0;

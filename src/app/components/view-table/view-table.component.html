@@ -62,7 +62,7 @@
   </button>
   <span class="align-self-center">Page {{ currentPage + 1 }} of {{ totalPages }}</span>
   <button class="btn btn-sm btn-primary ms-2" (click)="goToPage(currentPage + 1)" 
-          [disabled]="(currentPage + 1) * pageSize >= totalItems">
+          [disabled]="currentPage >= totalPages - 1">
     Next
   </button>
 </div>

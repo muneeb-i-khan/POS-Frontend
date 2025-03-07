@@ -13,30 +13,41 @@ export class ClientService {
   constructor(private http: HttpClient) {}
 
   getClients(): Observable<Client[]> {
-    return this.http.get<Client[]>(this.apiUrl);
+    return this.http.get<Client[]>(this.apiUrl, {
+      withCredentials: true
+     });
   }
 
   postClient(client: Client): Observable<Client> {
-    return this.http.post<Client>(this.apiUrl, client);
+    return this.http.post<Client>(this.apiUrl, client, {
+      withCredentials: true
+     });
   }
 
   deleteClient(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, {
+      withCredentials: true
+     });
   }
 
   updateClient(id: number, client: Partial<Client>): Observable<Client> {
-    return this.http.put<Client>(`${this.apiUrl}/${id}`, client);
+    return this.http.put<Client>(`${this.apiUrl}/${id}`, client, {
+      withCredentials: true
+     });
   }
 
   getClientsPaginated(page: number, pageSize: number): Observable<{ clients: Client[], totalClients: number }> {
-    return this.http.get<Client[]>(`${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`, { observe: 'response' })
-      .pipe(
-        map(response => {
-          const totalClients = Number(response.headers.get('totalClients')) || 0;
-          console.log('Parsed totalClients:', totalClients);
-          return { clients: response.body || [], totalClients };
-        })
-      );
+    return this.http.get<Client[]>(`${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`, { 
+      observe: 'response',
+      withCredentials: true
+    })
+    .pipe(
+      map(response => {
+        const totalClients = Number(response.headers.get('totalClients'));
+        console.log('Total clients:', totalClients, 'Current page:', page);
+        return { clients: response.body || [], totalClients };
+      })
+    );
   }
   
 }

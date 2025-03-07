@@ -28,17 +28,22 @@ export class SalesReportService {
   }
 
   getAllReports(): Observable<SalesReport[]> {
-    return this.http.get<SalesReport[]>(`${this.apiUrl}/sales/all`);
+    return this.http.get<SalesReport[]>(`${this.apiUrl}/sales/all`, {
+      withCredentials: true
+     });
   }
 
   getSalesReportsPaginated(page: number, pageSize: number): Observable<{ report: SalesReport[], totalSalesReport: number }> {
-    return this.http.get<SalesReport[]>(`${this.apiUrl}/sales/paginated?page=${page}&pageSize=${pageSize}`, { observe: 'response' })
+    return this.http.get<SalesReport[]>(`${this.apiUrl}/sales/paginated?page=${page}&pageSize=${pageSize}`, { 
+      observe: 'response',
+      withCredentials: true
+     })
       .pipe(
         map(response => {
           const totalSalesReport = Number(response.headers.get('totalSalesReport')) || 0;
           return { report: response.body || [], totalSalesReport };
         })
       );
-  }
+  } 
 }
 

@@ -88,6 +88,8 @@ export class ViewTableComponent {
   }
 
   goToPage(page: number) {
-    this.pageChange.emit(page);
+    if (page >= 0 && page < this.totalPages) {
+      this.pageChange.emit(page);
+    }
   }
 }

@@ -13,29 +13,42 @@ export class InventoryService {
   constructor(private http: HttpClient) {}
 
   getInventory(): Observable<Inventory[]> {
-    return this.http.get<Inventory[]>(this.apiUrl);
+    return this.http.get<Inventory[]>(this.apiUrl, {
+      withCredentials: true
+     });
   }
 
   postInventory(inventory: Inventory): Observable<Inventory> {
-    return this.http.post<Inventory>(this.apiUrl, inventory);
+    return this.http.post<Inventory>(this.apiUrl, inventory, {
+      withCredentials: true
+     });
   }
 
   deleteInventory(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, {
+      withCredentials: true
+     });
   }
 
   updateInventory(id: number, inventory: Partial<Inventory>): Observable<Inventory> {
-    return this.http.put<Inventory>(`${this.apiUrl}/${id}`, inventory);
+    return this.http.put<Inventory>(`${this.apiUrl}/${id}`, inventory, {
+      withCredentials: true
+     });
   }
 
   uploadInventoryTSV(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post(this.inventoryUploadUrl, formData);
+      return this.http.post(this.inventoryUploadUrl, formData, {
+      withCredentials: true
+     });
   }
 
   getInventoriesPaginated(page: number, pageSize: number): Observable<{ inventories: Inventory[], totalInventories: number }> {
-    return this.http.get<Inventory[]>(`${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`, { observe: 'response' })
+    return this.http.get<Inventory[]>(`${this.apiUrl}/paginated?page=${page}&pageSize=${pageSize}`, { 
+      observe: 'response',
+      withCredentials: true
+     })
       .pipe(
         map(response => {
           const totalInventories = Number(response.headers.get('totalInventories')) || 0;
