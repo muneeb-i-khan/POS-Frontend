@@ -24,7 +24,7 @@ export class SalesReportService {
       .set('clientName', clientName)
       .set('description', description);
 
-    return this.http.get<SalesReport[]>(`${this.apiUrl}/filter`, { params });
+    return this.http.get<SalesReport[]>(`${this.apiUrl}/filter`, { params, withCredentials: true });
   }
 
   getAllReports(): Observable<SalesReport[]> {
