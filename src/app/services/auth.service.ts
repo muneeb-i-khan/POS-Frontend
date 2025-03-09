@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 
@@ -9,16 +9,16 @@ import { tap, catchError } from 'rxjs/operators';
 export class AuthService {
   private apiUrl = 'http://localhost:9000/pos/api/auth';
   private lastCheckedTimeKey = 'lastCheckedTime';
-  
+
   constructor(private http: HttpClient) {}
 
   login(email: string, password: string): Observable<any> {
-    console.log(email, password);
-    return this.http.post(
-      `${this.apiUrl}/login`,
-      { email, password },
-      { withCredentials: true }
-    ).pipe(
+    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    const body = new HttpParams()
+      .set('email', email)
+      .set('password', password);
+
+    return this.http.post(`${this.apiUrl}/login`, body.toString(), { headers, withCredentials: true }).pipe(
       tap((response: any) => {
         this.setUserSession(email, response.userId, response.role);
       })
@@ -26,16 +26,18 @@ export class AuthService {
   }
 
   signup(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/signup`, { email, password }, {
-      observe: 'response', 
-      withCredentials: true
-    });
+    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    const body = new HttpParams()
+      .set('email', email)
+      .set('password', password);
+
+    return this.http.post(`${this.apiUrl}/signup`, body.toString(), { headers, withCredentials: true });
   }
 
   checkSession(): Observable<any> {
     const lastCheckedTime = sessionStorage.getItem(this.lastCheckedTimeKey);
     const now = Date.now();
-    
+
     if (lastCheckedTime && now - parseInt(lastCheckedTime) < 5 * 60 * 1000) {
       return of({ isAuthenticated: this.isLoggedIn() });
     }
