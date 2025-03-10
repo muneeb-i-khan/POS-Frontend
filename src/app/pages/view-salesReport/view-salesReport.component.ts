@@ -69,9 +69,45 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
         else {
             this.SalesReportService.getReport(this.startDate, this.endDate, this.clientName, this.description).subscribe({
                 next: (data) => {
-                    this.data = data.map(report => ({
-                        ...report,
-                    }));
+                    let aggregatedData: SalesReport[] = [];
+                    
+                    if (this.clientName) {
+                        const clientMap = new Map<string, SalesReport>();
+                        
+                        data.forEach(report => {
+                            if (clientMap.has(report.clientName)) {
+                                const existing = clientMap.get(report.clientName)!;
+                                existing.quantity += report.quantity;
+                                existing.revenue += report.revenue;
+                            } else {
+                                clientMap.set(report.clientName, {...report});
+                            }
+                        });
+                        
+                        aggregatedData = Array.from(clientMap.values());
+                    } 
+                    else if (this.description) {
+                        const descMap = new Map<string, SalesReport>();
+                        
+                        data.forEach(report => {
+                            if (descMap.has(report.description)) {
+                                const existing = descMap.get(report.description)!;
+                                existing.quantity += report.quantity;
+                                existing.revenue += report.revenue;
+                            } else {
+                                descMap.set(report.description, {...report});
+                            }
+                        });
+                        
+                        aggregatedData = Array.from(descMap.values());
+                    } 
+                    else {
+                        aggregatedData = data;
+                    }
+                    
+                    this.data = aggregatedData;
+                    this.totalItems = aggregatedData.length;
+                    this.currentPage = page;
                 },
                 error: (error) => {
                     console.error('Error fetching orders:', error);
