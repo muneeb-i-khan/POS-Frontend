@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 interface SalesReport {
   clientName: string;
@@ -24,18 +24,26 @@ export class SalesReportService {
       .set('clientName', clientName)
       .set('description', description);
 
-    return this.http.get<SalesReport[]>(`${this.apiUrl}/filter`, { params });
+    return this.http.get<SalesReport[]>(`${this.apiUrl}/filter`, { params, withCredentials: true });
   }
 
   getAllReports(): Observable<SalesReport[]> {
-    return this.http.get<SalesReport[]>(`${this.apiUrl}/sales/all`);
+    return this.http.get<SalesReport[]>(`${this.apiUrl}/sales/all`, {
+      withCredentials: true
+     });
   }
 
   getSalesReportsPaginated(page: number, pageSize: number): Observable<{ report: SalesReport[], totalSalesReport: number }> {
-    return this.http.get<{ report: SalesReport[], totalSalesReport: number }>(
-      `${this.apiUrl}/sales/paginated?page=${page}&pageSize=${pageSize}`
-    );
-  }
-
+    return this.http.get<SalesReport[]>(`${this.apiUrl}/sales/paginated?page=${page}&pageSize=${pageSize}`, { 
+      observe: 'response',
+      withCredentials: true
+     })
+      .pipe(
+        map(response => {
+          const totalSalesReport = Number(response.headers.get('totalSalesReport')) || 0;
+          return { report: response.body || [], totalSalesReport };
+        })
+      );
+  } 
 }
 

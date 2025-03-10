@@ -1,21 +1,26 @@
 <div class="container">
 
   <!-- Toolbar -->
-  <div *ngIf="entity !== 'Day Sales Report' && entity !== 'Sales Report'" class="row align-items-center g-3 mb-3">
+  <!-- <div *ngIf="entity !== 'Day Sales Report' && entity !== 'Sales Report'" class="row align-items-center g-3 mb-3"> -->
     <!-- Search Bar -->
-    <div class="col-md-6 col-12">
+    <!-- <div class="col-md-6 col-12">
       <app-search-bar [columns]="columns" (searchChange)="onSearchChange($event)"></app-search-bar>
-    </div>
+    </div> -->
 
     <!-- Sorting Dropdown -->
-    <div class="col-md-6 col-12 text-md-end text-center">
+    <!-- <div class="col-md-6 col-12 text-md-end text-center">
       <label class="fw-bold d-block mb-1">📌 Sort by:</label>
       <select class="form-select w-100" [(ngModel)]="sortField">
         <option value="" disabled selected>Choose a column</option>
         <option *ngFor="let col of columns" [value]="col.field">{{ col.header }}</option>
       </select>
     </div>
+  </div> -->
+  <!-- Error Message Box -->
+  <div *ngIf="showError" class="alert alert-danger mt-3 mb-3 fade show" role="alert">
+    <strong>Error:</strong> {{ errorMessage }}
   </div>
+
   <!-- Create button -->
   <div *ngIf="entity !== 'Day Sales Report' && entity !== 'Sales Report'" class="d-flex mt-3 mb-3">
     <button class="btn btn-success px-4 py-2 shadow-sm" (click)="onCreate()">
@@ -57,7 +62,7 @@
   </button>
   <span class="align-self-center">Page {{ currentPage + 1 }} of {{ totalPages }}</span>
   <button class="btn btn-sm btn-primary ms-2" (click)="goToPage(currentPage + 1)" 
-          [disabled]="(currentPage + 1) * pageSize >= totalItems">
+          [disabled]="currentPage >= totalPages - 1">
     Next
   </button>
 </div>

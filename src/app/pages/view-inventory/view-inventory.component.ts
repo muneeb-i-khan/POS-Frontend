@@ -39,22 +39,6 @@ export class ViewInventoryComponent implements OnInit {
     this.loadInventory();
   }
 
-  // loadProducts(page: number = 0) {
-  //   this.productService.getProductsPaginated(page, this.pageSize).subscribe({
-  //     next: (response) => {
-  //       this.data = response.products.map(product => ({
-  //         ...product,
-  //         isEditing: false
-  //       }));
-  //       this.totalProducts = response.totalProducts;
-  //       this.currentPage = page;
-  //     },
-  //     error: (error) => {
-  //       console.error('Error fetching products:', error);
-  //     }
-  //   });
-  // }
-
   loadInventory(page: number = 0) {
     this.inventoryService.getInventoriesPaginated(page, this.pageSize).subscribe({
       next: (response) => {
@@ -105,14 +89,34 @@ export class ViewInventoryComponent implements OnInit {
   }
 
   handleInventoryCreated() {
-    this.closeCreateModal(); 
-    this.loadInventory(); 
+    this.closeCreateModal();
+    this.inventoryService.getInventoriesPaginated(0, this.pageSize).subscribe({
+      next: (response) => {
+        this.totalProducts = response.totalInventories;
+        const lastPage = Math.max(0, Math.ceil(this.totalProducts / this.pageSize) - 1);
+        this.loadInventory(lastPage);
+      },
+      error: (error) => {
+        console.error('Error fetching updated inventory count:', error);
+        this.loadInventory(this.currentPage);
+      }
+    });
   }
 
   handleTsvSubmitted() {
     console.log("TSV submitted event received");
     this.closeCreateModal();
-    this.loadInventory();
+    this.inventoryService.getInventoriesPaginated(0, this.pageSize).subscribe({
+      next: (response) => {
+        this.totalProducts = response.totalInventories;
+        const lastPage = Math.max(0, Math.ceil(this.totalProducts / this.pageSize) - 1);
+        this.loadInventory(lastPage);
+      },
+      error: (error) => {
+        console.error('Error fetching updated inventory count:', error);
+        this.loadInventory(this.currentPage);
+      }
+    });
   }
 
   goToPage(page: number) {

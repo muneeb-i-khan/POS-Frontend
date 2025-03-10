@@ -5,13 +5,13 @@ import { Router } from '@angular/router';
 import { ClientService } from '../../services/client.service';
 import { ProductService } from '../../services/product.service';
 import { InventoryService } from '../../services/inventory.service';
-
+import { SampleTsvModalComponent } from '../sample-tsv-modal/sample-tsv-modal.component';
 @Component({
   selector: 'app-create-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SampleTsvModalComponent],
   templateUrl: './create-form.component.html',
-  styleUrl: './create-form.component.scss'
+  styleUrls: ['./create-form.component.scss']
 })
 export class CreateFormComponent {
   @Input() entity!: string;
@@ -21,6 +21,10 @@ export class CreateFormComponent {
   @Output() tsvSubmitted = new EventEmitter<void>();
   formData: any = {};
   selectedFile: File | null = null;
+  errorMessage: string | null = null;
+
+  isTsvModalOpen = false;
+  sampleTsvContent = '';
 
   constructor(
     private router: Router,
@@ -28,19 +32,44 @@ export class CreateFormComponent {
     private productService: ProductService,
     private inventoryService: InventoryService
   ) {}
-
+  
   submitForm() {
+    this.errorMessage = null; 
+  
     if (this.entity === 'Client') {
       this.clientService.postClient(this.formData).subscribe({
         next: () => {
-          this.clientCreated.emit(); 
+          this.clientCreated.emit();
+        },
+        error: (err) => {
+          if (err.status === 400 && err.error) {
+            if (typeof err.error === 'object') {
+              this.errorMessage = Object.values(err.error).join(' ');
+            } else {
+              this.errorMessage = err.error.error || "Failed to create client.";
+            }
+          } else {
+            this.errorMessage = "Failed to create client: " + err.message;
+          }
         }
       });
     } 
+
     else if (this.entity === 'Product') {
       this.productService.postProduct(this.formData).subscribe({
         next: () => {
           this.productCreated.emit();
+        },
+        error: (err) => {
+          if (err.status === 400 && err.error) {
+            if (typeof err.error === 'object') {
+              this.errorMessage = Object.values(err.error).join(' ');
+            } else {
+              this.errorMessage = err.error.error || "Failed to create product.";
+            }
+          } else {
+            this.errorMessage = "Failed to create product: " + err.message;
+          }
         }
       });
     } 
@@ -48,10 +77,21 @@ export class CreateFormComponent {
       this.inventoryService.postInventory(this.formData).subscribe({
         next: () => {
           this.inventoryCreated.emit();
+        },
+        error: (err) => {
+          if (err.status === 400 && err.error) {
+            if (typeof err.error === 'object') {
+              this.errorMessage = Object.values(err.error).join(' ');
+            } else {
+              this.errorMessage = err.error.error || "Failed to create inventory.";
+            }
+          } else {
+            this.errorMessage = "Failed to create inventory: " + err.message;
+          }
         }
       });
     }
-  }
+  }  
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
@@ -74,8 +114,7 @@ export class CreateFormComponent {
           this.selectedFile = null;
         },
         error: (err) => {
-          console.error("Product upload failed:", err);
-          alert("Failed to upload products.");
+          this.errorMessage = "Product upload failed: " + err.error.error;
         }
       });
     } 
@@ -88,11 +127,30 @@ export class CreateFormComponent {
           this.selectedFile = null;
         },
         error: (err) => {
-          console.error("Inventory upload failed:", err);
-          alert("Failed to upload inventory.");
-        }
+          this.errorMessage = "Inventory upload failed: " + err.error.error;
+        } 
       });
     }
   }
-  
+
+  openTsvModal(entity: string) {
+    this.isTsvModalOpen = true;
+    this.sampleTsvContent = entity === 'Product' 
+      ? `
+      barcode\tname\tprice\tclientName
+      100\tProduct A\t10.00\tClient X
+      101\tProduct B\t15.00\tClient Y
+      102\tProduct C\t20.00\tClient Z
+      ` 
+      : `
+      barcode\tquantity
+      100\t10
+      101\t20
+      102\t30
+      `;
+  }
+
+  closeTsvModal() {
+    this.isTsvModalOpen = false;
+  }
 }

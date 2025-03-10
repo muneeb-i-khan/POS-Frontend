@@ -5,7 +5,17 @@
       <div class="navbar-nav ms-auto d-flex align-items-center gap-3">
         <button class="btn btn-dark" (click)="toggleDarkMode()">🌙 Dark Mode</button>
         <a class="btn btn-primary" *ngIf="!authService.isLoggedIn()" routerLink="/login">Login</a>
-        <button class="btn btn-danger" *ngIf="authService.isLoggedIn()" (click)="logout()">Logout</button>
+
+        <div class="dropdown" *ngIf="authService.isLoggedIn()">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ authService.getUserEmail() }}
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li>
+              <button class="dropdown-item text-danger" (click)="logout()">Logout</button>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </nav>

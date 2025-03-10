@@ -1,12 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SearchBarComponent } from '../search-bar/search-bar.component';
 
 @Component({
   selector: 'app-view-table',
   standalone: true,
-  imports: [NgFor, NgIf, FormsModule, SearchBarComponent],
+  imports: [NgFor, NgIf, FormsModule],
   templateUrl: './view-table.component.html',
   styleUrls: ['./view-table.component.scss']
 })
@@ -19,7 +18,6 @@ export class ViewTableComponent {
   @Output() create = new EventEmitter<void>(); 
   @Input() editableFields: string[] = [];
 
-
   @Input() totalItems: number = 0;
   @Input() currentPage: number = 0;
   @Input() pageSize: number = 10;
@@ -28,6 +26,8 @@ export class ViewTableComponent {
   searchQuery: string = '';
   searchField: string = '';
   sortField: string = '';
+  errorMessage: string = '';
+  showError: boolean = false;
 
   get totalPages(): number {
     return Math.ceil(this.totalItems / this.pageSize);
@@ -70,10 +70,26 @@ export class ViewTableComponent {
   }
 
   onCreate() {
-    this.create.emit();
+    const USER_ROLE = sessionStorage.getItem('role');
+    console.log(USER_ROLE);
+    
+    if (USER_ROLE === 'SUPERVISOR') {
+      this.showError = false;
+      this.errorMessage = '';
+      this.create.emit();
+    } else {
+      this.errorMessage = 'Access Denied: OPERATORs can view entities only';
+      this.showError = true;
+      
+      setTimeout(() => {
+        this.showError = false;
+      }, 5000);
+    }
   }
 
   goToPage(page: number) {
-    this.pageChange.emit(page);
+    if (page >= 0 && page < this.totalPages) {
+      this.pageChange.emit(page);
+    }
   }
 }
