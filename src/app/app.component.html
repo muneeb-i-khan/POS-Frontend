@@ -2,19 +2,58 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">POS System</a>
-      <div class="navbar-nav ms-auto d-flex align-items-center gap-3">
-        <button class="btn btn-dark" (click)="toggleDarkMode()">🌙 Dark Mode</button>
-        <a class="btn btn-primary" *ngIf="!authService.isLoggedIn()" routerLink="/login">Login</a>
+      
+      <!-- Hamburger button for mobile -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
+              aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <!-- Collapsible navbar content -->
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <!-- Main navigation links -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="authService.isLoggedIn()">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/app/clients/view" routerLinkActive="active" 
+               data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Clients</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/app/products/view" routerLinkActive="active"
+               data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Products</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/app/inventory/view" routerLinkActive="active"
+               data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Inventory</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/app/orders/view" routerLinkActive="active"
+               data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Orders</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/app/day-reports/view" routerLinkActive="active"
+               data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Day Sales Report</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/app/sales-reports/view" routerLinkActive="active"
+               data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Sales Report</a>
+          </li>
+        </ul>
+        
+        <!-- Right-aligned items -->
+        <div class="navbar-nav ms-auto d-flex align-items-center gap-3">
+          <button class="btn btn-dark" (click)="toggleDarkMode()">🌙 Dark Mode</button>
+          <a class="btn btn-primary" *ngIf="!authService.isLoggedIn()" routerLink="/login">Login</a>
 
-        <div class="dropdown" *ngIf="authService.isLoggedIn()">
-          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ authService.getUserEmail() }}
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <li>
-              <button class="dropdown-item text-danger" (click)="logout()">Logout</button>
-            </li>
-          </ul>
+          <div class="dropdown" *ngIf="authService.isLoggedIn()">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ authService.getUserEmail() }}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li>
+                <button class="dropdown-item text-danger" (click)="logout()">Logout</button>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
