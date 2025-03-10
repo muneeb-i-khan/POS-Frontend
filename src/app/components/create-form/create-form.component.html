@@ -66,7 +66,12 @@
 
       <!-- Consolidated Buttons Section -->
       <div class="mt-3">
-        <button type="submit" class="btn btn-success">Submit</button>
+        <button type="submit" class="btn btn-success" 
+                [disabled]="(entity === 'Client' && (!formData.name || !formData.description)) || 
+                            (entity === 'Product' && (!formData.clientName || !formData.name || !formData.barcode || formData.price <= 0)) || 
+                            (entity === 'Inventory' && (!formData.barcode || formData.quantity <= 0))">
+          Submit
+        </button>
         <button *ngIf="entity === 'Product' || entity === 'Inventory'" 
                 type="button" 
                 class="btn btn-primary ms-2" 

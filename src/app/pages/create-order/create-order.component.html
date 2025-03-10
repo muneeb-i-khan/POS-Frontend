@@ -23,7 +23,7 @@
                 </tr>
             </tbody>
         </table>
-        <button type="submit" class="btn btn-success" (click)="submitForm()">Submit Order</button>
+        <button type="submit" class="btn btn-success" (click)="submitForm()" [disabled]="!customer.name || !customer.phone || !newItem.barcode || !newItem.quantity || !newItem.sellingPrice">Submit Order</button>
     </div>
 
     <div class="right-panel" style="flex: 1;">
