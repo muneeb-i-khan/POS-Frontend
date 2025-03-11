@@ -60,9 +60,7 @@ export class ViewTableComponent {
     } else {
       this.errorMessage = 'Access Denied: OPERATORs can view entities only';
       this.showError = true;
-      
     }
-
   }
 
   deleteRow(id: number) {
