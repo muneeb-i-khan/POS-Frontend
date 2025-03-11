@@ -53,7 +53,16 @@ export class ViewTableComponent {
   }
 
   editRow(index: number) {
-    this.edit.emit(index);
+    const USER_ROLE = sessionStorage.getItem('role');
+    console.log(USER_ROLE);
+    if (USER_ROLE === 'SUPERVISOR') {
+      this.edit.emit(index);
+    } else {
+      this.errorMessage = 'Access Denied: OPERATORs can view entities only';
+      this.showError = true;
+      
+    }
+
   }
 
   deleteRow(id: number) {
