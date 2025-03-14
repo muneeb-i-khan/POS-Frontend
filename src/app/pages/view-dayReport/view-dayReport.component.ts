@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
 import { Router } from '@angular/router';
-import { CreateFormComponent } from '../../components/create-form/create-form.component';
 import { DaySalesReportService } from '../../services/daySalesReport.service';
 import { DaySalesReport } from '../../models/daySalesReport.model';
 import { FormsModule } from '@angular/forms';
@@ -24,7 +23,6 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
     data: DaySalesReport[] = [];
     entity: string = 'Day Sales Report';
 
-
     startDate: string = '';
     endDate: string = '';
 
@@ -32,36 +30,18 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
     currentPage: number = 0;
     pageSize: number = 10;
 
-    constructor(private daySalesReportService: DaySalesReportService, private router: Router) { }
+    constructor(private daySalesReportService: DaySalesReportService, private router: Router) {}
 
     ngOnInit() {
         this.loadDayReports();
     }
 
-    ngAfterViewInit() {
-        setTimeout(() => {
-        });
-    }
+    ngAfterViewInit() {}
 
     onGenerateReport() {
         this.loadDayReports();
     }
 
-    // loadDayReports(page: number = 0) {
-    //     this.daySalesReportService.getDailyReportsPaginated(page, this.pageSize).subscribe({
-    //         next: (response) => {
-    //             this.data = response.reports.map(report => ({
-    //                 ...report,
-    //                 date: this.formatDate(report.date)
-    //             }));
-    //             this.totalItems = response.totalReports;
-    //             this.currentPage = page;
-    //         },
-    //         error: (error) => {
-    //             console.error('Error fetching day reports:', error);
-    //         }
-    //     });
-    // }
     loadDayReports(page: number = 0) {
         if (!this.startDate && !this.endDate) {
             this.daySalesReportService.getDailyReportsPaginated(page, this.pageSize).subscribe({
@@ -74,13 +54,14 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
                     this.currentPage = page;
                 },
                 error: (error) => {
-                    console.error('Error fetching orders:', error);
+                    console.error('Error fetching reports:', error);
                 }
             });
-            return;
-        }
-        else {
-            this.daySalesReportService.getReport(this.startDate, this.endDate).subscribe({
+        } else {
+            const formattedStartDate = this.startDate ? `${this.startDate}T00:00:00Z` : '';
+            const formattedEndDate = this.endDate ? `${this.endDate}T23:59:59Z` : '';
+
+            this.daySalesReportService.getReport(formattedStartDate, formattedEndDate).subscribe({
                 next: (data) => {
                     this.data = data.map(report => ({
                         ...report,
@@ -88,12 +69,11 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
                     }));
                 },
                 error: (error) => {
-                    console.error('Error fetching orders:', error);
+                    console.error('Error fetching reports:', error);
                 }
             });
         }
     }
-
 
     get totalPages(): number {
         return Math.ceil(this.totalItems / this.pageSize);
@@ -104,9 +84,11 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
         this.loadDayReports(page);
     }
 
-    private formatDate(dateObj: any): string {
-        if (!dateObj) return '';
-        return `${dateObj.year}-${String(dateObj.monthValue).padStart(2, '0')}-${String(dateObj.dayOfMonth).padStart(2, '0')}`;
+    private formatDate(date: any): string {
+        if (!date || typeof date !== 'object') return '';
+        const year = date.year;
+        const month = String(date.monthValue).padStart(2, '0'); 
+        const day = String(date.dayOfMonth).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
-
 }

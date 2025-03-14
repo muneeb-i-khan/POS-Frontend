@@ -23,7 +23,7 @@ export class DaySalesReportService {
       .set('startDate', startDate)
       .set('endDate', endDate);
     
-    return this.http.get<DaySalesReport[]>(`${this.apiUrl}/sales`, { params });
+    return this.http.get<DaySalesReport[]>(`${this.apiUrl}/sales`, { params, withCredentials: true });
   }
 
   getAllReports(): Observable<DaySalesReport[]> {
