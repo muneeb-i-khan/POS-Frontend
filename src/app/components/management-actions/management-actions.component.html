@@ -1,12 +1,12 @@
 <div class="d-flex flex-column align-items-center justify-content-center vh-100">
-    <h2>{{ entity }} Management</h2>
-    <div class="mt-4">
-      <button class="btn btn-success btn-lg me-3" (click)="navigateTo(createRoute)">
+    <h2 class="text-center">{{ entity }} Management</h2>
+    <div class="mt-4 text-center">
+      <button class="btn btn-success btn-lg mb-2" (click)="navigateTo(createRoute)">
         ➕ Create {{ entity }}
       </button>
-      <button class="btn btn-primary btn-lg" (click)="navigateTo(viewRoute)">
+      <div class="mb-2"></div> 
+      <button class="btn btn-primary btn-lg mb-2" (click)="navigateTo(viewRoute)">
         👀 View {{ entity }}
       </button>
     </div>
-  </div>
-  
+</div>
