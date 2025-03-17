@@ -17,13 +17,13 @@
                     <td>{{ item.sellingPrice }}</td>
                     <td>{{ item.quantity * item.sellingPrice }}</td>
                 </tr>
-                <tr>
+                <tr *ngIf="orderItems.length > 0">
                     <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
                     <td>{{ calculateTotalAmount() }}</td>
                 </tr>
             </tbody>
         </table>
-        <button type="submit" class="btn btn-success" (click)="submitForm()" >Submit Order</button>
+        <button type="submit" class="btn btn-success" (click)="submitForm()">Submit Order</button>
     </div>
 
     <div class="right-panel" style="flex: 1;">
