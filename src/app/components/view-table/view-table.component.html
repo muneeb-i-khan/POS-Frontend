@@ -36,7 +36,8 @@
           <th *ngFor="let col of columns" (click)="setSort(col.field)" class="sortable">
             {{ col.header }} <span *ngIf="sortField === col.field">🔼</span>
           </th>
-          <th>Actions</th>  
+          <!-- Only show Actions column for entities that are not reports -->
+          <th *ngIf="entity !== 'Sales Report' && entity !== 'Day Sales Report'">Actions</th>  
         </tr>
       </thead>
       <tbody>
@@ -47,7 +48,8 @@
             </ng-container>
             <span *ngIf="!row.isEditing || !isEditableField(col.field)">{{ row[col.field] }}</span>
           </td>
-          <td>
+          <!-- Only show Actions column for entities that are not reports -->
+          <td *ngIf="entity !== 'Sales Report' && entity !== 'Day Sales Report'">
             <button class="btn btn-sm btn-primary me-1" (click)="editRow(i)">
               <i class="fas fa-edit"></i> {{ row.isEditing ? 'Save' : 'Edit' }}
             </button>
