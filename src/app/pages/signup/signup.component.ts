@@ -13,7 +13,8 @@ import { NgIf } from '@angular/common';
     FormsModule,
     NgIf
   ],
-})export class SignupComponent {
+})
+export class SignupComponent {
   email = '';
   password = '';
   errorMessage: string | null = '';  
@@ -40,17 +41,41 @@ import { NgIf } from '@angular/common';
         }
       },
       error: (err) => {
-        if (err.status === 400 && err.error) {
+        if (err.status === 500 && err.error) {
+          // Extract default messages from the error description
+          const errorDesc = err.error.errorDescription;
+          if (errorDesc) {
+            const defaultMessages = errorDesc.match(/default message \[(.*?)\]/g)
+              ?.map((msg: string) => msg.replace('default message [', '').replace(']', ''))
+              ?.filter((msg: string) => !msg.includes('password') && !msg.includes('email'));
+
+            if (defaultMessages && defaultMessages.length > 0) {
+              this.errorMessage = defaultMessages.join('. ');
+            } else {
+              if (errorDesc.includes('Has to be a valid email')) {
+                this.errorMessage = 'Please enter a valid email address';
+              } else if (errorDesc.includes('Password should be of length greater than 6')) {
+                this.errorMessage = 'Password must be at least 6 characters long';
+              } else if (errorDesc.includes('Password must contain at least one letter')) {
+                this.errorMessage = 'Password must contain at least one letter, one digit, and one special character (@$!%*?&)';
+              } else {
+                this.errorMessage = 'Invalid email or password format';
+              }
+            }
+          } else {
+            this.errorMessage = 'Invalid email or password format';
+          }
+        } else if (err.status === 400 && err.error) {
           if (typeof err.error === 'object') {
-            this.errorMessage = Object.values(err.error).join(' '); 
+            this.errorMessage = Object.values(err.error).join(' ');
           } else {
             this.errorMessage = err.error.error || 'Signup failed. Please try again.';
           }
         } else {
           this.errorMessage = 'Signup failed: ' + err.message;
         }
+        this.successMessage = '';
       }
     });
-  
   }
 }
