@@ -45,7 +45,7 @@
           <a class="btn btn-primary" *ngIf="!authService.isLoggedIn()" routerLink="/login">Login</a>
 
           <div class="dropdown" *ngIf="authService.isLoggedIn()">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn dropdown-toggle text-white" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
               {{ authService.getUserEmail() }}
             </button>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
