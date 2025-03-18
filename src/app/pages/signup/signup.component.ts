@@ -9,44 +9,44 @@ import { NgIf } from '@angular/common';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
   standalone: true,
-  imports: [
-    FormsModule,
-    NgIf
-  ],
+  imports: [FormsModule, NgIf],
 })
 export class SignupComponent {
   email = '';
   password = '';
-  errorMessage: string | null = '';  
+  errorMessage: string | null = null;  
   successMessage = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  navigateToLogin() {
-    this.router.navigate(['/login']);
-  }
-
   signup() {
+    this.errorMessage = null; 
+    this.successMessage = ''; 
+
     this.authService.signup(this.email, this.password).subscribe({
       next: (response) => {
-        console.log('Full response:', response);
         
-        if (response.status === 200) {  
-          this.successMessage = response.body?.message || 'Signup successful!';
-          this.errorMessage = null;
-          
-          setTimeout(() => {
-            console.log('Navigating to login...');
-            this.router.navigate(['/login']);
-          }, 1500);
-        } else {
-          this.errorMessage = 'Unexpected response status';
-          this.successMessage = '';
+        let message = 'Signup successful! Redirecting to login...';
+        if (response) {
+          if (typeof response === 'object' && 'message' in response) {
+            message = response.message; 
+          } else if (typeof response === 'string') {
+            message = response; 
+          }
         }
+        
+        this.successMessage = message;
+        this.errorMessage = null;
+
+        setTimeout(() => {
+          console.log('Navigating to login...');
+          this.navigateToLogin();
+        }, 1500);
       },
       error: (err) => {
+        console.error('Signup error:', err);
+
         if (err.status === 500 && err.error) {
-          // Extract default messages from the error description
           const errorDesc = err.error.errorDescription;
           if (errorDesc) {
             const defaultMessages = errorDesc.match(/default message \[(.*?)\]/g)
@@ -76,10 +76,14 @@ export class SignupComponent {
             this.errorMessage = err.error.error || 'Signup failed. Please try again.';
           }
         } else {
-          this.errorMessage = 'Signup failed: ' + err.message;
+          this.errorMessage = 'Signup failed: ' + (err.message || 'Unknown error');
         }
         this.successMessage = '';
       }
     });
+  }
+
+  navigateToLogin() {
+    this.router.navigate(['/login']);
   }
 }
