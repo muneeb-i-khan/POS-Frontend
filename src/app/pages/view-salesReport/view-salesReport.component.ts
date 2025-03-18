@@ -6,8 +6,9 @@ import { SalesReport } from '../../types/salesReport.type';
 import { SalesReportService } from '../../services/salesReport.service';
 import { CurrencyPipe, NgIf } from '@angular/common';
 import { CommonModule } from '@angular/common';
+
 @Component({
-    selector: 'app-view-dayReport',
+    selector: 'app-view-salesReport', 
     standalone: true,
     imports: [ViewTableComponent, FormsModule, CurrencyPipe, CommonModule, NgIf],
     templateUrl: './view-salesReport.component.html',
@@ -34,6 +35,7 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
     totalItems: number = 0;
     currentPage: number = 0;
     pageSize: number = 10;
+    private errorTimeout: any;
 
     constructor(private salesReportService: SalesReportService, private router: Router) { }
 
@@ -41,8 +43,12 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
         this.loadSalesReports();
     }
 
-    ngAfterViewInit() {
-        setTimeout(() => {});
+    ngAfterViewInit() {}
+
+    ngOnDestroy() {
+        if (this.errorTimeout) {
+            clearTimeout(this.errorTimeout);
+        }
     }
 
     onGenerateReport() {
@@ -50,6 +56,7 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
     }
 
     loadSalesReports(page: number = 0) {
+        this.clearError();
         const formattedStartDate = this.startDate ? `${this.startDate}T00:00:00Z` : '';
         const formattedEndDate = this.endDate ? `${this.endDate}T23:59:59Z` : '';
 
@@ -80,8 +87,7 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
                     this.currentPage = page;
                 },
                 error: (err) => {
-                    this.showError = true;
-                    this.errorMessage = err.error.error;
+                    this.showErrorMessage(err.error?.error || 'An error occurred while fetching reports');
                 }
             });
         } else {
@@ -92,8 +98,7 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
                     this.currentPage = page;
                 },
                 error: (err) => {
-                    this.showError = true;
-                    this.errorMessage = err.error.error;
+                    this.showErrorMessage(err.error?.error || 'An error occurred while fetching reports');
                 }
             });
         }
@@ -116,5 +121,27 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
 
     getTotalQuantity(): number {
         return this.data.reduce((sum, report) => sum + report.quantity, 0);
+    }
+
+    private showErrorMessage(message: string) {
+        if (this.errorTimeout) {
+            clearTimeout(this.errorTimeout);
+        }
+
+        this.errorMessage = message;
+        this.showError = true;
+
+        this.errorTimeout = setTimeout(() => {
+            this.clearError();
+        }, 3000);
+    }
+
+    private clearError() {
+        if (this.errorTimeout) {
+            clearTimeout(this.errorTimeout);
+            this.errorTimeout = null;
+        }
+        this.showError = false;
+        this.errorMessage = '';
     }
 }

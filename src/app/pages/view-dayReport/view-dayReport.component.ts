@@ -5,6 +5,7 @@ import { DaySalesReportService } from '../../services/daySalesReport.service';
 import { DaySalesReport } from '../../types/daySalesReport.type';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
+
 @Component({
     selector: 'app-view-dayReport',
     standalone: true,
@@ -30,6 +31,7 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
     totalItems: number = 0;
     currentPage: number = 0;
     pageSize: number = 10;
+    private errorTimeout: any; 
 
     constructor(private daySalesReportService: DaySalesReportService, private router: Router) {}
 
@@ -44,6 +46,8 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
     }
 
     loadDayReports(page: number = 0) {
+        this.clearError(); 
+        
         if (!this.startDate && !this.endDate) {
             this.daySalesReportService.getDailyReportsPaginated(page, this.pageSize).subscribe({
                 next: (data) => {
@@ -55,8 +59,7 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
                     this.currentPage = page;
                 },
                 error: (err) => {
-                    this.showError = true;
-                    this.errorMessage = err.error.error;
+                    this.showErrorMessage(err.error?.error || 'An error occurred');
                 }
             });
         } else {
@@ -71,8 +74,7 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
                     }));
                 },
                 error: (err) => {
-                    this.showError = true;
-                    this.errorMessage = err.error.error;
+                    this.showErrorMessage(err.error?.error || 'An error occurred');
                 }
             });
         }
@@ -90,8 +92,36 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
     private formatDate(date: any): string {
         if (!date || typeof date !== 'object') return '';
         const year = date.year;
-        const month = String(date.monthValue).padStart(2, '0'); 
+        const month = String(date.monthValue).padStart(2, '0');
         const day = String(date.dayOfMonth).padStart(2, '0');
         return `${year}-${month}-${day}`;
+    }
+
+    private showErrorMessage(message: string) {
+        if (this.errorTimeout) {
+            clearTimeout(this.errorTimeout);
+        }
+
+        this.errorMessage = message;
+        this.showError = true;
+
+        this.errorTimeout = setTimeout(() => {
+            this.clearError();
+        }, 3000);
+    }
+
+    private clearError() {
+        if (this.errorTimeout) {
+            clearTimeout(this.errorTimeout);
+            this.errorTimeout = null;
+        }
+        this.showError = false;
+        this.errorMessage = '';
+    }
+
+    ngOnDestroy() {
+        if (this.errorTimeout) {
+            clearTimeout(this.errorTimeout);
+        }
     }
 }
