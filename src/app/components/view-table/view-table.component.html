@@ -11,27 +11,28 @@
     </button>
   </div>
 
-  <!-- Responsive Table -->
     <table class="table table-hover table-bordered text-center align-middle">
       <thead class="table-dark">
         <tr>
-          <th *ngFor="let col of columns" (click)="setSort(col.field)" class="sortable">
-            {{ col.header }} <span *ngIf="sortField === col.field">🔼</span>
+          <th *ngFor="let col of columns">
+            {{ col.header }} 
           </th>
-          <!-- Only show Actions column for entities that are not reports -->
           <th *ngIf="entity !== 'Sales Report' && entity !== 'Day Sales Report'">Actions</th>  
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let row of filteredData(); let i = index">
-          <td *ngFor="let col of columns">
+          <td *ngFor="let col of columns" class="table-cell">
             <ng-container *ngIf="row.isEditing && isEditableField(col.field)">
-              <input [(ngModel)]="row[col.field]" name="{{ col.field + '-' + i }}" class="form-control text-center" />
+              <div class="d-flex justify-content-center align-items-center">
+                <input [(ngModel)]="row[col.field]" name="{{ col.field + '-' + i }}" class="form-control text-center border-0" style="width: 100%;" />
+              </div>
             </ng-container>
-            <span *ngIf="!row.isEditing || !isEditableField(col.field)">{{ row[col.field] }}</span>
+            <ng-container *ngIf="!row.isEditing || !isEditableField(col.field)">
+              {{ row[col.field] }}
+            </ng-container>
           </td>
-          <!-- Only show Actions column for entities that are not reports -->
-          <td *ngIf="entity !== 'Sales Report' && entity !== 'Day Sales Report'">
+          <td *ngIf="entity !== 'Sales Report' && entity !== 'Day Sales Report'" class="table-cell">
             <button class="btn btn-sm btn-primary me-1" (click)="editRow(i)">
               <i class="fas fa-edit"></i> {{ row.isEditing ? 'Save' : 'Edit' }}
             </button>
@@ -51,4 +52,3 @@
     </button>
   </div>
 </div>
-<!-- End of Selection -->
