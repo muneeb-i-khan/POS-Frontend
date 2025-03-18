@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
             <pre>{{ sampleContent }}</pre>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" (click)="copyToClipboard()">Copy to Clipboard</button>
+            <button type="button" class="btn btn-success" (click)="downloadTsv()">Download TSV</button>
             <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
           </div>
         </div>
@@ -33,9 +33,16 @@ export class SampleTsvModalComponent {
     this.modalClosed.emit();
   }
 
-  copyToClipboard() {
-    navigator.clipboard.writeText(this.sampleContent).then(() => {
-      alert('Sample TSV content copied to clipboard!');
-    });
+
+  downloadTsv() {
+    const blob = new Blob([this.sampleContent], { type: 'text/tab-separated-values' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'sample.tsv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
   }
 }
