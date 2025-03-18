@@ -48,43 +48,44 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
     }
 
     loadSalesReports(page: number = 0) {
-        if (!this.startDate && !this.endDate && !this.clientName && !this.description) {
-            this.salesReportService.getSalesReportsPaginated(page, this.pageSize).subscribe({
+        const formattedStartDate = this.startDate ? `${this.startDate}T00:00:00Z` : '';
+        const formattedEndDate = this.endDate ? `${this.endDate}T23:59:59Z` : '';
+
+        if (this.startDate || this.endDate || this.clientName || this.description) {
+            this.salesReportService.getReport(formattedStartDate, formattedEndDate, this.clientName, this.description).subscribe({
                 next: (data) => {
-                    this.data = data.report;
-                    this.totalItems = data.totalSalesReport;
+                    if (this.clientName && !this.description) {
+                        const clientMap = new Map<string, SalesReport>();
+                        data.forEach(report => {
+                            if (report.clientName.toLowerCase().includes(this.clientName.toLowerCase())) {
+                                if (clientMap.has(report.clientName)) {
+                                    const existing = clientMap.get(report.clientName)!;
+                                    existing.quantity += report.quantity;
+                                    existing.revenue += report.revenue;
+                                } else {
+                                    clientMap.set(report.clientName, { ...report });
+                                }
+                            }
+                        });
+                        this.data = Array.from(clientMap.values());
+                    } else {
+                        this.data = data;
+                    }
+                    
+                    const startIndex = page * this.pageSize;
+                    const endIndex = startIndex + this.pageSize;
+                    this.totalItems = this.data.length;
+                    this.data = this.data.slice(startIndex, endIndex);
                     this.currentPage = page;
                 },
                 error: (error) => {
-                    console.error('Error fetching reports:', error);
+                    console.error('Error fetching filtered reports:', error);
                 }
             });
-            return;
         } else {
-            const formattedStartDate = this.startDate ? `${this.startDate}T00:00:00Z` : '';
-            const formattedEndDate = this.endDate ? `${this.endDate}T23:59:59Z` : '';
-
             this.salesReportService.getSalesReportsPaginated(page, this.pageSize).subscribe({
                 next: (data) => {
-                    let aggregatedData: SalesReport[] = [];
-
-                    if (this.clientName && !this.description) {
-                        const clientMap = new Map<string, SalesReport>();
-                        data.report.forEach(report => {
-                            if (clientMap.has(report.clientName)) {
-                                const existing = clientMap.get(report.clientName)!;
-                                existing.quantity += report.quantity;
-                                existing.revenue += report.revenue;
-                            } else {
-                                clientMap.set(report.clientName, { ...report });
-                            }
-                        });
-                        aggregatedData = Array.from(clientMap.values());
-                    } else {
-                        aggregatedData = data.report;
-                    }
-
-                    this.data = aggregatedData;
+                    this.data = data.report;
                     this.totalItems = data.totalSalesReport;
                     this.currentPage = page;
                 },
@@ -96,12 +97,14 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
     }
 
     get totalPages(): number {
-        return Math.ceil(this.totalItems / this.pageSize);
+        return Math.max(1, Math.ceil(this.totalItems / this.pageSize));
     }
 
     goToPage(page: number) {
-        this.currentPage = page;
-        this.loadSalesReports(page);
+        if (page >= 0 && page < this.totalPages) {
+            this.currentPage = page;
+            this.loadSalesReports(page);
+        }
     }
 
     getTotalRevenue(): number {
