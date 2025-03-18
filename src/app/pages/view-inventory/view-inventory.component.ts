@@ -32,6 +32,8 @@ export class ViewInventoryComponent implements OnInit {
   totalProducts: number = 0;
   currentPage: number = 0;
   pageSize: number = 10;
+  showError = false;
+  errorMessage = '';
 
   constructor(private inventoryService: InventoryService, private router: Router) {} 
 
@@ -73,6 +75,14 @@ export class ViewInventoryComponent implements OnInit {
         next: () => {
           inventory.isEditing = false;
           this.loadInventory();
+        },
+        error: (error) => {
+          this.errorMessage = 'Error updating inventory: ' + (error.error.quantity || 'Unexpected error');
+          this.showError = true;
+          this.loadInventory();
+          setTimeout(() => {
+            this.showError = false;
+          }, 3000);
         }
       });
     } else {
