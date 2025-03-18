@@ -7,36 +7,36 @@
       <!-- Client Form -->
       <div *ngIf="entity === 'Client'">
         <div class="mb-3">
-          <label class="form-label">Name</label>
+          <label class="form-label">Name <span class="text-danger">*</span></label>
           <input type="text" class="form-control" [(ngModel)]="formData.name" name="name" required>
-          <div *ngIf="formData.name?.length === 0" class="text-danger">Name is required.</div>
+          <div *ngIf="formData.name?.trim()?.length === 0" class="text-danger">Name is required.</div>
         </div>
         <div class="mb-3">
-          <label class="form-label">Description</label>
+          <label class="form-label">Description <span class="text-danger">*</span></label>
           <textarea class="form-control" [(ngModel)]="formData.description" name="description" required></textarea>
-          <div *ngIf="formData.description?.length === 0" class="text-danger">Description is required.</div>
+          <div *ngIf="formData.description?.trim()?.length === 0" class="text-danger">Description is required.</div>
         </div>
       </div>
   
       <!-- Product Form -->
       <div *ngIf="entity === 'Product'">
         <div class="mb-3">
-          <label class="form-label">Client Name</label>
+          <label class="form-label">Client Name <span class="text-danger">*</span></label>
           <input type="text" class="form-control" [(ngModel)]="formData.clientName" name="clientName" required>
-          <div *ngIf="formData.clientName?.length === 0" class="text-danger">Client Name is required.</div>
+          <div *ngIf="formData.clientName?.trim()?.length === 0" class="text-danger">Client Name is required.</div>
         </div>
         <div class="mb-3">
-          <label class="form-label">Product Name</label>
+          <label class="form-label">Product Name <span class="text-danger">*</span></label>
           <input type="text" class="form-control" [(ngModel)]="formData.name" name="productName" required>
-          <div *ngIf="formData.name?.length === 0" class="text-danger">Product Name is required.</div>
+          <div *ngIf="formData.name?.trim()?.length === 0" class="text-danger">Product Name is required.</div>
         </div>
         <div class="mb-3">
-          <label class="form-label">Barcode</label>
+          <label class="form-label">Barcode <span class="text-danger">*</span></label>
           <input type="text" class="form-control" [(ngModel)]="formData.barcode" name="barcode" required>
-          <div *ngIf="formData.barcode?.length === 0" class="text-danger">Barcode is required.</div>
+          <div *ngIf="formData.barcode?.trim()?.length === 0" class="text-danger">Barcode is required.</div>
         </div>
         <div class="mb-3">
-          <label class="form-label">Price</label>
+          <label class="form-label">Price <span class="text-danger">*</span></label>
           <input type="number" class="form-control" [(ngModel)]="formData.price" name="price" required>
           <div *ngIf="formData.price === '' || formData.price <= 0" class="text-danger">A positive price is required.</div>
         </div>
@@ -49,14 +49,14 @@
       <!-- Inventory Form -->
       <div *ngIf="entity === 'Inventory'">
         <div class="mb-3">
-          <label class="form-label">Barcode</label>
+          <label class="form-label">Barcode <span class="text-danger">*</span></label>
           <input type="text" class="form-control" [(ngModel)]="formData.barcode" name="barcode" required>
-          <div *ngIf="formData.barcode?.length === 0" class="text-danger">Barcode is required.</div>
+          <div *ngIf="formData.barcode?.trim()?.length === 0" class="text-danger">Barcode is required.</div>
         </div>
         <div class="mb-3">
-          <label class="form-label">Quantity</label>
+          <label class="form-label">Quantity <span class="text-danger">*</span></label>
           <input type="number" class="form-control" [(ngModel)]="formData.quantity" name="quantity" required>
-          <div *ngIf="formData.quantity == '' || formData.quantity <= 0" class="text-danger">Positive quantity is required.</div>
+          <div *ngIf="formData.quantity == '' || formData.quantity < 0" class="text-danger">Positive quantity is required.</div>
         </div>
         <div class="mb-3">
           <label class="form-label">Upload TSV File</label>
