@@ -24,7 +24,7 @@
     <tbody>
       <tr *ngFor="let row of filteredData(); let i = index">
         <td *ngFor="let col of columns">
-          <span>{{ row[col.field] }}</span>
+          <span>{{ truncateValue(row[col.field]) }}</span>
         </td>
         <td>
           <button class="btn btn-sm btn-primary me-1" [routerLink]="['/app/order-details', row['id']]">

@@ -13,11 +13,11 @@
     </thead>
     <tbody>
       <tr *ngFor="let item of items">
-        <td>{{ item.barcode }}</td>
-        <td>{{ item.quantity }}</td>
-        <td>{{ item.prodName }}</td>
-        <td>{{ item.price }}</td>
-        <td>{{ item.sellingPrice }}</td>
+        <td>{{ truncateValue(item.barcode) }}</td>
+        <td>{{ truncateValue(item.quantity) }}</td>
+        <td>{{ truncateValue(item.prodName) }}</td>
+        <td>{{ truncateValue(item.price) }}</td>
+        <td>{{ truncateValue(item.sellingPrice) }}</td>
       </tr>
     </tbody>
   </table>

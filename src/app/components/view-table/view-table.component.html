@@ -11,35 +11,35 @@
     </button>
   </div>
 
-    <table class="table table-hover table-bordered text-center align-middle">
-      <thead class="table-dark">
-        <tr>
-          <th *ngFor="let col of columns">
-            {{ col.header }} 
-          </th>
-          <th *ngIf="entity !== 'Sales Report' && entity !== 'Day Sales Report'">Actions</th>  
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of filteredData(); let i = index">
-          <td *ngFor="let col of columns" class="table-cell">
-            <ng-container *ngIf="row.isEditing && isEditableField(col.field)">
-              <div class="d-flex justify-content-center align-items-center">
-                <input [(ngModel)]="row[col.field]" name="{{ col.field + '-' + i }}" class="form-control text-center border-0" style="width: 100%;" />
-              </div>
-            </ng-container>
-            <ng-container *ngIf="!row.isEditing || !isEditableField(col.field)">
-              {{ row[col.field] }}
-            </ng-container>
-          </td>
-          <td *ngIf="entity !== 'Sales Report' && entity !== 'Day Sales Report'" class="table-cell">
-            <button class="btn btn-sm btn-primary me-1" (click)="editRow(i)">
-              <i class="fas fa-edit"></i> {{ row.isEditing ? 'Save' : 'Edit' }}
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <table class="table table-hover table-bordered text-center align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th *ngFor="let col of columns">
+          {{ col.header }} 
+        </th>
+        <th *ngIf="entity !== 'Sales Report' && entity !== 'Day Sales Report'">Actions</th>  
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of filteredData(); let i = index">
+        <td *ngFor="let col of columns" class="table-cell">
+          <ng-container *ngIf="row.isEditing && isEditableField(col.field)">
+            <div class="d-flex justify-content-center align-items-center">
+              <input [(ngModel)]="row[col.field]" name="{{ col.field + '-' + i }}" class="form-control text-center border-0" style="width: 100%;" />
+            </div>
+          </ng-container>
+          <ng-container *ngIf="!row.isEditing || !isEditableField(col.field)">
+            {{ truncateValue(row[col.field]) }}
+          </ng-container>
+        </td>
+        <td *ngIf="entity !== 'Sales Report' && entity !== 'Day Sales Report'" class="table-cell">
+          <button class="btn btn-sm btn-primary me-1" (click)="editRow(i)">
+            <i class="fas fa-edit"></i> {{ row.isEditing ? 'Save' : 'Edit' }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
   <!-- Pagination Controls -->
   <div class="d-flex justify-content-center mt-3">
