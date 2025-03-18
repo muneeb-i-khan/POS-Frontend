@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
 import { Router } from '@angular/router';
 import { DaySalesReportService } from '../../services/daySalesReport.service';
-import { DaySalesReport } from '../../models/daySalesReport.model';
+import { DaySalesReport } from '../../types/daySalesReport.type';
 import { FormsModule } from '@angular/forms';
 
 @Component({

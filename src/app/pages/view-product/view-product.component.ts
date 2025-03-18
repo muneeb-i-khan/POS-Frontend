@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
 import { ProductService } from '../../services/product.service';
-import { Product } from '../../models/product.model';
+import { Product } from '../../types/product.type';
 import { Router } from '@angular/router';
 import { CreateFormComponent } from '../../components/create-form/create-form.component';
 

@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { SalesReport } from '../../models/salesReport.model';
+import { SalesReport } from '../../types/salesReport.type';
 import { SalesReportService } from '../../services/salesReport.service';
 import { CurrencyPipe, NgIf } from '@angular/common';
 
@@ -49,10 +49,10 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
 
     loadSalesReports(page: number = 0) {
         if (!this.startDate && !this.endDate && !this.clientName && !this.description) {
-            this.salesReportService.getAllReports().subscribe({
+            this.salesReportService.getSalesReportsPaginated(page, this.pageSize).subscribe({
                 next: (data) => {
-                    this.data = data.map(report => ({ ...report }));
-                    this.totalItems = data.length;
+                    this.data = data.report;
+                    this.totalItems = data.totalSalesReport;
                     this.currentPage = page;
                 },
                 error: (error) => {
@@ -64,13 +64,13 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
             const formattedStartDate = this.startDate ? `${this.startDate}T00:00:00Z` : '';
             const formattedEndDate = this.endDate ? `${this.endDate}T23:59:59Z` : '';
 
-            this.salesReportService.getReport(formattedStartDate, formattedEndDate, this.clientName, this.description).subscribe({
+            this.salesReportService.getSalesReportsPaginated(page, this.pageSize).subscribe({
                 next: (data) => {
                     let aggregatedData: SalesReport[] = [];
 
                     if (this.clientName && !this.description) {
                         const clientMap = new Map<string, SalesReport>();
-                        data.forEach(report => {
+                        data.report.forEach(report => {
                             if (clientMap.has(report.clientName)) {
                                 const existing = clientMap.get(report.clientName)!;
                                 existing.quantity += report.quantity;
@@ -81,11 +81,11 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
                         });
                         aggregatedData = Array.from(clientMap.values());
                     } else {
-                        aggregatedData = data;
+                        aggregatedData = data.report;
                     }
 
                     this.data = aggregatedData;
-                    this.totalItems = aggregatedData.length;
+                    this.totalItems = data.totalSalesReport;
                     this.currentPage = page;
                 },
                 error: (error) => {
@@ -104,7 +104,6 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
         this.loadSalesReports(page);
     }
 
-    // Helper methods for calculations
     getTotalRevenue(): number {
         return this.data.reduce((sum, report) => sum + report.revenue, 0);
     }

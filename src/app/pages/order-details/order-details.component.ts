@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgFor } from '@angular/common';
 import { OrderService } from '../../services/order.service';
-import { Order, OrderItem } from '../../models/order.model';
+import { Order, OrderItem } from '../../types/order.type';
 
 @Component({
   selector: 'app-order-details',

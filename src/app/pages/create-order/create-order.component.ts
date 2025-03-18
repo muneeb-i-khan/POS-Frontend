@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { OrderService } from '../../services/order.service';
-import { Order, OrderItem, Customer } from '../../models/order.model';
+import { Order, OrderItem, Customer } from '../../types/order.type';
 import { ProductService } from '../../services/product.service';
 
 @Component({

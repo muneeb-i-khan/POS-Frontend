@@ -3,7 +3,7 @@ import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
 import { OrderService } from '../../services/order.service';
-import { Order } from '../../models/order.model';
+import { Order } from '../../types/order.type';
 import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-view-order',

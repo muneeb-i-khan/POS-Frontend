@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
 import { InventoryService } from '../../services/inventory.service';
-import { Inventory } from '../../models/inventory.model';
+import { Inventory } from '../../types/inventory.type';
 import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { CreateFormComponent } from '../../components/create-form/create-form.component';
