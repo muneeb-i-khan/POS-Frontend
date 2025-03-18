@@ -1,14 +1,14 @@
 import { Component, OnInit, inject , Input, Output, EventEmitter} from '@angular/core';
-import { RouterLink, ActivatedRoute } from '@angular/router';
+import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { OrderService } from '../../services/order.service';
 import { Order } from '../../models/order.model';
-
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-view-order',
   standalone: true,
-  imports: [RouterLink, FormsModule, NgFor],  
+  imports: [RouterLink, FormsModule, NgFor, RouterModule, NgIf],  
   templateUrl: './view-order.component.html',
   styleUrls: ['./view-order.component.scss']
 })
@@ -16,10 +16,10 @@ import { Order } from '../../models/order.model';
 export class ViewOrderComponent implements OnInit {
   private orderService = inject(OrderService);
   private route = inject(ActivatedRoute);
-
+  private router = inject(Router);
   @Input() totalItems: number = 0;
   @Input() currentPage: number = 0;
-  @Input() pageSize: number = 5;
+  @Input() pageSize: number = 10;
   @Output() pageChange = new EventEmitter<number>();
 
 
@@ -36,7 +36,8 @@ export class ViewOrderComponent implements OnInit {
   searchField: string = '';
   startDate: string = '';
   endDate: string = '';
-
+  errorMessage: string = '';
+  showError: boolean = false;
 
 
   ngOnInit() {
@@ -121,5 +122,13 @@ export class ViewOrderComponent implements OnInit {
 
   goToPage(page: number) {
     this.loadOrders(page);
+  }
+
+  switchToView() {
+    this.router.navigate(['/app/orders/view']);
+  }
+
+  onCreate() {
+    this.router.navigate(['/app/orders/create']);
   }
 }
