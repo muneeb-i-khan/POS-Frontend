@@ -12,30 +12,18 @@ declare var bootstrap: any;
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements  AfterViewInit {
   title = 'POS-Frontend';
   isDarkMode = false;
 
   constructor(public authService: AuthService, private router: Router) {}
 
-  ngOnInit() {
-    this.authService.checkSession().subscribe(response => {
-      if (!response.isAuthenticated) {
-        this.authService.clearUserSession();
-        this.router.navigate(['/login']); 
-      }
-    });
-  }
 
   ngAfterViewInit(): void {
-    // Initialize all dropdowns
     const dropdownElementList = document.querySelectorAll('.dropdown-toggle');
     dropdownElementList.forEach(dropdownToggleEl => {
       new bootstrap.Dropdown(dropdownToggleEl);
     });
-    
-    // Remove the custom event listener for the hamburger menu
-    // Bootstrap's data attributes will handle the toggle automatically
   }
 
   toggleDarkMode(): void {

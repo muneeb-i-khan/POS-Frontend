@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SalesReport } from '../../types/salesReport.type';
 import { SalesReportService } from '../../services/salesReport.service';
-import { CurrencyPipe, NgIf } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
     selector: 'app-view-dayReport',
@@ -71,7 +71,13 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
                     } else {
                         this.data = data;
                     }
-                    
+                    console.log("--------------------------------");
+                    console.log(page);
+                    console.log(this.pageSize);
+                    console.log(this.totalItems);
+                    console.log(this.currentPage);
+                    console.log(this.totalPages);
+                    console.log(this.data.length);
                     const startIndex = page * this.pageSize;
                     const endIndex = startIndex + this.pageSize;
                     this.totalItems = this.data.length;
@@ -85,9 +91,17 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
         } else {
             this.salesReportService.getSalesReportsPaginated(page, this.pageSize).subscribe({
                 next: (data) => {
+                    console.log(data);
+              
                     this.data = data.report;
                     this.totalItems = data.totalSalesReport;
                     this.currentPage = page;
+                    console.log("--------------------------------");
+                    console.log(this.pageSize);
+                    console.log(this.totalItems);
+                    console.log(this.currentPage);
+                    console.log(this.totalPages);
+                    console.log(this.data.length);
                 },
                 error: (error) => {
                     console.error('Error fetching reports:', error);

@@ -30,18 +30,21 @@
     </div>
 </form>
 
-<div class="row mb-3 text-center mx-5">
-    <div class="col-md-6">
-        <div class="card p-3 shadow-sm">
-            <strong>Total Revenue:</strong> <span class="h5">{{ getTotalRevenue() | currency }}</span>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card p-3 shadow-sm">
-            <strong>Total Quantity:</strong> <span class="h5">{{ getTotalQuantity() }}</span>
-        </div>
-    </div>
-</div>
+<div class="container">
+  <div class="d-flex mt-3 mb-3 ms-3 me-3 justify-content-between">
+    <div class="col-md-5">
+      <div class="card p-3 shadow-sm">
+          <strong>Total Revenue:</strong> <span class="h5">{{ getTotalRevenue() | currency }}</span>
+      </div>
+  </div>
+  <div class="col-md-5">
+      <div class="card p-3 shadow-sm">
+          <strong>Total Quantity:</strong> <span class="h5">{{ getTotalQuantity() }}</span>
+      </div>
+  </div>
+  </div>
+
+
 
 <app-view-table 
     [columns]="columns" 
@@ -53,3 +56,4 @@
     [pageSize]="pageSize"
     (pageChange)="goToPage($event)">
 </app-view-table>
+</div>

@@ -6,7 +6,6 @@ import { AuthGuard } from './guards/auth.guard';
 import { ClientManagementComponent } from './pages/client-management/client-management.component';
 import { ProductManagementComponent } from './pages/product-management/product-management.component';
 import { InventoryManagementComponent } from './pages/inventory-management/inventory-management.component';
-import { OrderManagementComponent } from './pages/order-management/order-management.component';
 import { CreateOrderComponent } from './pages/create-order/create-order.component';
 import { ViewClientComponent } from './pages/view-client/view-client.component';
 import { ViewProductComponent } from './pages/view-product/view-product.component';
@@ -23,7 +22,6 @@ export const routes: Routes = [
   { path: 'app/clients', component: ClientManagementComponent, canActivate: [AuthGuard] },
   { path: 'app/products', component: ProductManagementComponent, canActivate: [AuthGuard] },
   { path: 'app/inventory', component: InventoryManagementComponent, canActivate: [AuthGuard] },
-  { path: 'app/orders', component: OrderManagementComponent, canActivate: [AuthGuard] },
   { path: 'app/orders/create', component: CreateOrderComponent, canActivate: [AuthGuard] },
   { path: 'app/clients/view', component: ViewClientComponent, canActivate: [AuthGuard] },
   { path: 'app/products/view', component: ViewProductComponent, canActivate: [AuthGuard] },

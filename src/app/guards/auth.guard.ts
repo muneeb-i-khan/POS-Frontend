@@ -10,19 +10,11 @@ import { tap, catchError } from 'rxjs/operators';
 export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(): Observable<boolean> {
-    return this.authService.checkSession().pipe(
-      tap(response => {
-        if (!response.isAuthenticated) {
-          this.authService.clearUserSession();
-          this.router.navigate(['/login']);
-        }
-      }),
-      catchError(() => {
-        this.authService.clearUserSession();
-        this.router.navigate(['/login']);
-        return of(false);
-      })
-    );
+    canActivate(): boolean {
+      if (this.authService.isLoggedIn()) {
+        return true;
+      }
+      this.router.navigate(['/login']);
+      return false;
   }
 }

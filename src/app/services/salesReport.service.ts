@@ -27,12 +27,6 @@ export class SalesReportService {
     return this.http.get<SalesReport[]>(`${this.apiUrl}/filter`, { params, withCredentials: true });
   }
 
-  getAllReports(): Observable<SalesReport[]> {
-    return this.http.get<SalesReport[]>(`${this.apiUrl}/sales/all`, {
-      withCredentials: true
-     });
-  }
-
   getSalesReportsPaginated(page: number, pageSize: number): Observable<{ report: SalesReport[], totalSalesReport: number }> {
     return this.http.get<SalesReport[]>(`${this.apiUrl}/sales/paginated?page=${page}&pageSize=${pageSize}`, { 
       observe: 'response',
@@ -40,7 +34,7 @@ export class SalesReportService {
      })
       .pipe(
         map(response => {
-          const totalSalesReport = Number(response.headers.get('totalSalesReport')) || 0;
+          const totalSalesReport = Number(response.headers.get('totalSalesReport'));
           return { report: response.body || [], totalSalesReport };
         })
       );
