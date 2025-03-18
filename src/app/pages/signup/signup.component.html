@@ -1,5 +1,5 @@
-<div class="login-container d-flex justify-content-center align-items-center vh-100">
-    <div class="card p-4 shadow-sm">
+<div class="login-container d-flex justify-content-center align-items-center vh-100" style="overflow: hidden;">
+    <div class="card p-4 shadow-sm signup-card">
       <h2 class="text-center">Signup</h2>
       <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
       <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
@@ -15,5 +15,10 @@
       </div>
 
       <button class="btn btn-primary w-100" (click)="signup()" [disabled]="!email || !password">Signup</button>
+
+      <div class="text-center mt-3">
+        <span>Already have an account? </span>
+        <button class="btn btn-link p-0 text-primary" (click)="navigateToLogin()">Login here</button>
+      </div>
     </div>
 </div>

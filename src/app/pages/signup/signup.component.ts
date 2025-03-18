@@ -22,6 +22,10 @@ export class SignupComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  navigateToLogin() {
+    this.router.navigate(['/login']);
+  }
+
   signup() {
     this.authService.signup(this.email, this.password).subscribe({
       next: (response) => {
