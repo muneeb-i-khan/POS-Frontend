@@ -1,5 +1,4 @@
 <form (ngSubmit)="onGenerateReport()" class="d-flex flex-column align-items-center">
-
   <div class="d-flex mb-3 justify-content-center mt-3">
     <div class="me-3">
       <label for="startDate" class="form-label">Start Date</label>
@@ -18,11 +17,24 @@
     </div>
   </div>
 </form>
+
 <div class="container">
-  <div *ngIf="showError" class="alert alert-danger mt-3 mb-3 fade show justify-content-center" role="alert" style="max-width: 500px;">
-    <strong>Error:</strong> {{ errorMessage }}
+  <div class="d-flex justify-content-center">
+    <div *ngIf="showError" class="alert alert-danger mt-3 mb-3 w-50 fade show text-center" role="alert">
+      <strong>Error:</strong> {{ errorMessage }}
+    </div>
   </div>
-  <app-view-table [columns]="columns" [data]="data" [entity]="entity" [editableFields]="[]" [totalItems]="totalItems"
-    [currentPage]="currentPage" [pageSize]="pageSize" (pageChange)="goToPage($event)">
-  </app-view-table>
+  
+  <div class="justify-content-center">
+    <app-view-table 
+      [columns]="columns" 
+      [data]="data" 
+      [entity]="entity"
+      [editableFields]="[]"
+      [totalItems]="totalItems"
+      [currentPage]="currentPage"
+      [pageSize]="pageSize"
+      (pageChange)="goToPage($event)">
+    </app-view-table>
+  </div>
 </div>

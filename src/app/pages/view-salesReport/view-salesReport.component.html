@@ -1,63 +1,63 @@
 <form (ngSubmit)="onGenerateReport()" class="d-flex flex-column align-items-center">
-    <div class="d-flex mb-3 justify-content-center mt-3">
-      <div class="me-3">
-        <label for="startDate" class="form-label">Start Date</label>
-        <div class="d-flex align-items-center">
-          <input type="date" id="startDate" name="startDate" [(ngModel)]="startDate" class="form-control">
-        </div>
-      </div>
-      <div class="me-3">
-        <label for="endDate" class="form-label">End Date</label>
-        <div class="d-flex align-items-center">
-          <input type="date" id="endDate" name="endDate" [(ngModel)]="endDate" class="form-control">
-        </div>
-      </div>
-      <div class="me-3">
-        <label for="clientName" class="form-label">Client</label>
-        <div class="d-flex align-items-center">
-          <input type="text" id="clientName" name="clientName" [(ngModel)]="clientName" class="form-control" placeholder="Enter Client Name">
-        </div>
-      </div>
-      <div class="me-3">
-        <label for="description" class="form-label">Description</label>
-        <div class="d-flex align-items-center">
-          <input type="text" id="description" name="description" [(ngModel)]="description" class="form-control" placeholder="Enter Description">
-        </div>
-      </div>
-      <div class="d-flex align-items-end">
-        <button type="submit" class="btn btn-primary">Generate Report</button>
+  <div class="d-flex mb-3 justify-content-center mt-3">
+    <div class="me-3">
+      <label for="startDate" class="form-label">Start Date</label>
+      <div class="d-flex align-items-center">
+        <input type="date" id="startDate" name="startDate" [(ngModel)]="startDate" class="form-control">
       </div>
     </div>
+    <div class="me-3">
+      <label for="endDate" class="form-label">End Date</label>
+      <div class="d-flex align-items-center">
+        <input type="date" id="endDate" name="endDate" [(ngModel)]="endDate" class="form-control">
+      </div>
+    </div>
+    <div class="me-3">
+      <label for="clientName" class="form-label">Client</label>
+      <div class="d-flex align-items-center">
+        <input type="text" id="clientName" name="clientName" [(ngModel)]="clientName" class="form-control" placeholder="Enter Client Name">
+      </div>
+    </div>
+    <div class="me-3">
+      <label for="description" class="form-label">Description</label>
+      <div class="d-flex align-items-center">
+        <input type="text" id="description" name="description" [(ngModel)]="description" class="form-control" placeholder="Enter Description">
+      </div>
+    </div>
+    <div class="d-flex align-items-end">
+      <button type="submit" class="btn btn-primary">Generate Report</button>
+    </div>
+  </div>
 </form>
 
 <div class="container">
-  <div *ngIf="showError" class="alert alert-danger mt-3 mb-3 fade show" role="alert">
+<div class="d-flex justify-content-center">
+  <div *ngIf="showError" class="alert alert-danger mt-3 mb-3 w-50 fade show text-center" role="alert">
     <strong>Error:</strong> {{ errorMessage }}
   </div>
-  
-  <div class="d-flex mt-3 mb-3 ms-3 me-3 justify-content-between">
-    <div class="col-md-5">
-      <div class="card p-3 shadow-sm">
-          <strong>Total Revenue:</strong> <span class="h5">{{ getTotalRevenue() | currency }}</span>
-      </div>
+</div>
+
+<div class="d-flex mt-3 mb-3 ms-3 me-3 justify-content-between">
+  <div class="col-md-5">
+    <div class="card p-3 shadow-sm">
+        <strong>Total Revenue:</strong> <span class="h5">{{ getTotalRevenue() | currency }}</span>
+    </div>
   </div>
   <div class="col-md-5">
-      <div class="card p-3 shadow-sm">
-          <strong>Total Quantity:</strong> <span class="h5">{{ getTotalQuantity() }}</span>
-      </div>
+    <div class="card p-3 shadow-sm">
+        <strong>Total Quantity:</strong> <span class="h5">{{ getTotalQuantity() }}</span>
+    </div>
   </div>
-  </div>
-
-
+</div>
 
 <app-view-table 
-    [columns]="columns" 
-    [data]="data" 
-    [entity]="entity"
-    [editableFields]="['date', 'orderCount', 'itemSoldCount', 'revenue']"
-    [totalItems]="totalItems"
-    [currentPage]="currentPage"
-    [pageSize]="pageSize"
-    (pageChange)="goToPage($event)">
+  [columns]="columns" 
+  [data]="data" 
+  [entity]="entity"
+  [editableFields]="['date', 'orderCount', 'itemSoldCount', 'revenue']"
+  [totalItems]="totalItems"
+  [currentPage]="currentPage"
+  [pageSize]="pageSize"
+  (pageChange)="goToPage($event)">
 </app-view-table>
 </div>
