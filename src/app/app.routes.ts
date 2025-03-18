@@ -15,6 +15,7 @@ import { OrderDetailsComponent } from './pages/order-details/order-details.compo
 import { SignupComponent } from './pages/signup/signup.component';
 import { ViewDayReportComponent } from './pages/view-dayReport/view-dayReport.component';
 import { ViewSalesReportComponent } from './pages/view-salesReport/view-salesReport.component';
+import { RedirectIfLoggedInGuard } from './guards/redirect-if-logged-in.guard';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -28,8 +29,8 @@ export const routes: Routes = [
   { path: 'app/inventory/view', component: ViewInventoryComponent, canActivate: [AuthGuard] },
   { path: 'app/orders/view', component: ViewOrderComponent, canActivate: [AuthGuard] },
   { path: 'app/order-details/:orderId', component: OrderDetailsComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
+  { path: 'login', component: LoginComponent, canActivate: [RedirectIfLoggedInGuard] }, 
+  { path: 'signup', component: SignupComponent, canActivate: [RedirectIfLoggedInGuard] }, 
   { path: 'app/day-reports/view', component: ViewDayReportComponent, canActivate: [AuthGuard] },
   { path: 'app/sales-reports/view', component: ViewSalesReportComponent, canActivate: [AuthGuard] },
 ];
