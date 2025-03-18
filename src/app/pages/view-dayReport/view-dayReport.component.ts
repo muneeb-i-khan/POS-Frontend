@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { DaySalesReportService } from '../../services/daySalesReport.service';
 import { DaySalesReport } from '../../types/daySalesReport.type';
 import { FormsModule } from '@angular/forms';
-
+import { NgIf } from '@angular/common';
 @Component({
     selector: 'app-view-dayReport',
     standalone: true,
-    imports: [ViewTableComponent, FormsModule],
+    imports: [ViewTableComponent, FormsModule, NgIf],
     templateUrl: './view-dayReport.component.html',
     styleUrls: ['./view-dayReport.component.scss']
 })
@@ -25,7 +25,8 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
 
     startDate: string = '';
     endDate: string = '';
-
+    showError: boolean = false;
+    errorMessage: string = '';
     totalItems: number = 0;
     currentPage: number = 0;
     pageSize: number = 10;
@@ -53,8 +54,9 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
                     this.totalItems = data.totalReports;
                     this.currentPage = page;
                 },
-                error: (error) => {
-                    console.error('Error fetching reports:', error);
+                error: (err) => {
+                    this.showError = true;
+                    this.errorMessage = err.error.error;
                 }
             });
         } else {
@@ -68,8 +70,9 @@ export class ViewDayReportComponent implements OnInit, AfterViewInit {
                         date: this.formatDate(report.date)
                     }));
                 },
-                error: (error) => {
-                    console.error('Error fetching reports:', error);
+                error: (err) => {
+                    this.showError = true;
+                    this.errorMessage = err.error.error;
                 }
             });
         }
