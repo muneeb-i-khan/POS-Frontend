@@ -23,7 +23,10 @@
                 </tr>
             </tbody>
         </table>
-        <button type="submit" class="btn btn-success" (click)="submitForm()">Submit Order</button>
+        <button type="submit" class="btn btn-success" (click)="submitForm()" 
+                [disabled]="!customer.name || customer.name?.trim()?.length === 0 || !customer.phone || customer.phone?.trim()?.length !== 10 || orderItems.length === 0">
+            Submit Order
+        </button>
     </div>
 
     <div class="right-panel" style="flex: 1;">
@@ -34,14 +37,14 @@
             <div class="mb-3">
                 <label class="form-label">Customer Name</label>
                 <input type="text" class="form-control" [(ngModel)]="customer.name" name="customerName" required placeholder="Enter customer name">
-                <div *ngIf="orderForm.controls['customerName']?.invalid && orderForm.controls['customerName']?.touched" class="text-danger">
+                <div *ngIf="customer.name?.trim()?.length === 0 || orderForm.controls['customerName']?.invalid && orderForm.controls['customerName']?.touched" class="text-danger">
                     Customer Name is required.
                 </div>
             </div>
             <div class="mb-3">
                 <label class="form-label">Customer Phone</label>
                 <input type="tel" class="form-control" [(ngModel)]="customer.phone" name="customerPhone" required pattern="^[0-9]{10}$" placeholder="Enter 10-digit phone number">
-                <div *ngIf="orderForm.controls['customerPhone']?.invalid && orderForm.controls['customerPhone']?.touched" class="text-danger">
+                <div *ngIf="customer.phone?.trim()?.length !== 10 || orderForm.controls['customerPhone']?.invalid && orderForm.controls['customerPhone']?.touched" class="text-danger">
                     <div *ngIf="orderForm.controls['customerPhone']?.errors?.['required']">Customer Phone is required.</div>
                     <div *ngIf="orderForm.controls['customerPhone']?.errors?.['pattern']">Please enter a valid 10-digit phone number.</div>
                 </div>
