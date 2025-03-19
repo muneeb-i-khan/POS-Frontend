@@ -43,11 +43,12 @@
 
   <!-- Pagination Controls -->
   <div class="d-flex justify-content-center mt-3">
-    <button *ngIf="currentPage > 0" class="btn btn-sm btn-primary me-2" (click)="goToPage(currentPage - 1)">
+    <button class="btn btn-sm btn-primary me-2" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 0">
       Previous
     </button>
     <span class="align-self-center">Page {{ currentPage + 1 }} of {{ totalPages }}</span>
-    <button *ngIf="currentPage < totalPages - 1" class="btn btn-sm btn-primary ms-2" (click)="goToPage(currentPage + 1)">
+    <button class="btn btn-sm btn-primary ms-2" (click)="goToPage(currentPage + 1)" 
+            [disabled]="currentPage >= totalPages - 1">
       Next
     </button>
   </div>
