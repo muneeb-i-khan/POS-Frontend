@@ -1,15 +1,16 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ClientService } from '../../services/client.service';
 import { ProductService } from '../../services/product.service';
 import { InventoryService } from '../../services/inventory.service';
 import { SampleTsvModalComponent } from '../sample-tsv-modal/sample-tsv-modal.component';
+
 @Component({
   selector: 'app-create-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, SampleTsvModalComponent],
+  imports: [CommonModule, FormsModule, SampleTsvModalComponent, NgIf],
   templateUrl: './create-form.component.html',
   styleUrls: ['./create-form.component.scss']
 })
@@ -38,57 +39,18 @@ export class CreateFormComponent {
   
     if (this.entity === 'Client') {
       this.clientService.postClient(this.formData).subscribe({
-        next: () => {
-          this.clientCreated.emit();
-        },
-        error: (err) => {
-          if (err.status === 400 && err.error) {
-            if (typeof err.error === 'object') {
-              this.errorMessage = Object.values(err.error).join(' ');
-            } else {
-              this.errorMessage = err.error.error || "Failed to create client.";
-            }
-          } else {
-            this.errorMessage = "Failed to create client: " + err.message;
-          }
-        }
+        next: () => this.clientCreated.emit(),
+        error: (err) => this.handleError(err, "Failed to create client")
       });
-    } 
-
-    else if (this.entity === 'Product') {
+    } else if (this.entity === 'Product') {
       this.productService.postProduct(this.formData).subscribe({
-        next: () => {
-          this.productCreated.emit();
-        },
-        error: (err) => {
-          if (err.status === 400 && err.error) {
-            if (typeof err.error === 'object') {
-              this.errorMessage = Object.values(err.error).join(' ');
-            } else {
-              this.errorMessage = err.error.error || "Failed to create product.";
-            }
-          } else {
-            this.errorMessage = "Failed to create product: " + err.message;
-          }
-        }
+        next: () => this.productCreated.emit(),
+        error: (err) => this.handleError(err, "Failed to create product")
       });
-    } 
-    else if (this.entity === 'Inventory') {
+    } else if (this.entity === 'Inventory') {
       this.inventoryService.postInventory(this.formData).subscribe({
-        next: () => {
-          this.inventoryCreated.emit();
-        },
-        error: (err) => {
-          if (err.status === 400 && err.error) {
-            if (typeof err.error === 'object') {
-              this.errorMessage = Object.values(err.error).join(' ');
-            } else {
-              this.errorMessage = err.error.error || "Failed to create inventory.";
-            }
-          } else {
-            this.errorMessage = "Failed to create inventory: " + err.message;
-          }
-        }
+        next: () => this.inventoryCreated.emit(),
+        error: (err) => this.handleError(err, "Failed to create inventory")
       });
     }
   }  
@@ -113,24 +75,40 @@ export class CreateFormComponent {
           this.tsvSubmitted.emit();
           this.selectedFile = null;
         },
-        error: (err) => {
-          this.errorMessage = "Product upload failed: " + err.error.error;
-        }
+        error: (err) => this.handleError(err, "Product upload failed")
       });
-    } 
-  
-    else if (this.entity === 'Inventory') {
+    } else if (this.entity === 'Inventory') {
       this.inventoryService.uploadInventoryTSV(this.selectedFile).subscribe({
         next: () => {
           console.log("TSV upload successful, emitting event");
           this.tsvSubmitted.emit();
           this.selectedFile = null;
         },
-        error: (err) => {
-          this.errorMessage = "Inventory upload failed: " + err.error.error;
-        } 
+        error: (err) => this.handleError(err, "Inventory upload failed")
       });
     }
+  }
+
+  private async handleError(err: any, defaultMessage: string) {
+    this.errorMessage = defaultMessage + ": ";
+
+    if (err.status === 400 && err.error) {
+      if (err.error instanceof Blob && err.error.type === 'application/json') {
+        const errorText = await err.error.text();
+        const errorJson = JSON.parse(errorText);
+        this.errorMessage += errorJson.error || "Unknown error";
+      } else if (typeof err.error === 'string') {
+        this.errorMessage += err.error;
+      } else if (typeof err.error === 'object') {
+        this.errorMessage += Object.values(err.error).join(' ');
+      }
+    } else {
+      this.errorMessage += err.message || "An unexpected error occurred";
+    }
+
+    setTimeout(() => {
+      this.errorMessage = null;
+    }, 3000);
   }
 
   openTsvModal(entity: string) {
