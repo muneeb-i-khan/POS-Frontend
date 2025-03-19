@@ -37,6 +37,8 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
     pageSize: number = 10;
     private errorTimeout: any;
 
+    showTotals: boolean = false;
+
     constructor(private salesReportService: SalesReportService, private router: Router) { }
 
     ngOnInit() {
@@ -143,5 +145,9 @@ export class ViewSalesReportComponent implements OnInit, AfterViewInit {
         }
         this.showError = false;
         this.errorMessage = '';
+    }
+
+    toggleTotals() {
+        this.showTotals = !this.showTotals;
     }
 }
