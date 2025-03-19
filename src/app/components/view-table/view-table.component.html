@@ -22,7 +22,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let row of filteredData(); let i = index">
-        <td *ngFor="let col of columns" class="table-cell">
+        <td *ngFor="let col of columns" class="table-cell" [title]="row[col.field]">
           <ng-container *ngIf="row.isEditing && isEditableField(col.field)">
             <div class="d-flex justify-content-center align-items-center">
               <input [(ngModel)]="row[col.field]" name="{{ col.field + '-' + i }}" class="form-control text-center border-0" style="width: 100%;" />
