@@ -40,9 +40,23 @@ export class ProductService {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post(this.uploadUrl, formData, {
-      withCredentials: true
-     });
-  }
+        withCredentials: true,
+        responseType: 'blob' as 'json' 
+    }).pipe(
+        map(response => {
+            if (response instanceof Blob) {
+                const blob = new Blob([response], { type: 'text/tab-separated-values' });
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'error.tsv';
+                link.click();
+                window.URL.revokeObjectURL(url);
+            }
+            return response;
+        })
+    );
+}
 
 
   getProductsPaginated(page: number, pageSize: number): Observable<{ products: Product[], totalProducts: number }> {
