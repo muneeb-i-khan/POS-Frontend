@@ -25,7 +25,7 @@
         <td *ngFor="let col of columns" class="table-cell" [title]="row[col.field]">
           <ng-container *ngIf="row.isEditing && isEditableField(col.field)">
             <div class="d-flex justify-content-center align-items-center">
-              <input [(ngModel)]="row[col.field]" name="{{ col.field + '-' + i }}" class="form-control text-center border-0" style="width: 100%;" />
+              <input [(ngModel)]="row[col.field]" name="{{ col.field + '-' + i }}" class="form-control text-center border-0 input-field" />
             </div>
           </ng-container>
           <ng-container *ngIf="!row.isEditing || !isEditableField(col.field)">

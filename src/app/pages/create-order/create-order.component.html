@@ -1,5 +1,5 @@
 <div class="container mt-4 d-flex">
-    <div class="left-panel" style="flex: 2; padding-right: 20px;">
+    <div class="left-panel" >
         <h3>Order Items</h3>
         <table class="table table-bordered">
             <thead>
@@ -29,7 +29,7 @@
         </button>
     </div>
 
-    <div class="right-panel" style="flex: 1;">
+    <div class="right-panel">
         <h3>Create Order</h3>
         <form (ngSubmit)="submitForm()" #orderForm="ngForm">
             <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
@@ -37,14 +37,14 @@
             <div class="mb-3">
                 <label class="form-label">Customer Name</label>
                 <input type="text" class="form-control" [(ngModel)]="customer.name" name="customerName" required placeholder="Enter customer name">
-                <div *ngIf="customer.name?.trim()?.length === 0 || orderForm.controls['customerName']?.invalid && orderForm.controls['customerName']?.touched" class="text-danger">
+                <div *ngIf="orderForm.controls['customerName']?.touched && (customer.name?.trim()?.length === 0 || orderForm.controls['customerName']?.invalid) " class="text-danger">
                     Customer Name is required.
                 </div>
             </div>
             <div class="mb-3">
                 <label class="form-label">Customer Phone</label>
                 <input type="tel" class="form-control" [(ngModel)]="customer.phone" name="customerPhone" required pattern="^[0-9]{10}$" placeholder="Enter 10-digit phone number">
-                <div *ngIf="customer.phone?.trim()?.length !== 10 || orderForm.controls['customerPhone']?.invalid && orderForm.controls['customerPhone']?.touched" class="text-danger">
+                <div *ngIf="orderForm.controls['customerPhone']?.touched && (customer.phone?.trim()?.length !== 10 || orderForm.controls['customerPhone']?.invalid)" class="text-danger">
                     <div *ngIf="orderForm.controls['customerPhone']?.errors?.['required']">Customer Phone is required.</div>
                     <div *ngIf="orderForm.controls['customerPhone']?.errors?.['pattern']">Please enter a valid 10-digit phone number.</div>
                 </div>
