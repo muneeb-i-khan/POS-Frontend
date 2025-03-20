@@ -4,6 +4,10 @@
       <app-create-form entity="Product" (productCreated)="handleProductCreated()"  (tsvSubmitted)="handleTsvSubmitted()"></app-create-form>
     </div>
   </div>
+
+  <div *ngIf="showError" class="alert alert-danger mt-3 mb-3 me-3 ms-3 fade show" role="alert">
+    <strong>Error:</strong> {{ errorMessage }}
+  </div>
   
   <app-view-table 
     [columns]="columns" 

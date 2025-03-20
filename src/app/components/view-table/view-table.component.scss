@@ -1,0 +1,17 @@
+.table-cell {
+    width: 150px;
+    height: 50px;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .table-cell:hover {
+    cursor: pointer; 
+  }
+
+  .input-field {
+    width: 100%;
+  }
+  

@@ -1,25 +1,24 @@
 <div class="container mt-4">
-    <h2>Order Details - Order ID: {{ orderId }}</h2>
-  
-    <table class="table table-bordered mt-3">
-      <thead>
-        <tr>
-          <th>Barcode</th>
-          <th>Quantity</th>
-          <th>Product Name</th>
-          <th>Price</th>
-          <th>Selling Price</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of items">
-          <td>{{ item.barcode }}</td>
-          <td>{{ item.quantity }}</td>
-          <td>{{ item.prodName }}</td>
-          <td>{{ item.price }}</td>
-          <td>{{ item.sellingPrice }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
+  <h2>Order Details - Order ID: {{ orderId }}</h2>
+
+  <table class="table table-hover table-bordered text-center align-middle mt-3">
+    <thead class="table-dark">
+      <tr>
+        <th>Barcode</th>
+        <th>Quantity</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Selling Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td [title]="item.barcode">{{ truncateValue(item.barcode) }}</td>
+        <td [title]="item.quantity">{{ truncateValue(item.quantity) }}</td>
+        <td [title]="item.prodName">{{ truncateValue(item.prodName) }}</td>
+        <td [title]="item.price">{{ truncateValue(item.price) }}</td>
+        <td [title]="item.sellingPrice">{{ truncateValue(item.sellingPrice) }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

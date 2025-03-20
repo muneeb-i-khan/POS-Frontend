@@ -8,7 +8,6 @@ import { tap, catchError } from 'rxjs/operators';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:9000/pos/api/auth';
-  private lastCheckedTimeKey = 'lastCheckedTime';
 
   constructor(private http: HttpClient) {}
 
@@ -35,22 +34,7 @@ export class AuthService {
   }
 
   checkSession(): Observable<any> {
-    const lastCheckedTime = sessionStorage.getItem(this.lastCheckedTimeKey);
-    const now = Date.now();
-
-    if (lastCheckedTime && now - parseInt(lastCheckedTime) < 5 * 60 * 1000) {
-      return of({ isAuthenticated: this.isLoggedIn() });
-    }
-
-    return this.http.get(`${this.apiUrl}/check`, { withCredentials: true }).pipe(
-      tap(response => {
-        sessionStorage.setItem(this.lastCheckedTimeKey, now.toString());
-      }),
-      catchError(() => {
-        this.clearUserSession();
-        return of({ isAuthenticated: false });
-      })
-    );
+    return this.http.get(`${this.apiUrl}/check`, { withCredentials: true });
   }
 
   logout(): Observable<any> {
@@ -67,13 +51,11 @@ export class AuthService {
     sessionStorage.setItem('email', email);
     sessionStorage.setItem('userId', userId);
     sessionStorage.setItem('role', role);
-    sessionStorage.setItem(this.lastCheckedTimeKey, Date.now().toString());
   }
 
   clearUserSession(): void {
     sessionStorage.removeItem('userId');
     sessionStorage.removeItem('role');
-    sessionStorage.removeItem(this.lastCheckedTimeKey);
   }
 
   getUserEmail(): string {

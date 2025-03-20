@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { OrderService } from '../../services/order.service';
-import { Order, OrderItem, Customer } from '../../models/order.model';
+import { Order, OrderItem, Customer } from '../../types/order.type';
 import { ProductService } from '../../services/product.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { ProductService } from '../../services/product.service';
   templateUrl: './create-order.component.html',
   styleUrls: ['./create-order.component.scss']
 })
-export class CreateOrderComponent implements OnInit {
+export class CreateOrderComponent {
   customer: Customer = { name: '', phone: '' }; 
   orderItems: OrderItem[] = [];
   newItem: OrderItem;
@@ -27,7 +27,6 @@ export class CreateOrderComponent implements OnInit {
     this.newItem = this.createEmptyOrderItem();
   }
 
-  ngOnInit() {}
 
   private createEmptyOrderItem(): OrderItem {
     return { 
@@ -65,8 +64,6 @@ export class CreateOrderComponent implements OnInit {
       orderItems: this.orderItems,
       orderDate: this.getTodayDate()
     };
-
-    console.log('Order Payload:', order);
 
     this.orderService.postOrder(order).subscribe({
       next: () => this.router.navigate(['/app/orders/view'], { 

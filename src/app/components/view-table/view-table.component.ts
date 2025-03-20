@@ -37,7 +37,6 @@ export class ViewTableComponent {
     return this.data
       .filter(row => {
         if (!this.searchQuery) return true;
-
         if (this.searchField) {
           return row[this.searchField]?.toString().toLowerCase().includes(this.searchQuery.toLowerCase());
         }
@@ -56,7 +55,13 @@ export class ViewTableComponent {
     const USER_ROLE = sessionStorage.getItem('role');
     console.log(USER_ROLE);
     if (USER_ROLE === 'SUPERVISOR') {
-      this.edit.emit(index);
+      const row = this.data[index];
+      if (row.isEditing) {
+        this.edit.emit(index); 
+        row.isEditing = false; 
+      } else {
+        row.isEditing = true;
+      }
     } else {
       this.errorMessage = 'Access Denied: OPERATORs can view entities only';
       this.showError = true;
@@ -98,5 +103,13 @@ export class ViewTableComponent {
     if (page >= 0 && page < this.totalPages) {
       this.pageChange.emit(page);
     }
+  }
+
+  truncateValue(value: any): string {
+    const str = value?.toString() || '';
+    if (str.length > 16) {
+      return `${str.slice(0, 3)}...${str.slice(-3)}`;
+    }
+    return str;
   }
 }

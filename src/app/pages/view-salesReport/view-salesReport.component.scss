@@ -1,0 +1,24 @@
+.alert-danger {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+
+  @media (max-width: 576px) {
+    .form-label {
+      font-size: 0.9rem; // Slightly smaller labels on mobile
+    }
+    .btn-primary {
+      font-size: 0.9rem; // Adjust button size
+      padding: 0.5rem; // Smaller padding
+    }
+    .card {
+      padding: 1rem; // Reduce padding on cards
+    }
+    .h5 {
+      font-size: 1rem; // Adjust font size for totals
+    }
+  }

@@ -1,14 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ViewTableComponent } from '../../components/view-table/view-table.component';
 import { ProductService } from '../../services/product.service';
-import { Product } from '../../models/product.model';
+import { Product } from '../../types/product.type';
 import { Router } from '@angular/router';
 import { CreateFormComponent } from '../../components/create-form/create-form.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-view-product',
   standalone: true,
-  imports: [ViewTableComponent, CreateFormComponent],
+  imports: [ViewTableComponent, CreateFormComponent, NgIf],
   templateUrl: './view-product.component.html',
   styleUrls: ['./view-product.component.scss']
 })
@@ -26,10 +27,12 @@ export class ViewProductComponent implements OnInit, AfterViewInit {
 
   @ViewChild('createProductModal', { static: false }) createProductModal!: ElementRef;
 
-   // Pagination properties
+
    totalProducts: number = 0;
    currentPage: number = 0;
    pageSize: number = 10;
+   showError = false;
+   errorMessage = '';
  
   constructor(private productService: ProductService, private router: Router) {}
 
@@ -86,6 +89,18 @@ export class ViewProductComponent implements OnInit, AfterViewInit {
         next: () => {
           product.isEditing = false;
           this.loadProducts();
+        },
+        error: (error) => {
+          if(product.price < 0){
+            this.errorMessage = 'Price cannot be negative';
+          }else{
+            this.errorMessage = 'Error updating product: ' + (error.error.error || 'Unexpected error');
+          }
+          this.showError = true;
+          this.loadProducts();
+          setTimeout(() => {
+            this.showError = false;
+          }, 3000);
         }
       });
     } else {
