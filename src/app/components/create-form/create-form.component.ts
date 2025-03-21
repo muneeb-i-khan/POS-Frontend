@@ -64,7 +64,7 @@ export class CreateFormComponent {
 
   uploadTSV() {
     if (!this.selectedFile) {
-      alert("Please select a TSV file to upload.");
+      this.handleError(null, "Please select a TSV file to upload.");
       return;
     }
   
