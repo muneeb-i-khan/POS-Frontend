@@ -43,4 +43,8 @@ export class AppComponent implements  AfterViewInit {
       },
     });
   }
+
+  isAuthPage(): boolean {
+    return this.router.url === '/login' || this.router.url === '/signup';
+  }
 }
