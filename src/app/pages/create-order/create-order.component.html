@@ -25,7 +25,7 @@
         </table>
         <button type="submit" class="btn btn-success" (click)="submitForm()" 
                 [disabled]="!customer.name || customer.name.trim().length === 0 || !customer.phone || customer.phone.trim().length !== 10 || orderItems.length === 0">
-            Submit Order
+            Place Order
         </button>
     </div>
 
@@ -52,7 +52,7 @@
 
             <!-- Order Item Form -->
             <div class="border p-3 mb-3">
-                <h5>Add Sale Item</h5>
+                <h5>Add Item</h5>
                 <div class="mb-3">
                     <label class="form-label">Barcode</label>
                     <input type="text" class="form-control" [(ngModel)]="newItem.barcode" name="newBarcode" required #newBarcode="ngModel" placeholder="Enter barcode">
